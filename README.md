@@ -1,4 +1,4 @@
-[https://ja.reactjs.org/docs/static-type-checking.html#typescript](https://ja.reactjs.org/docs/static-type-checking.html#typescript)
+[こちら](https://ja.reactjs.org/docs/static-type-checking.html#typescript)を使用してプロジェクトを初期化しています。
 
 ## API
 こちらのAPIを使用しています。
