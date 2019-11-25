@@ -4,6 +4,7 @@ import './App.css';
 
 const App: React.FC = () => {
     console.log(`process.env.NODE_ENV is: ${process.env.NODE_ENV}`)
+    console.log(`REACT_APP_API_KEY is: ${process.env.REACT_APP_API_KEY}`)
     return (
         <div className="App">
             <header className="App-header">
