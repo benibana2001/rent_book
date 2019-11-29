@@ -1,4 +1,5 @@
 import * as React from 'react'
+import {Calil, options} from './Calil'
 export { View }
 
 class Button extends React.Component<{ value: string, name: string }> {
@@ -10,6 +11,18 @@ class Button extends React.Component<{ value: string, name: string }> {
   getTopStoryJSON = async (): Promise<any> => {
     const HKN_TOP_URL: string = 'https://hacker-news.firebaseio.com/v0/topstories.json'
     let response: any = await fetch(HKN_TOP_URL)
+
+    //
+    let o: options = {
+        'appkey': process.env.APP_API_KEY,
+        'isbn': [111],
+        'systemid': [111]
+    }
+    console.log(`o: ${JSON.stringify(o)}`)
+    let c: Calil = new Calil(o)
+    c.search()
+    //
+
     return response.json()
   }
 

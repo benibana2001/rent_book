@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 module.exports = {
     mode: 'development',
     entry: './src/index.tsx',
@@ -12,6 +13,7 @@ module.exports = {
 
     plugins: [
         new webpack.ProgressPlugin(), 
+        new Dotenv(),
         new HtmlWebpackPlugin({
             template: './src/html/index.html'
         })],
