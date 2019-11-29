@@ -1,0 +1,9 @@
+{
+    "manifest_version": 2,
+    "name": "rent_book",
+    "version": "1.0",
+    "description": "rental book system.",
+    "permissions": [
+        "https://iss.ndl.go.jp/"
+    ]
+}
