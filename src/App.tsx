@@ -1,58 +1,137 @@
 import * as React from 'react'
 import { Calil, options } from './Calil'
-import { NDL } from './NDL'
 export { View }
 
-class Button extends React.Component<{ value: string, name: string }> {
-    private log = (): void => {
-        console.log(this.props.name)
-        console.log(process.env.NODE_ENV)
+class InputISBN extends React.Component<{ f: Function }, { isbn: string }> {
+    constructor(props: { f: Function }) {
+        super(props)
+        this.state = { isbn: '' }
+        this.handleChange = this.handleChange.bind(this)
     }
 
-    getTopStoryJSON = async (): Promise<any> => {
-        const HKN_TOP_URL: string = 'https://hacker-news.firebaseio.com/v0/topstories.json'
-        let response: any = await fetch(HKN_TOP_URL)
-
-        //
-        let o: options = {
-            'appkey': process.env.APP_API_KEY,
-            'isbn': [111],
-            'systemid': [111]
-        }
-        console.log(`o: ${JSON.stringify(o)}`)
-        let c: Calil = new Calil(o)
-        c.search()
-        //
-        let n: NDL = new NDL()
-        n.search()
-        //
-
-        return response.json()
+    /**
+     * 
+     * @param event 
+     */
+    handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+        // If reference target in the async function, to do persit().
+        event.persist()
+        this.setState({ isbn: event.target.value });
+        this.props.f(event.target.value)
     }
-
-    jsonValid = async (): Promise<any> => {
-        let json: any = await this.getTopStoryJSON()
-        console.log(json)
-        console.log(typeof (json))
-    }
-
+    /**
+     * 
+     */
     render() {
         return (
-            <ul>
-                <li><button onClick={this.log}>{this.props.value}</button></li>
-                <li><button onClick={this.jsonValid}>JSON</button></li>
-            </ul>
+            <div>
+                ISBN: <input id="isbn" value={this.state.isbn} type="text" onChange={this.handleChange} />
+            </div>
         )
     }
 }
 
-class Card extends React.Component<{ name: string }>{
+class RadioSystemID extends React.Component<{ f: Function }> {
+    constructor(props: { f: Function }) {
+        super(props)
+        this.handleChange = this.handleChange.bind(this)
+    }
+    handleChange(event: React.ChangeEvent<HTMLInputElement>): void {
+        event.persist()
+        this.props.f(event.target.value)
+        console.log(event.target.value)
+    }
     render() {
         return (
-            <ul>
-                <li>{this.props.name}</li>
-                <Button value="OK" name={this.props.name} />
-            </ul>
+            <div>
+                <input type="radio" name="system_id" value="Tokyo_Setagaya" id="system_id_setagaya" onChange={this.handleChange} /> <label htmlFor="system_id_setagaya">Setagaya</label>
+                <input type="radio" name="system_id" value="Tokyo_Shibuya" id="system_id_shibuya" onChange={this.handleChange} /> <label htmlFor="system_id_shibuya">Shibuya</label>
+            </div>
+        )
+    }
+}
+
+class Form extends React.Component<{}, { o: options }> {
+    constructor(props: {}) {
+        super(props)
+        this.state = {
+            o: {
+                'appkey': '',
+                'isbn': '',
+                'systemid': ''
+            }
+        };
+        this.setAppkey = this.setAppkey.bind(this)
+        this.setISBN = this.setISBN.bind(this)
+        this.setSystemID = this.setSystemID.bind(this)
+        this.fetchBook = this.fetchBook.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this)
+    }
+    componentDidMount() {
+        let form = document.querySelector('form')
+        form.addEventListener("submit", (event) => {
+            // let data: FormData = new FormData(form)
+            event.preventDefault()
+        })
+        this.setAppkey(process.env.APP_API_KEY)
+    }
+    setAppkey(appkey: string): void {
+        this.setState({
+            o: {
+                'appkey': appkey,
+                'isbn': this.state.o.isbn,
+                'systemid': this.state.o.systemid
+            }
+        })
+        console.log(`State was Changed: ${JSON.stringify(this.state)}`)
+    }
+    setISBN(isbn: string): void {
+        this.setState({
+            o: {
+                'appkey': this.state.o.appkey,
+                'isbn': isbn,
+                'systemid': this.state.o.systemid
+            }
+        })
+        console.log(`State was Changed: ${JSON.stringify(this.state)}`)
+    }
+    setSystemID(systemid: string): void {
+        this.setState({
+            o: {
+                'appkey': this.state.o.appkey,
+                'isbn': this.state.o.isbn,
+                'systemid': systemid
+            }
+        })
+        console.log(`State was Changed: ${JSON.stringify(this.state)}`)
+    }
+    /**
+     * Use Calil API.
+     */
+    public async fetchBook(o: options): Promise<any> {
+        let c: Calil = new Calil(o)
+        c.search()
+    }
+    /**
+     * 
+     */
+    handleSubmit(event: React.FormEvent): void {
+        console.log(this.state.o)
+        this.fetchBook(this.state.o)
+        // event.preventDefault()
+    }
+    /**
+ * 
+ */
+    render() {
+        return (
+            <form onSubmit={this.handleSubmit}>
+                <InputISBN f={this.setISBN} />
+                <RadioSystemID f={this.setSystemID} />
+                <div>
+                    <input type="submit" value="submit" />
+                </div>
+            </form>
         )
     }
 }
@@ -61,32 +140,8 @@ class View extends React.Component {
     render() {
         return (
             <div>
-                <Card name="Taro" />
-                <Card name="Alex" />
-                <Card name="Bob" />
+                <Form />
             </div>
         )
     }
-}
-
-
-const App: React.FC = () => {
-    return (
-        <div className="App">
-            <header className="App-header">
-                {/* <img src={logo} className="App-logo" alt="logo" /> */}
-                <p>
-                    Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-                <a
-                    className="App-link"
-                    href="https://reactjs.org"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    Learn React
-        </a>
-            </header>
-        </div>
-    );
 }

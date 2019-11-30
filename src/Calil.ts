@@ -24,7 +24,18 @@ class Calil {
      */
     public init(): void {
         this.checkOptions()
-        // console.log(fetchJsonp)
+        // THIS IS DEBUG FUNCTION TO BE ERASED!!
+        // this.setTestOptions()
+    }
+    /**
+     * setTestOptions
+     */
+    private setTestOptions(): void {
+        this._options = {
+            'appkey': process.env.APP_API_KEY,
+            'isbn': '4834000826',
+            'systemid': 'Tokyo_Setagaya'
+        }
     }
     /**
      * checkOptions
@@ -46,11 +57,20 @@ class Calil {
      * If using fetch API, using third party library for JSONP is required 
      * because not supported in standard fetch API.
      * 
+     * I dont' know why, but when I access Error was happend.
+     * I think it occured because server judged my request as wrong one when I request many times by same isbn probably.
+     * 
      */
     public async search(): Promise<any> {
         // Create url
-        let appkey: string = this._options.appkey
-        let url: string = 'https://api.calil.jp/check?appkey=' + appkey + '&isbn=1920197008605&systemid=Tokyo_Setagaya&format=json'
+        // https://api.calil.jp/check?appkey={}&isbn=4334926940&systemid=Tokyo_Setagaya&format=json
+        // https://api.calil.jp/check?appkey={}&isbn=4834000826&systemid=Aomori_Pref&format=json
+        let url: string = (
+            'https://api.calil.jp/check' +
+            '?appkey=' + this._options.appkey +
+            '&isbn=' + this._options.isbn +
+            '&systemid=' + this._options.systemid + '&format=json')
+        console.log(url)
         // Request
         let json: any = await this.callApi(url)
         // Check data
@@ -91,21 +111,21 @@ class Calil {
     private confirm(status: number): void {
         if (status === 1) {
             // AB-NORMAL. If data.continue === 1, server is still running
-            console.log('Server is still runnning. So start polling...')
+            // console.log('Server is still runnning. So start polling...')
             // Do polling. This function should be loop until server process done.
             this.poll()
         } else if (status === 0) {
             // NORMAL. If data.continue === 0, server process is done.
-            console.log('Serve processe is done.')
-            return 
+            // console.log('Serve processe is done.')
+            return
         } else {
-            console.log(`json.continue is wrong value.`)
+            // console.log(`json.continue is wrong value.`)
         }
     }
 }
 
 interface options {
     'appkey': string,
-    'isbn': number[],
-    'systemid': number[]
+    'isbn': string,
+    'systemid': string
 }
