@@ -133,12 +133,92 @@ class Form extends React.Component<{}, { o: options }> {
     }
 }
 
+class Card extends React.Component<{}, { data: libraryData, parsed: { id: number, name: string, status: string }[] }> {
+    constructor(props: {}) {
+        super(props)
+        this.state = {
+            data: null,
+            parsed: null
+        }
+        this.dummyButtonClicked = this.dummyButtonClicked.bind(this)
+    }
+
+    componentDidMount() {
+    }
+
+    setDummyData(): libraryData {
+        let data: libraryData = {
+            'status': 'OK', 'reserveurl': 'http://libweb.tokyo.jp/123',
+            'libkey': {
+                '玉川台': '貸出可',
+                '世田谷': '貸出中',
+                '経堂': '館内のみ'
+            }
+        }
+        // 
+        let dummyParsedData: { id: number, name: string, status: string }[] = [
+            { id: 1, name: '玉川台', status: '貸出可' },
+            { id: 2, name: '世田谷', status: '貸出中' },
+            { id: 3, name: '経堂', status: '館内のみ' }
+        ]
+        this.setState({ parsed: dummyParsedData })
+        console.log(`this.state.parsed: ${JSON.stringify(this.state.parsed)}`)
+        return data
+    }
+
+    dummyButtonClicked(): void {
+        this.setDummyData()
+    }
+
+    render() {
+        let renderButton =
+            <div>
+                <button onClick={this.dummyButtonClicked}>SET dummyParsedData</button>
+            </div>
+        if (this.state.parsed !== null) {
+            return (
+                <div>
+                    {renderButton}
+                    {this.state.parsed.map(libData =>
+                        < li key={libData.id} >
+                            {libData.name}: {libData.status}
+                        </li>
+                    )}
+                </div>
+            )
+        } else {
+            return renderButton
+        }
+    }
+}
+
 class View extends React.Component {
     render() {
         return (
             <div>
                 <Form />
+                <Card />
             </div>
         )
     }
+}
+
+/*
+ * Data Sample
+ "books": {
+    "4334926940": {
+      "Tokyo_Setagaya": {"status": "OK", "reserveurl": "http://libweb.tokyo.jp/123", 
+        "libkey": {"玉川台": "貸出可", "世田谷": "貸出中", "経堂": "館内のみ"}}
+    }, 
+    "4088700104": {
+      "Tokyo_Setagaya": {"status": "Running", "reserveurl": "", 
+        "libkey": {}}
+    }
+  }, 
+  */
+
+interface libraryData {
+    'status': string,
+    'reserveurl': string,
+    'libkey': {}
 }

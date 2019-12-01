@@ -78,7 +78,7 @@ class Calil {
         // Check value 'continue' and decide next process.
         this.confirm(status)
         // DONE
-        console.log(`search() is finished.`)
+        console.log('search() is finished.')
     }
     /**
     * poll
