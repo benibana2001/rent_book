@@ -16,7 +16,7 @@ class InputISBN extends React.Component<{ f: Function }, { isbn: string }> {
     handleChange(event: React.ChangeEvent<HTMLInputElement>) {
         // If reference target in the async function, to do persit().
         event.persist()
-        this.setState({ isbn: event.target.value });
+        this.setState({ isbn: event.target.value })
         this.props.f(event.target.value)
     }
     /**
@@ -60,7 +60,7 @@ class Form extends React.Component<{}, { o: options }> {
                 'isbn': '',
                 'systemid': ''
             }
-        };
+        }
         this.setAppkey = this.setAppkey.bind(this)
         this.setISBN = this.setISBN.bind(this)
         this.setSystemID = this.setSystemID.bind(this)
@@ -69,7 +69,7 @@ class Form extends React.Component<{}, { o: options }> {
     }
     componentDidMount() {
         let form = document.querySelector('form')
-        form.addEventListener("submit", (event) => {
+        form.addEventListener('submit', (event) => {
             // let data: FormData = new FormData(form)
             event.preventDefault()
         })
@@ -93,7 +93,6 @@ class Form extends React.Component<{}, { o: options }> {
                 'systemid': this.state.o.systemid
             }
         })
-        console.log(`State was Changed: ${JSON.stringify(this.state)}`)
     }
     setSystemID(systemid: string): void {
         this.setState({
@@ -103,7 +102,6 @@ class Form extends React.Component<{}, { o: options }> {
                 'systemid': systemid
             }
         })
-        console.log(`State was Changed: ${JSON.stringify(this.state)}`)
     }
     /**
      * Use Calil API.
@@ -116,9 +114,8 @@ class Form extends React.Component<{}, { o: options }> {
      * 
      */
     handleSubmit(event: React.FormEvent): void {
-        console.log(this.state.o)
         this.fetchBook(this.state.o)
-        // event.preventDefault()
+        event.preventDefault()
     }
     /**
  * 
