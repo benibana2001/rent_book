@@ -2,12 +2,29 @@ import * as React from 'react'
 import './scss/app.scss'
 import { Calil, options, dataRow } from './Calil'
 export { View }
+import { config, dom, library } from '@fortawesome/fontawesome-svg-core'
+import { faBook } from '@fortawesome/free-solid-svg-icons'
+import { faTimesCircle } from '@fortawesome/free-regular-svg-icons'
 
-class InputISBN extends React.Component<{ f: Function }, { isbn: string }> {
+class FormFieldISBN extends React.Component<{ f: Function }, { isbn: string }> {
     constructor(props: { f: Function }) {
         super(props)
         this.state = { isbn: '' }
         this.handleChange = this.handleChange.bind(this)
+    }
+
+    /**
+     * To use fontawsome, we need to replace <i> to <svg>, so that
+     * do these function.
+     * Replace should be done after DOM rendering.
+     * 
+     * More detail: 
+     *   - https://fontawesome.com/how-to-use/on-the-web/advanced/svg-javascript-core
+     *   - https://fontawesome.com/how-to-use/with-the-api/setup/getting-started
+     */
+    componentDidMount() {
+        library.add(faBook, faTimesCircle)
+        dom.i2svg()
     }
 
     /**
@@ -25,14 +42,30 @@ class InputISBN extends React.Component<{ f: Function }, { isbn: string }> {
      */
     render() {
         return (
-            <div>
-                ISBN: <input id="isbn" value={this.state.isbn} type="text" onChange={this.handleChange} />
+            <div id='isbn'>
+                <div className='isbn-container'>
+                    <div className='isbn-inner'>
+                        <div className='leading-icon'>
+                            <i className="fas fa-book fa-1x"></i>
+                        </div>
+                        <div className='label'>ISBN</div>
+                        <div className='input-text'>
+                            <input value={this.state.isbn} type="text" onChange={this.handleChange} placeholder='123456789012' />
+                        </div>
+                    </div>
+                    <div className='trailing-icon'>
+                        <div>
+                            <i className='far fa-times-circle fa-2x font-trailing-icon'></i>
+                        </div>
+                    </div>
+                </div>
+                <div className='helper-text'>Enter ISBN which the book of you want to check.</div>
             </div>
         )
     }
 }
 
-class RadioSystemID extends React.Component<{ f: Function }> {
+class FormFieldSystemID extends React.Component<{ f: Function }> {
     constructor(props: { f: Function }) {
         super(props)
         this.handleChange = this.handleChange.bind(this)
@@ -43,7 +76,7 @@ class RadioSystemID extends React.Component<{ f: Function }> {
     }
     render() {
         return (
-            <div>
+            <div id='systemid'>
                 <input type="radio" name="system_id" value="Tokyo_Setagaya" id="system_id_setagaya" onChange={this.handleChange} /> <label htmlFor="system_id_setagaya">Setagaya</label>
                 <input type="radio" name="system_id" value="Tokyo_Shibuya" id="system_id_shibuya" onChange={this.handleChange} /> <label htmlFor="system_id_shibuya">Shibuya</label>
             </div>
@@ -129,9 +162,9 @@ class Form extends React.Component<{ f: Function }, { o: options }> {
     render() {
         return (
             <form onSubmit={this.handleSubmit}>
-                <InputISBN f={this.setISBN} />
-                <RadioSystemID f={this.setSystemID} />
-                <div>
+                <FormFieldISBN f={this.setISBN} />
+                <FormFieldSystemID f={this.setSystemID} />
+                <div id='submit'>
                     <input type="submit" value="submit" />
                 </div>
             </form>
@@ -145,14 +178,14 @@ class Card extends React.Component<{ libData: { id: number, name: string, status
     }
     render() {
         return (
-            <fieldset>
+            <li className='card'>
                 {this.props.libData.name}: {this.props.libData.status}
-            </fieldset>
+            </li>
         )
     }
 }
 
-class ReferenceLibray extends React.Component<{}, { data: dataRow[] }> {
+class ReferenceLibrary extends React.Component<{}, { data: dataRow[] }> {
     constructor(props: {}) {
         super(props)
         this.state = {
@@ -166,7 +199,7 @@ class ReferenceLibray extends React.Component<{}, { data: dataRow[] }> {
     }
     render() {
         return (
-            <div>
+            <div className='reference-libray'>
                 <Form f={this.setData} />
                 <CardList data={this.state.data} />
             </div>
@@ -188,17 +221,15 @@ class CardList extends React.Component<{ data: dataRow[] }, { data: dataRow[] }>
     render() {
         if (this.props.data !== null) {
             return (
-                <div>
+                <ul className='card-list'>
                     {this.props.data.map(data =>
-                        < li key={data.id} >
-                            <Card libData={data} />
-                        </li>
+                        <Card key={data.id} libData={data} />
                     )}
-                </div>
+                </ul>
             )
         } else {
             return (
-                <div></div>
+                <div className='card-list'></div>
             )
         }
     }
@@ -207,9 +238,20 @@ class CardList extends React.Component<{ data: dataRow[] }, { data: dataRow[] }>
 class View extends React.Component {
     render() {
         return (
-            <div>
-                <ReferenceLibray />
+            <div className='view'>
+                <Header />
+                <ReferenceLibrary />
             </div>
+        )
+    }
+}
+
+class Header extends React.Component {
+    render() {
+        return (
+            <header>
+                <h1 id='h1-title'>Rent Book Whasse</h1>
+            </header>
         )
     }
 }

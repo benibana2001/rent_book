@@ -1,26 +1,137 @@
 // VARIABLE
-$tab: 'screen and (max-width: 788px)';
-$header-fix-top: 44px;// ヘッダをpostion:fixとした際のオフセット
+$pc: 'screen and (min-width: 1024px)';
+$tab: 'screen and (min-width: 788px)';
+//
+$header-fix-top: 44px; // ヘッダをpostion:fixとした際のオフセット
+$input-size: 24px;
+//
 $view-max-width: 700px;
 
 @mixin mediaquery($bp) {
-  @media #{$bp} {
-    @content;
-  }
+    @media #{$bp} {
+        @content;
+    }
 }
 
 // RESET
-body, h1 {
-  margin: 0;
-  padding: 0;
+body,
+h1,
+ul,
+li,
+div,
+form {
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+}
+
+li {
+    list-style: none;
 }
 
 // MAIN
 body {
-  background: #fafafa;
-  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
-  font-size: 16px!important;
-  @include mediaquery($tab) {
-    background: #e7eef7;
-  }
+    background: #fafafa;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    font-size: 16px !important;
+
+    // Tab layout
+    @include mediaquery($tab) {
+        background: #e7eef7;
+    }
+
+    // PC layout
+    @include mediaquery($pc) {
+        background: #e7eef7;
+    }
+}
+
+header {
+    border-bottom: 1px solid #ddd;
+    background-color: rgba(255, 255, 255, 0.95);
+    line-height: $header-fix-top;
+    height: $header-fix-top;
+    color: #333;
+    left: 0;
+    top: 0;
+    right: 0;
+    z-index: 3;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    text-align: center;
+    position: fixed;
+
+    h1 {
+        cursor: default;
+        display: inline-block;
+        padding: 0;
+        font-weight: 400;
+        font-size: 16px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+}
+
+.view {
+    margin-top: $header-fix-top;
+}
+
+#isbn {
+    .isbn-container {
+        position: relative;
+        background: #eee;
+        border-bottom: 2px solid transparent;
+    }
+
+    .leading-icon {
+        position: absolute;
+        left: 15px;
+        top: 23px;
+        text-align: right;
+    }
+
+    .isbn-inner {
+        margin-left: 4ex;
+        padding: 10px 50px 10px 5px;
+    }
+
+    .label {
+        font-size: 12px;
+        color: rgb(91, 94, 248);
+        font-weight: bold;
+    }
+
+    .input-text {
+        ::-webkit-input-placeholder {
+            color: #ccc;
+        }
+    }
+
+    .input-text input {
+        font-size: $input-size;
+        background-color: transparent;
+        border: none;
+        outline: none;
+    }
+
+    .trailing-icon {
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 0;
+        z-index: 2;
+        text-align: center;
+        vertical-align: middle;
+        height: 100%;
+        width: 50px;
+        cursor: pointer;
+
+        div {
+            margin: 15px 0 0;
+        }
+        .font-trailing-icon {
+            color: #999;
+        }
+    }
 }
