@@ -1,4 +1,5 @@
 import * as React from 'react'
+import './scss/app.scss'
 import { Calil, options } from './Calil'
 export { View }
 
@@ -133,7 +134,20 @@ class Form extends React.Component<{}, { o: options }> {
     }
 }
 
-class Card extends React.Component<{}, { data: libraryData, parsed: { id: number, name: string, status: string }[] }> {
+class Card extends React.Component<{ libData: { id: number, name: string, status: string } }> {
+    constructor(props: { libData: { id: number, name: string, status: string } }) {
+        super(props)
+    }
+    render() {
+        return (
+            <fieldset>
+                {this.props.libData.name}: {this.props.libData.status}
+            </fieldset>
+        )
+    }
+}
+
+class CardList extends React.Component<{}, { data: libraryData, parsed: { id: number, name: string, status: string }[] }> {
     constructor(props: {}) {
         super(props)
         this.state = {
@@ -179,9 +193,9 @@ class Card extends React.Component<{}, { data: libraryData, parsed: { id: number
             return (
                 <div>
                     {renderButton}
-                    {this.state.parsed.map(libData =>
-                        < li key={libData.id} >
-                            {libData.name}: {libData.status}
+                    {this.state.parsed.map(data =>
+                        < li key={data.id} >
+                            <Card libData={data} />
                         </li>
                     )}
                 </div>
@@ -197,7 +211,7 @@ class View extends React.Component {
         return (
             <div>
                 <Form />
-                <Card />
+                <CardList />
             </div>
         )
     }
