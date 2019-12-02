@@ -1,6 +1,6 @@
 import * as React from 'react'
 import './scss/app.scss'
-import { Calil, options } from './Calil'
+import { Calil, options, dataRow } from './Calil'
 export { View }
 
 class InputISBN extends React.Component<{ f: Function }, { isbn: string }> {
@@ -40,7 +40,6 @@ class RadioSystemID extends React.Component<{ f: Function }> {
     handleChange(event: React.ChangeEvent<HTMLInputElement>): void {
         event.persist()
         this.props.f(event.target.value)
-        console.log(event.target.value)
     }
     render() {
         return (
@@ -52,8 +51,8 @@ class RadioSystemID extends React.Component<{ f: Function }> {
     }
 }
 
-class Form extends React.Component<{}, { o: options }> {
-    constructor(props: {}) {
+class Form extends React.Component<{ f: Function }, { o: options }> {
+    constructor(props: { f: Function }) {
         super(props)
         this.state = {
             o: {
@@ -68,6 +67,7 @@ class Form extends React.Component<{}, { o: options }> {
         this.fetchBook = this.fetchBook.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
     }
+    //
     componentDidMount() {
         let form = document.querySelector('form')
         form.addEventListener('submit', (event) => {
@@ -76,6 +76,7 @@ class Form extends React.Component<{}, { o: options }> {
         })
         this.setAppkey(process.env.APP_API_KEY)
     }
+    //
     setAppkey(appkey: string): void {
         this.setState({
             o: {
@@ -86,6 +87,7 @@ class Form extends React.Component<{}, { o: options }> {
         })
         console.log(`State was Changed: ${JSON.stringify(this.state)}`)
     }
+    //
     setISBN(isbn: string): void {
         this.setState({
             o: {
@@ -95,6 +97,7 @@ class Form extends React.Component<{}, { o: options }> {
             }
         })
     }
+    //
     setSystemID(systemid: string): void {
         this.setState({
             o: {
@@ -107,9 +110,11 @@ class Form extends React.Component<{}, { o: options }> {
     /**
      * Use Calil API.
      */
-    public async fetchBook(o: options): Promise<any> {
+    public async fetchBook(o: options): Promise<dataRow[]> {
         let c: Calil = new Calil(o)
-        c.search()
+        let data: dataRow[] = await c.search()
+        this.props.f(data)
+        return data
     }
     /**
      * 
@@ -147,53 +152,44 @@ class Card extends React.Component<{ libData: { id: number, name: string, status
     }
 }
 
-class CardList extends React.Component<{}, { data: libraryData, parsed: { id: number, name: string, status: string }[] }> {
+class ReferenceLibray extends React.Component<{}, { data: dataRow[] }> {
     constructor(props: {}) {
         super(props)
         this.state = {
-            data: null,
-            parsed: null
+            data: null
         }
-        this.dummyButtonClicked = this.dummyButtonClicked.bind(this)
+        this.setData = this.setData.bind(this)
+    }
+    setData(d: dataRow[]): void {
+        this.setState({ data: d })
+        console.log(this.state.data)
+    }
+    render() {
+        return (
+            <div>
+                <Form f={this.setData} />
+                <CardList data={this.state.data} />
+            </div>
+        )
+    }
+}
+
+class CardList extends React.Component<{ data: dataRow[] }, { data: dataRow[] }> {
+    constructor(props: { data: dataRow[] }) {
+        super(props)
+        this.state = {
+            data: null
+        }
     }
 
     componentDidMount() {
     }
 
-    setDummyData(): libraryData {
-        let data: libraryData = {
-            'status': 'OK', 'reserveurl': 'http://libweb.tokyo.jp/123',
-            'libkey': {
-                '玉川台': '貸出可',
-                '世田谷': '貸出中',
-                '経堂': '館内のみ'
-            }
-        }
-        // 
-        let dummyParsedData: { id: number, name: string, status: string }[] = [
-            { id: 1, name: '玉川台', status: '貸出可' },
-            { id: 2, name: '世田谷', status: '貸出中' },
-            { id: 3, name: '経堂', status: '館内のみ' }
-        ]
-        this.setState({ parsed: dummyParsedData })
-        console.log(`this.state.parsed: ${JSON.stringify(this.state.parsed)}`)
-        return data
-    }
-
-    dummyButtonClicked(): void {
-        this.setDummyData()
-    }
-
     render() {
-        let renderButton =
-            <div>
-                <button onClick={this.dummyButtonClicked}>SET dummyParsedData</button>
-            </div>
-        if (this.state.parsed !== null) {
+        if (this.props.data !== null) {
             return (
                 <div>
-                    {renderButton}
-                    {this.state.parsed.map(data =>
+                    {this.props.data.map(data =>
                         < li key={data.id} >
                             <Card libData={data} />
                         </li>
@@ -201,7 +197,9 @@ class CardList extends React.Component<{}, { data: libraryData, parsed: { id: nu
                 </div>
             )
         } else {
-            return renderButton
+            return (
+                <div></div>
+            )
         }
     }
 }
@@ -210,8 +208,7 @@ class View extends React.Component {
     render() {
         return (
             <div>
-                <Form />
-                <CardList />
+                <ReferenceLibray />
             </div>
         )
     }
@@ -221,18 +218,12 @@ class View extends React.Component {
  * Data Sample
  "books": {
     "4334926940": {
-      "Tokyo_Setagaya": {"status": "OK", "reserveurl": "http://libweb.tokyo.jp/123", 
+      "Tokyo_Setagaya": {"status": "OK", "reserveurl": "http://libweb.tokyo.jp/123",
         "libkey": {"玉川台": "貸出可", "世田谷": "貸出中", "経堂": "館内のみ"}}
-    }, 
+    },
     "4088700104": {
-      "Tokyo_Setagaya": {"status": "Running", "reserveurl": "", 
+      "Tokyo_Setagaya": {"status": "Running", "reserveurl": "",
         "libkey": {}}
     }
-  }, 
+  },
   */
-
-interface libraryData {
-    'status': string,
-    'reserveurl': string,
-    'libkey': {}
-}

@@ -1,5 +1,5 @@
 import fetchJsonp = require('fetch-jsonp');
-export { Calil, options }
+export { Calil, options, dataRow }
 
 class Calil {
     //----------------------------------------
@@ -61,7 +61,7 @@ class Calil {
      * I think it occured because server judged my request as wrong one when I request many times by same isbn probably.
      * 
      */
-    public async search(): Promise<any> {
+    public async search(): Promise<dataRow[]> {
         // Create url
         // https://api.calil.jp/check?appkey={}&isbn=4334926940&systemid=Tokyo_Setagaya&format=json
         // https://api.calil.jp/check?appkey={}&isbn=4834000826&systemid=Aomori_Pref&format=json
@@ -79,6 +79,26 @@ class Calil {
         this.confirm(status)
         // DONE
         console.log('search() is finished.')
+        // Parse Data
+        return this.parse(json)
+    }
+    /**
+     * parse
+     * 
+     * Parse JSON data to use React JSX easily. 
+     * When display some data in JSX, you are recommended to use Array.map() function, 
+     * and raw JSON data is difficult to display. So that this function parse JSON data to array.
+     */
+    public parse (json: any):  dataRow[] {
+        let libkey: any = json.books[this._options.isbn][this._options.systemid].libkey
+        let datas: dataRow[] = []
+        let i: number = 1
+        for(let key in libkey){
+            let d: dataRow = {id: i, name: key, status: libkey[key]}
+            datas.push(d)
+            i++
+        }
+        return datas
     }
     /**
     * poll
@@ -93,7 +113,6 @@ class Calil {
         // fetch jsonp... I don't know why but fetch-jsonp package wrapp response twice by Promise.
         let res: fetchJsonp.Response = await fetchJsonp(url)
         let s: any = await res.json()
-        console.log(`s: ${JSON.stringify(s)}`)
         return s
     }
 
@@ -128,4 +147,10 @@ interface options {
     'appkey': string,
     'isbn': string,
     'systemid': string
+}
+
+interface dataRow {
+    'id': number,
+    'name': string,
+    'status': string
 }
