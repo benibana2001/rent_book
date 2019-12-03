@@ -1,5 +1,5 @@
 import fetchJsonp = require('fetch-jsonp');
-export { Calil, options, dataRow }
+export { Calil, options, dataRow, data }
 
 class Calil {
     //----------------------------------------
@@ -19,8 +19,8 @@ class Calil {
     set session(session: string) { this._session = session }
     get session() { return this._session }
     //
-    private _data: dataRow[] = []
-    set data(data: dataRow[]) { this._data = data }
+    private _data: data | null = null
+    set data(data: data) { this._data = data }
     get data() { return this._data }
     //----------------------------------------
     constructor(O: options) {
@@ -77,7 +77,7 @@ class Calil {
      * I think it occured because server judged my request as wrong one when I request many times by same isbn probably.
      * 
      */
-    public async search(): Promise<dataRow[]> {
+    public async search(): Promise<data> {
         // Create url
         // https://api.calil.jp/check?appkey={}&isbn=4334926940&systemid=Tokyo_Setagaya&format=json
         // https://api.calil.jp/check?appkey={}&isbn=4834000826&systemid=Aomori_Pref&format=json
@@ -120,14 +120,14 @@ class Calil {
         } else if (this.server_status === 0) {
             // Done
             // Parse
-            const data: dataRow[] = this.parse(json)
+            const data: data = this.parse(json)
             // Set data
             this.data = data
             return
 
         } else {
             console.log(`Error - server.status: ${this.server_status}`)
-            return 
+            return
         }
     }
     /**
@@ -173,16 +173,17 @@ class Calil {
      * When display some data in JSX, you are recommended to use Array.map() function, 
      * and raw JSON data is difficult to display. So that this function parse JSON data to array.
      */
-    public parse(json: any): dataRow[] {
+    public parse(json: any): data {
         let libkey: any = json.books[this._options.isbn][this._options.systemid].libkey
-        let datas: dataRow[] = []
+        let reserveurl: string = json.books[this._options.isbn][this._options.systemid].reserveurl
+        let data: data = { libkey: [], reserveurl: reserveurl }
         let i: number = 1
         for (let key in libkey) {
             let d: dataRow = { id: i, name: key, status: libkey[key] }
-            datas.push(d)
+            data.libkey.push(d)
             i++
         }
-        return datas
+        return data
     }
     /**
      * callApi
@@ -203,7 +204,7 @@ class Calil {
     /**
      * getSession
      */
-    private getSession (data: any):  string {
+    private getSession(data: any): string {
         return data.session
     }
 
@@ -225,4 +226,9 @@ interface dataRow {
     'id': number,
     'name': string,
     'status': string
+}
+
+interface data {
+    'libkey': dataRow[],
+    'reserveurl': string
 }

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import './scss/app.scss'
-import { Calil, options, dataRow } from './Calil'
+import { Calil, options, dataRow, data } from './Calil'
 export { View }
 import { config, dom, library } from '@fortawesome/fontawesome-svg-core'
 import { faBook } from '@fortawesome/free-solid-svg-icons'
@@ -143,10 +143,14 @@ class Form extends React.Component<{ f: Function }, { o: options }> {
     /**
      * Use Calil API.
      */
-    public async fetchBook(o: options): Promise<dataRow[]> {
+    public async fetchBook(o: options): Promise<data> {
         let c: Calil = new Calil(o)
-        let data: dataRow[] = await c.search()
-        this.props.f(data)
+        let data: data = await c.search()
+        if (!data) {
+            console.log('Data is none')
+        } else {
+            this.props.f(data)
+        }
         return data
     }
     /**
@@ -185,26 +189,49 @@ class Card extends React.Component<{ libData: { id: number, name: string, status
     }
 }
 
-class ReferenceLibrary extends React.Component<{}, { data: dataRow[] }> {
+class ReferenceLibrary extends React.Component<{}, { libkey: dataRow[], reserveurl: string }> {
     constructor(props: {}) {
         super(props)
         this.state = {
-            data: null
+            libkey: null,
+            reserveurl: ''
         }
         this.setData = this.setData.bind(this)
     }
-    setData(d: dataRow[]): void {
-        this.setState({ data: d })
-        console.log(this.state.data)
+    setData(d: data): void {
+        this.setState({ libkey: d.libkey })
+        this.setState({ reserveurl: d.reserveurl })
+        console.log(this.state.libkey)
     }
     render() {
         return (
             <div className='reference-libray'>
                 <Form f={this.setData} />
-                <CardList data={this.state.data} />
+                <CardList data={this.state.libkey} />
+                <Reserve reserveurl={this.state.reserveurl} />
             </div>
         )
     }
+}
+
+class Reserve extends React.Component<{ reserveurl: string }>{
+    constructor(props: { reserveurl: string }) {
+        super(props)
+    }
+    render() {
+        if (this.props.reserveurl === '') {
+            return (
+                <div></div>
+            )
+        } else {
+            return (
+                <div>
+                    <a href={this.props.reserveurl}>予約画面へ, URL: ${this.props.reserveurl}</a>
+                </div>
+            )
+        }
+    }
+
 }
 
 class CardList extends React.Component<{ data: dataRow[] }, { data: dataRow[] }> {
