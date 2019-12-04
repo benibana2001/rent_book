@@ -114,7 +114,7 @@ class Calil {
         //
         if (this.server_status === 1) {
             // Polling
-            await this.sleep(1000)
+            await this.sleep(2000)
             await this.poll()
 
         } else if (this.server_status === 0) {
@@ -126,7 +126,11 @@ class Calil {
             return
 
         } else {
-            console.log(`Error - server.status: ${this.server_status}`)
+            if (this.server_status === -2) {
+                console.log('Error - book is not exist')
+            } else if (this.server_status === -1) {
+                console.log(`Error - server.status: ${this.server_status}`)
+            }
             return
         }
     }
@@ -144,26 +148,7 @@ class Calil {
         console.log(`Polling url: ${url}`)
         console.log(`Fetch from polling: ${JSON.stringify(json)}`)
         // Check server status
-        this.checkServerStatus(json)
-    }
-    /**
-     * confirm
-     * Check server process was done or not, and proceed next process.
-     */
-    private async confirm(): Promise<any> {
-        if (this.server_status === 1) {
-            // AB-NORMAL. If data.continue === 1, server is still running
-            // Do polling. This function should be loop until server process done.
-            await this.sleep(1000)
-            await this.poll()
-            return
-        } else if (this.server_status === 0) {
-            // NORMAL. If data.continue === 0, server process is done.
-            // console.log('Serve processe is done.')
-            return
-        } else {
-            // console.log(`json.continue is wrong value.`)
-        }
+        await this.checkServerStatus(json)
     }
 
     /**
@@ -197,9 +182,29 @@ class Calil {
 
     /**
      * getServerStatus
+     * 
+     * 0: success
+     * 1: polling
+     * -1: server error
+     * -2: boo isn't exist
      */
     private getServerStatus(data: any): number {
-        return data.continue
+        let c = data.continue
+        let status = data.books[this._options.isbn][this._options.systemid].status
+        if (c === 1) {
+            return 1
+        } else if (c === 0) {
+            if (status === 'OK' || status === 'Cache') {
+                let libkey: any = data.books[this._options.isbn][this._options.systemid].libkey
+                if (!libkey || !Object.keys(libkey).length) {
+                    return -2
+                } else {
+                    return 0
+                }
+            } else {
+                return -1
+            }
+        }
     }
     /**
      * getSession
