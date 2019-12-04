@@ -47,9 +47,26 @@ module.exports = {
                 ]
             },
             {
+                test: /\.css$/,
+                include: [path.resolve(__dirname, 'src')],
+                use: [
+                    "style-loader",
+                    {
+                        loader: "css-loader",
+                        options: {
+                            url: false,
+                            sourceMap: true
+                        }
+                    }]
+            },
+            {
                 test: /\.html$/,
                 include: [path.resolve(__dirname, 'src')],
                 loader: "html-loader"
+            },
+            {
+                test: /\.(woff|woff2|eot|ttf|svg)$/,
+                loader: 'file?name=fonts/[name].[ext]'
             }
         ]
     },
