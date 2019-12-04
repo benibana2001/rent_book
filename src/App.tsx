@@ -1,14 +1,14 @@
 import * as React from 'react'
-import 'typeface-roboto'
 import './scss/app.scss'
 import { Calil, options, dataRow, data } from './Calil'
+import { OpenBD, BookInfo } from './OpenBD'
 export { View }
 import { config, dom, library } from '@fortawesome/fontawesome-svg-core'
 import { faBook } from '@fortawesome/free-solid-svg-icons'
 import { faTimesCircle } from '@fortawesome/free-regular-svg-icons'
-import './fonts/index.css'
+// import './fonts/index.css'
 // import 'typeface-roboto'
-import Button from '@material-ui/core/Button'
+// import Button from '@material-ui/core/Button'
 
 class FormFieldISBN extends React.Component<{ f: Function }, { isbn: string }> {
     constructor(props: { f: Function }) {
@@ -155,6 +155,12 @@ class Form extends React.Component<{ f: Function }, { o: options }> {
         } else {
             this.props.f(data)
         }
+
+        // Fetch OpenBD
+        const O: OpenBD = new OpenBD()
+        let bookInfo: BookInfo = await O.search(o.isbn)
+        console.log(`bookInfo: ${JSON.stringify(bookInfo)}`)
+
         return data
     }
     /**
@@ -213,9 +219,9 @@ class ReferenceLibrary extends React.Component<{}, { libkey: dataRow[], reserveu
                 <Form f={this.setData} />
                 <CardList data={this.state.libkey} />
                 <Reserve reserveurl={this.state.reserveurl} />
-                <Button variant="contained" color="primary">
+                {/* <Button variant="contained" color="primary">
                     Hello World
-                </Button>
+                </Button> */}
             </div>
         )
     }
@@ -233,7 +239,7 @@ class Reserve extends React.Component<{ reserveurl: string }>{
         } else {
             return (
                 <div>
-                    <a href={this.props.reserveurl}>予約画面へ, URL: ${this.props.reserveurl}</a>
+                    <a href={this.props.reserveurl}>予約画面へ</a>
                 </div>
             )
         }
