@@ -48,7 +48,10 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                include: [path.resolve(__dirname, 'src')],
+                include: [
+                    path.resolve(__dirname, 'src'),
+                    /node_modules/
+                ],
                 use: [
                     "style-loader",
                     {

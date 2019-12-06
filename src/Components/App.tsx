@@ -1,14 +1,14 @@
 import * as React from 'react'
-import './scss/app.scss'
-import { Calil, options, dataRow, data } from './Calil'
-import { OpenBD, BookInfo } from './OpenBD'
+import '../scss/app.scss'
+import { Calil, options, dataRow, data } from '../api/Calil'
+import { OpenBD, BookInfo } from '../OpenBD'
 export { View }
 import { config, dom, library } from '@fortawesome/fontawesome-svg-core'
-import { faBook } from '@fortawesome/free-solid-svg-icons'
+import { faBook, faUniversity } from '@fortawesome/free-solid-svg-icons'
 import { faTimesCircle } from '@fortawesome/free-regular-svg-icons'
-// import './fonts/index.css'
-// import 'typeface-roboto'
-// import Button from '@material-ui/core/Button'
+import 'material-design-lite'
+import 'material-design-lite/material.min.css'
+// import 'https://fonts.googleapis.com/icon?family=Material+Icons'
 
 class FormFieldISBN extends React.Component<{ f: Function }, { isbn: string }> {
     constructor(props: { f: Function }) {
@@ -27,7 +27,7 @@ class FormFieldISBN extends React.Component<{ f: Function }, { isbn: string }> {
      *   - https://fontawesome.com/how-to-use/with-the-api/setup/getting-started
      */
     componentDidMount() {
-        library.add(faBook, faTimesCircle)
+        library.add(faBook, faTimesCircle, faUniversity)
         dom.i2svg()
     }
 
@@ -179,7 +179,9 @@ class Form extends React.Component<{ f: Function }, { o: options }> {
                 <FormFieldISBN f={this.setISBN} />
                 <FormFieldSystemID f={this.setSystemID} />
                 <div id='submit'>
-                    <input type="submit" value="submit" />
+                    <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                        Submit
+                    </button>
                 </div>
             </form>
         )
@@ -190,12 +192,74 @@ class Card extends React.Component<{ libData: { id: number, name: string, status
     constructor(props: { libData: { id: number, name: string, status: string } }) {
         super(props)
     }
+    componentDidMount() {
+        library.add(faUniversity)
+        dom.i2svg()
+    }
     render() {
         return (
-            <li className='card'>
-                {this.props.libData.name}: {this.props.libData.status}
+            // <li className='card'>
+            //     <i className="fas fa-university fa-1x"></i>
+            //     {this.props.libData.name}: {this.props.libData.status}
+            // </li>
+            <li className="card mdl-list__item mdl-list__item--two-line">
+                <span className="mdl-list__item-primary-content">
+                    <i className="fas fa-university mdl-list__item-avatar fa-1x"></i>
+                    <span>{this.props.libData.name}</span>
+                    <span className="mdl-list__item-sub-title">XX Episodes</span>
+                </span>
+                <span className="mdl-list__item-secondary-content">
+                    <span className="mdl-list__item-secondary-info">{this.props.libData.status}</span>
+                    <a className="mdl-list__item-secondary-action" href="#">
+                        <i className="fas fa-book fa-2x"></i>
+                    </a>
+                </span>
             </li>
         )
+    }
+}
+
+class CardList extends React.Component<{ data: dataRow[] }, { data: dataRow[] }> {
+    constructor(props: { data: dataRow[] }) {
+        super(props)
+        this.state = {
+            data: null
+        }
+    }
+
+    componentDidMount() {
+    }
+
+    render() {
+        if (this.props.data !== null) {
+            return (
+                <ul className='demo-list-two mdl-list'>
+                    {this.props.data.map(data =>
+                        <Card key={data.id} libData={data} />
+                    )}
+                </ul>
+            )
+        } else {
+            return (
+                // <div className='card-list'></div>
+                <ul className="demo-list-two mdl-list">
+                    <li className="mdl-list__item mdl-list__item--two-line">
+                        <span className="mdl-list__item-primary-content">
+                            {/* <i className="material-icons mdl-list__item-avatar">person</i> */}
+                            <i className="fas fa-university mdl-list__item-avatar fa-1x"></i>
+                            <span>世田谷</span>
+                            <span className="mdl-list__item-sub-title">62 Episodes</span>
+                        </span>
+                        <span className="mdl-list__item-secondary-content">
+                            <span className="mdl-list__item-secondary-info">蔵書あり</span>
+                            <a className="mdl-list__item-secondary-action" href="#">
+                                <i className="fas fa-book fa-2x"></i>
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            )
+        }
     }
 }
 
@@ -247,34 +311,6 @@ class Reserve extends React.Component<{ reserveurl: string }>{
 
 }
 
-class CardList extends React.Component<{ data: dataRow[] }, { data: dataRow[] }> {
-    constructor(props: { data: dataRow[] }) {
-        super(props)
-        this.state = {
-            data: null
-        }
-    }
-
-    componentDidMount() {
-    }
-
-    render() {
-        if (this.props.data !== null) {
-            return (
-                <ul className='card-list'>
-                    {this.props.data.map(data =>
-                        <Card key={data.id} libData={data} />
-                    )}
-                </ul>
-            )
-        } else {
-            return (
-                <div className='card-list'></div>
-            )
-        }
-    }
-}
-
 class View extends React.Component {
     render() {
         return (
@@ -298,14 +334,14 @@ class Header extends React.Component {
 
 /*
  * Data Sample
- "books": {
-    "4334926940": {
-      "Tokyo_Setagaya": {"status": "OK", "reserveurl": "http://libweb.tokyo.jp/123",
-        "libkey": {"玉川台": "貸出可", "世田谷": "貸出中", "経堂": "館内のみ"}}
+"books": {
+            "4334926940": {
+            "Tokyo_Setagaya": {"status": "OK", "reserveurl": "http://libweb.tokyo.jp/123",
+"libkey": {"玉川台": "貸出可", "世田谷": "貸出中", "経堂": "館内のみ"}}
     },
-    "4088700104": {
-      "Tokyo_Setagaya": {"status": "Running", "reserveurl": "",
-        "libkey": {}}
+"4088700104": {
+            "Tokyo_Setagaya": {"status": "Running", "reserveurl": "",
+"libkey": {}}
     }
   },
   */

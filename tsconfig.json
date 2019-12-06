@@ -6,6 +6,12 @@
         "target": "es5",
         "allowJs": true,
         "sourceMap": true,
-        "jsx": "react"
+        "jsx": "react",
+        "baseUrl": ".",
+        "paths": {
+            "*": [
+                "*"
+            ]
+        }
     }
 }
