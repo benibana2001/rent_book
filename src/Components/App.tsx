@@ -1,15 +1,18 @@
+// View
 import * as React from 'react'
 import '../scss/app.scss'
+import { Header } from './Header'
 import { Calil, options, dataRow, data } from '../api/Calil'
+// API
 import { OpenBD, BookInfo } from '../OpenBD'
-export { View }
+// Library
 import { config, dom, library } from '@fortawesome/fontawesome-svg-core'
 import { faBook, faUniversity } from '@fortawesome/free-solid-svg-icons'
 import { faTimesCircle } from '@fortawesome/free-regular-svg-icons'
 import 'material-design-lite'
 import 'material-design-lite/material.min.css'
-// import 'https://fonts.googleapis.com/icon?family=Material+Icons'
-
+//
+export { View }
 class FormFieldISBN extends React.Component<{ f: Function }, { isbn: string }> {
     constructor(props: { f: Function }) {
         super(props)
@@ -188,39 +191,39 @@ class Form extends React.Component<{ f: Function }, { o: options }> {
     }
 }
 
-class Card extends React.Component<{ libData: { id: number, name: string, status: string } }> {
-    constructor(props: { libData: { id: number, name: string, status: string } }) {
+class Card extends React.Component<{ libData: { id: number, name: string, status: string }, reserveurl: string }> {
+    constructor(props: { libData: { id: number, name: string, status: string }, reserveurl: string }) {
         super(props)
     }
     componentDidMount() {
         library.add(faUniversity)
         dom.i2svg()
     }
+    card =
+        <li className="card mdl-list__item mdl-list__item--two-line">
+            <span className="mdl-list__item-primary-content">
+                <i className="fas fa-university mdl-list__item-avatar fa-1x"></i>
+                <span>{this.props.libData.name}</span>
+                {/* <span className="mdl-list__item-sub-title">XX Episodes</span> */}
+            </span>
+            <span className="mdl-list__item-secondary-content">
+                <span className="mdl-list__item-secondary-info">{this.props.libData.status}</span>
+                <span className="mdl-list__item-secondary-action">
+                    <i className="fas fa-book fa-2x"></i>
+                </span>
+            </span>
+        </li>
     render() {
-        return (
-            // <li className='card'>
-            //     <i className="fas fa-university fa-1x"></i>
-            //     {this.props.libData.name}: {this.props.libData.status}
-            // </li>
-            <li className="card mdl-list__item mdl-list__item--two-line">
-                <span className="mdl-list__item-primary-content">
-                    <i className="fas fa-university mdl-list__item-avatar fa-1x"></i>
-                    <span>{this.props.libData.name}</span>
-                    <span className="mdl-list__item-sub-title">XX Episodes</span>
-                </span>
-                <span className="mdl-list__item-secondary-content">
-                    <span className="mdl-list__item-secondary-info">{this.props.libData.status}</span>
-                    <a className="mdl-list__item-secondary-action" href="#">
-                        <i className="fas fa-book fa-2x"></i>
-                    </a>
-                </span>
-            </li>
-        )
+        if (this.props.reserveurl === '') {
+            return this.card
+        } else {
+            return this.card
+        }
     }
 }
 
-class CardList extends React.Component<{ data: dataRow[] }, { data: dataRow[] }> {
-    constructor(props: { data: dataRow[] }) {
+class CardList extends React.Component<{ data: dataRow[], reserveurl: string }, { data: dataRow[] }> {
+    constructor(props: { data: dataRow[], reserveurl: string }) {
         super(props)
         this.state = {
             data: null
@@ -235,7 +238,7 @@ class CardList extends React.Component<{ data: dataRow[] }, { data: dataRow[] }>
             return (
                 <ul className='demo-list-two mdl-list'>
                     {this.props.data.map(data =>
-                        <Card key={data.id} libData={data} />
+                        <Card key={data.id} libData={data} reserveurl={this.props.reserveurl} />
                     )}
                 </ul>
             )
@@ -281,7 +284,7 @@ class ReferenceLibrary extends React.Component<{}, { libkey: dataRow[], reserveu
         return (
             <div className='reference-libray'>
                 <Form f={this.setData} />
-                <CardList data={this.state.libkey} />
+                <CardList data={this.state.libkey} reserveurl={this.state.reserveurl} />
                 <Reserve reserveurl={this.state.reserveurl} />
                 {/* <Button variant="contained" color="primary">
                     Hello World
@@ -318,16 +321,6 @@ class View extends React.Component {
                 <Header />
                 <ReferenceLibrary />
             </div>
-        )
-    }
-}
-
-class Header extends React.Component {
-    render() {
-        return (
-            <header>
-                <h1 id='h1-title'>Rent Book Whasse</h1>
-            </header>
         )
     }
 }
