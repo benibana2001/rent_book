@@ -75,17 +75,30 @@ class FormFieldSystemID extends React.Component<{ f: Function }> {
     constructor(props: { f: Function }) {
         super(props)
         this.handleChange = this.handleChange.bind(this)
+        this.handleChangeSelect = this.handleChangeSelect.bind(this)
     }
     handleChange(event: React.ChangeEvent<HTMLInputElement>): void {
         event.persist()
         this.props.f(event.target.value)
     }
+    handleChangeSelect(event: React.ChangeEvent<HTMLSelectElement>): void {
+        event.persist()
+        this.props.f(event.target.value)
+    }
     render() {
         return (
-            <div id='systemid'>
-                <input type="radio" name="system_id" value="Tokyo_Setagaya" id="system_id_setagaya" onChange={this.handleChange} /> <label htmlFor="system_id_setagaya">Setagaya</label>
-                <input type="radio" name="system_id" value="Tokyo_Shibuya" id="system_id_shibuya" onChange={this.handleChange} /> <label htmlFor="system_id_shibuya">Shibuya</label>
-            </div>
+            // <div id='systemid'>
+            //     <input type="radio" name="system_id" value="Tokyo_Setagaya" id="system_id_setagaya" onChange={this.handleChange} /> <label htmlFor="system_id_setagaya">Setagaya</label>
+            //     <input type="radio" name="system_id" value="Tokyo_Shibuya" id="system_id_shibuya" onChange={this.handleChange} /> <label htmlFor="system_id_shibuya">Shibuya</label>
+            <div className = "mdl-textfield mdl-js-textfield mdl-textfield--floating-label" >
+                <select name="system_id" className="mdl-textfield__input" id='systemid' onChange={this.handleChangeSelect}>
+                    <option></option>
+                    <option value="Tokyo_Setagaya" >世田谷区</option>
+                    <option value="Tokyo_Shibuya">渋谷区</option>
+                </select>
+                <label className="mdl-textfield__label" htmlFor="octane">区を選択</label>
+            </div >
+            // </div>
         )
     }
 }
@@ -265,7 +278,7 @@ class CardList extends React.Component<{ data: dataRow[], reserveurl: string }, 
     }
 }
 
-class ReferenceLibrary extends React.Component<{}, { libkey: dataRow[], reserveurl: string }> {
+class Isbn extends React.Component<{}, { libkey: dataRow[], reserveurl: string }> {
     constructor(props: {}) {
         super(props)
         this.state = {
@@ -285,14 +298,12 @@ class ReferenceLibrary extends React.Component<{}, { libkey: dataRow[], reserveu
                 <Form f={this.setData} />
                 <CardList data={this.state.libkey} reserveurl={this.state.reserveurl} />
                 <Reserve reserveurl={this.state.reserveurl} />
-                {/* <Button variant="contained" color="primary">
-                    Hello World
-                </Button> */}
             </div>
         )
     }
 }
 
+// TODO: リンクを削除して蔵書アイコンにリンクを埋め込む
 class Reserve extends React.Component<{ reserveurl: string }>{
     constructor(props: { reserveurl: string }) {
         super(props)
@@ -313,16 +324,15 @@ class Reserve extends React.Component<{ reserveurl: string }>{
 
 }
 
-class Isbn extends React.Component {
-    render() {
-        return (
-            <div className='mdl-layout mdl-js-layout mdl-layout--fixed-header
-            mdl-layout--fixed-tabs'>
-                <ReferenceLibrary />
-            </div>
-        )
-    }
-}
+// class Isbn extends React.Component {
+//     render() {
+//         return (
+//             <div>
+//                 <ReferenceLibrary />
+//             </div>
+//         )
+//     }
+// }
 
 /*
  * Data Sample
