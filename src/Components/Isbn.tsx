@@ -49,23 +49,11 @@ class FormFieldISBN extends React.Component<{ f: Function }, { isbn: string }> {
     render() {
         return (
             <div id='isbn'>
-                <div className='isbn-container'>
-                    <div className='isbn-inner'>
-                        <div className='leading-icon'>
-                            <i className="fas fa-book fa-1x"></i>
-                        </div>
-                        <div className='label'>ISBN</div>
-                        <div className='input-text'>
-                            <input value={this.state.isbn} type="text" onChange={this.handleChange} placeholder='123456789012' />
-                        </div>
-                    </div>
-                    <div className='trailing-icon'>
-                        <div>
-                            <i className='far fa-times-circle fa-2x font-trailing-icon'></i>
-                        </div>
-                    </div>
+                <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input className="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="sample4" onChange={this.handleChange} />
+                    <label className="mdl-textfield__label" htmlFor="sample4">ISBNを入力</label>
+                    <span className="mdl-textfield__error">Input is not a number!</span>
                 </div>
-                <div className='helper-text'>Enter ISBN which the book of you want to check.</div>
             </div>
         )
     }
@@ -90,7 +78,7 @@ class FormFieldSystemID extends React.Component<{ f: Function }> {
             // <div id='systemid'>
             //     <input type="radio" name="system_id" value="Tokyo_Setagaya" id="system_id_setagaya" onChange={this.handleChange} /> <label htmlFor="system_id_setagaya">Setagaya</label>
             //     <input type="radio" name="system_id" value="Tokyo_Shibuya" id="system_id_shibuya" onChange={this.handleChange} /> <label htmlFor="system_id_shibuya">Shibuya</label>
-            <div className = "mdl-textfield mdl-js-textfield mdl-textfield--floating-label" >
+            <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" >
                 <select name="system_id" className="mdl-textfield__input" id='systemid' onChange={this.handleChangeSelect}>
                     <option></option>
                     <option value="Tokyo_Setagaya" >世田谷区</option>
@@ -190,15 +178,20 @@ class Form extends React.Component<{ f: Function }, { o: options }> {
  */
     render() {
         return (
-            <form onSubmit={this.handleSubmit}>
-                <FormFieldISBN f={this.setISBN} />
-                <FormFieldSystemID f={this.setSystemID} />
-                <div id='submit'>
-                    <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-                        Submit
-                    </button>
+            <div className="mdl-grid">
+                <div className="mdl-cell mdl-cell--4-col div-isbn">
+                    ISBNで検索
+                    <form onSubmit={this.handleSubmit}>
+                        <FormFieldISBN f={this.setISBN} />
+                        <FormFieldSystemID f={this.setSystemID} />
+                        <div id='submit'>
+                            <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                                Submit
+                            </button>
+                        </div>
+                    </form>
                 </div>
-            </form>
+            </div>
         )
     }
 }
@@ -278,6 +271,16 @@ class CardList extends React.Component<{ data: dataRow[], reserveurl: string }, 
     }
 }
 
+class TitleIsbn extends React.Component {
+    render() {
+        return (
+            <div className="mdl-grid">
+                <div className="mdl-cell mdl-cell--4-col div-isbn">タイトルで検索</div>
+            </div>
+        )
+    }
+}
+
 class Isbn extends React.Component<{}, { libkey: dataRow[], reserveurl: string }> {
     constructor(props: {}) {
         super(props)
@@ -296,6 +299,7 @@ class Isbn extends React.Component<{}, { libkey: dataRow[], reserveurl: string }
         return (
             <div className='reference-libray'>
                 <Form f={this.setData} />
+                <TitleIsbn />
                 <CardList data={this.state.libkey} reserveurl={this.state.reserveurl} />
                 <Reserve reserveurl={this.state.reserveurl} />
             </div>
