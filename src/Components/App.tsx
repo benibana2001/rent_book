@@ -7,6 +7,7 @@ import 'material-design-lite/material.min.css'
 import '../scss/material_icon.scss'
 import * as React from 'react'
 import { Isbn } from './Isbn'
+import { Camera } from './Camera'
 
 export { App }
 class App extends React.Component {
@@ -36,7 +37,7 @@ class App extends React.Component {
                     </section>
                     <section className="mdl-layout__tab-panel" id="fixed-tab-2">
                         <div className="page-content">
-
+                            <Camera />
                         </div>
                     </section>
                     <section className="mdl-layout__tab-panel" id="fixed-tab-3">
