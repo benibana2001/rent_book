@@ -106,6 +106,7 @@ class Form extends React.Component<{ f: Function }, { o: options }> {
         this.setSystemID = this.setSystemID.bind(this)
         this.fetchBook = this.fetchBook.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
+        this.initModal = this.initModal.bind(this)
     }
     //
     componentDidMount() {
@@ -115,6 +116,12 @@ class Form extends React.Component<{ f: Function }, { o: options }> {
             event.preventDefault()
         })
         this.setAppkey(process.env.APP_API_KEY)
+    }
+    //
+    // modal
+    initModal(): void {
+        const dialog = document.querySelector('dialog')
+        dialog.showModal()
     }
     //
     setAppkey(appkey: string): void {
@@ -164,6 +171,9 @@ class Form extends React.Component<{ f: Function }, { o: options }> {
         let bookInfo: BookInfo = await O.search(o.isbn)
         console.log(`bookInfo: ${JSON.stringify(bookInfo)}`)
 
+        // dialog
+        this.initModal()
+
         return data
     }
     /**
@@ -205,16 +215,16 @@ class Card extends React.Component<{ libData: { id: number, name: string, status
         dom.i2svg()
     }
     card =
-        <li className="card mdl-list__item mdl-list__item--two-line">
+        <li className="card mdl-list__item ">
             <span className="mdl-list__item-primary-content">
-                <i className="fas fa-university mdl-list__item-avatar fa-1x"></i>
+                <i className="fas fa-university fa-1x"></i>
                 <span>{this.props.libData.name}</span>
                 {/* <span className="mdl-list__item-sub-title">XX Episodes</span> */}
             </span>
             <span className="mdl-list__item-secondary-content">
-                <span className="mdl-list__item-secondary-info">{this.props.libData.status}</span>
+                {/* <span className="mdl-list__item-secondary-info">{this.props.libData.status}</span> */}
                 <span className="mdl-list__item-secondary-action">
-                    <i className="fas fa-book fa-2x"></i>
+                    {this.props.libData.status}<i className="fas fa-book fa-1x"></i>
                 </span>
             </span>
         </li>
@@ -251,17 +261,17 @@ class CardList extends React.Component<{ data: dataRow[], reserveurl: string }, 
             return (
                 // <div className='card-list'></div>
                 <ul className="demo-list-two mdl-list">
-                    <li className="mdl-list__item mdl-list__item--two-line">
+                    <li className="mdl-list__item">
                         <span className="mdl-list__item-primary-content">
                             {/* <i className="material-icons mdl-list__item-avatar">person</i> */}
-                            <i className="fas fa-university mdl-list__item-avatar fa-1x"></i>
+                            <i className="fas fa-university  fa-1x"></i>
                             <span>世田谷</span>
-                            <span className="mdl-list__item-sub-title">62 Episodes</span>
+                            {/* <span className="mdl-list__item-sub-title">62 Episodes</span> */}
                         </span>
                         <span className="mdl-list__item-secondary-content">
-                            <span className="mdl-list__item-secondary-info">蔵書あり</span>
+                            {/* <span className="mdl-list__item-secondary-info">蔵書あり</span> */}
                             <a className="mdl-list__item-secondary-action" href="#">
-                                <i className="fas fa-book fa-2x"></i>
+                                蔵書あり<i className="fas fa-book fa-1x"></i>
                             </a>
                         </span>
                     </li>
@@ -295,11 +305,43 @@ class Isbn extends React.Component<{}, { libkey: dataRow[], reserveurl: string }
         this.setState({ reserveurl: d.reserveurl })
         console.log(this.state.libkey)
     }
+    componentDidMount() {
+        // Test for dialog
+        const elem: HTMLElement = document.getElementById('test')
+        elem.addEventListener('click', () => {
+            console.log('clicked')
+        })
+        let dialog = document.querySelector('dialog')
+        elem.addEventListener('click', () => {
+            dialog.showModal()
+        })
+        dialog.querySelector('.close').addEventListener('click', () => {
+            dialog.close()
+        })
+    }
     render() {
         return (
             <div className='reference-libray'>
+                <div>
+                    {/* Test for dialog */}
+                    <button id="test" className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                        TEST
+                    </button>
+                    <dialog className="mdl-dialog">
+                        {/* <h4 className="mdl-dialog__title">Allow data collection?</h4> */}
+                        <div className="mdl-dialog__content">
+                            <CardList data={this.state.libkey} reserveurl={this.state.reserveurl} />
+                        </div>
+                        <div className="mdl-dialog__actions">
+                            <button type="button" className="mdl-button">予約</button>
+                            <button type="button" className="mdl-button close">とじる</button>
+                        </div>
+                    </dialog>
+                    {/*  */}
+                </div>
                 <Form f={this.setData} />
                 <TitleIsbn />
+
                 <CardList data={this.state.libkey} reserveurl={this.state.reserveurl} />
                 <Reserve reserveurl={this.state.reserveurl} />
             </div>
@@ -328,18 +370,7 @@ class Reserve extends React.Component<{ reserveurl: string }>{
 
 }
 
-// class Isbn extends React.Component {
-//     render() {
-//         return (
-//             <div>
-//                 <ReferenceLibrary />
-//             </div>
-//         )
-//     }
-// }
-
-/*
- * Data Sample
+/** Data Sample
 "books": {
             "4334926940": {
             "Tokyo_Setagaya": {"status": "OK", "reserveurl": "http://libweb.tokyo.jp/123",

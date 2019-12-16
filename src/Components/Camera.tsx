@@ -48,7 +48,7 @@ class Camera extends React.Component {
                 return
             }
             console.log('Initialization finished. Ready to start')
-            Quagga.start()
+            // Quagga.start()
         })
         //
         Quagga.onDetected((success: any) => {

@@ -23,7 +23,7 @@ class App extends React.Component {
                     <div className="mdl-layout__tab-bar mdl-js-ripple-effect">
                         <a href="#fixed-tab-1" className="mdl-layout__tab is-active">ISBN</a>
                         <a href="#fixed-tab-2" className="mdl-layout__tab">Camera</a>
-                        <a href="#fixed-tab-3" className="mdl-layout__tab">Result</a>
+                        {/* <a href="#fixed-tab-3" className="mdl-layout__tab">Result</a> */}
                     </div>
                 </header>
                 <div className="mdl-layout__drawer">
@@ -40,11 +40,11 @@ class App extends React.Component {
                             <Camera />
                         </div>
                     </section>
-                    <section className="mdl-layout__tab-panel" id="fixed-tab-3">
+                    {/* <section className="mdl-layout__tab-panel" id="fixed-tab-3">
                         <div className="page-content">
 
                         </div>
-                    </section>
+                    </section> */}
                 </main>
             </div>
         )
