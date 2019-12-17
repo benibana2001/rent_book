@@ -1,17 +1,16 @@
 // View
 import * as React from 'react'
-import '../scss/app.scss'
-import { Calil, options, dataRow, data } from '../api/Calil'
+import { Calil, options, dataRow, data } from '../../../api/Calil'
 // API
-import { OpenBD, BookInfo } from '../OpenBD'
+import { OpenBD, BookInfo } from '../../../api/OpenBD'
 // Library
 import { config, dom, library } from '@fortawesome/fontawesome-svg-core'
 import { faBook, faUniversity } from '@fortawesome/free-solid-svg-icons'
 import { faTimesCircle } from '@fortawesome/free-regular-svg-icons'
 import 'material-design-lite'
 import 'material-design-lite/material.min.css'
-//
-export { Isbn }
+
+export { Form, CardList }
 class FormFieldISBN extends React.Component<{ f: Function }, { isbn: string }> {
     constructor(props: { f: Function }) {
         super(props)
@@ -280,105 +279,3 @@ class CardList extends React.Component<{ data: dataRow[], reserveurl: string }, 
         }
     }
 }
-
-class TitleIsbn extends React.Component {
-    render() {
-        return (
-            <div className="mdl-grid">
-                <div className="mdl-cell mdl-cell--4-col div-isbn">タイトルで検索</div>
-            </div>
-        )
-    }
-}
-
-class Isbn extends React.Component<{}, { libkey: dataRow[], reserveurl: string }> {
-    constructor(props: {}) {
-        super(props)
-        this.state = {
-            libkey: null,
-            reserveurl: ''
-        }
-        this.setData = this.setData.bind(this)
-    }
-    setData(d: data): void {
-        this.setState({ libkey: d.libkey })
-        this.setState({ reserveurl: d.reserveurl })
-        console.log(this.state.libkey)
-    }
-    componentDidMount() {
-        // Test for dialog
-        const elem: HTMLElement = document.getElementById('test')
-        elem.addEventListener('click', () => {
-            console.log('clicked')
-        })
-        let dialog = document.querySelector('dialog')
-        elem.addEventListener('click', () => {
-            dialog.showModal()
-        })
-        dialog.querySelector('.close').addEventListener('click', () => {
-            dialog.close()
-        })
-    }
-    render() {
-        return (
-            <div className='reference-libray'>
-                <div>
-                    {/* Test for dialog */}
-                    <button id="test" className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-                        TEST
-                    </button>
-                    <dialog className="mdl-dialog">
-                        {/* <h4 className="mdl-dialog__title">Allow data collection?</h4> */}
-                        <div className="mdl-dialog__content">
-                            <CardList data={this.state.libkey} reserveurl={this.state.reserveurl} />
-                        </div>
-                        <div className="mdl-dialog__actions">
-                            <button type="button" className="mdl-button">予約</button>
-                            <button type="button" className="mdl-button close">とじる</button>
-                        </div>
-                    </dialog>
-                    {/*  */}
-                </div>
-                <Form f={this.setData} />
-                <TitleIsbn />
-
-                <CardList data={this.state.libkey} reserveurl={this.state.reserveurl} />
-                <Reserve reserveurl={this.state.reserveurl} />
-            </div>
-        )
-    }
-}
-
-// TODO: リンクを削除して蔵書アイコンにリンクを埋め込む
-class Reserve extends React.Component<{ reserveurl: string }>{
-    constructor(props: { reserveurl: string }) {
-        super(props)
-    }
-    render() {
-        if (this.props.reserveurl === '') {
-            return (
-                <div></div>
-            )
-        } else {
-            return (
-                <div>
-                    <a href={this.props.reserveurl}>予約画面へ</a>
-                </div>
-            )
-        }
-    }
-
-}
-
-/** Data Sample
-"books": {
-            "4334926940": {
-            "Tokyo_Setagaya": {"status": "OK", "reserveurl": "http://libweb.tokyo.jp/123",
-"libkey": {"玉川台": "貸出可", "世田谷": "貸出中", "経堂": "館内のみ"}}
-    },
-"4088700104": {
-            "Tokyo_Setagaya": {"status": "Running", "reserveurl": "",
-"libkey": {}}
-    }
-  },
-  */
