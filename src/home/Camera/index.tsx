@@ -60,8 +60,10 @@ class Camera extends React.Component {
     render() {
         return (
             <React.Fragment>
-                Helloworld
-                <div id="camera"></div>
+                <div className="mdl-grid">
+                    <div className="mdl-cell mdl-cell--4-col div-isbn">バーコードから調べる</div>
+                    <div id="camera"></div>
+                </div>
             </React.Fragment>
         )
     }

@@ -189,7 +189,7 @@ class Form extends React.Component<{ f: Function }, { o: options }> {
         return (
             <div className="mdl-grid">
                 <div className="mdl-cell mdl-cell--4-col div-isbn">
-                    ISBNで検索
+                    ISBNで調べる
                     <form onSubmit={this.handleSubmit}>
                         <FormFieldISBN f={this.setISBN} />
                         <FormFieldSystemID f={this.setSystemID} />
