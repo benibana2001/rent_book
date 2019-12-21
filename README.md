@@ -3,7 +3,7 @@
 　書籍のISBN（アイエスビーエヌ、International Standard Book Number）を元に、図書館別の蔵書情報および貸し出し状況の確認から貸出/予約までを行うことを可能とするアプリです。  
 2019年12月現在, 開発中です。
 
-![開発中デモ](https://raw.githubusercontent.com/wiki/benibana2001/rent_book/images/rent_book_demo01.gif)
+![開発中デモ](https://raw.githubusercontent.com/wiki/benibana2001/rent_book/images/rent_book_demo02.gif)
 
 ## 実装予定の機能
 
