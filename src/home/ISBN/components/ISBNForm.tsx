@@ -3,6 +3,7 @@ import * as React from 'react'
 import { Calil, options, dataRow, data } from '../../../api/Calil'
 // API
 import { OpenBD, BookInfo } from '../../../api/OpenBD'
+import { data as TokyoLibraryData } from '../../../api/data_tokyo_library'
 // Library
 import { config, dom, library } from '@fortawesome/fontawesome-svg-core'
 import { faBook, faUniversity } from '@fortawesome/free-solid-svg-icons'
@@ -73,19 +74,18 @@ class FormFieldSystemID extends React.Component<{ f: Function }> {
         this.props.f(event.target.value)
     }
     render() {
+        console.log(TokyoLibraryData)
         return (
-            // <div id='systemid'>
-            //     <input type="radio" name="system_id" value="Tokyo_Setagaya" id="system_id_setagaya" onChange={this.handleChange} /> <label htmlFor="system_id_setagaya">Setagaya</label>
-            //     <input type="radio" name="system_id" value="Tokyo_Shibuya" id="system_id_shibuya" onChange={this.handleChange} /> <label htmlFor="system_id_shibuya">Shibuya</label>
             <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" >
                 <select name="system_id" className="mdl-textfield__input" id='systemid' onChange={this.handleChangeSelect}>
                     <option></option>
-                    <option value="Tokyo_Setagaya" >世田谷区</option>
-                    <option value="Tokyo_Shibuya">渋谷区</option>
+                    {TokyoLibraryData.map((item, index) =>
+                        <option key={index} value={item[0]}>{item[1]}</option>
+                    )}
+
                 </select>
                 <label className="mdl-textfield__label" htmlFor="octane">区を選択</label>
             </div >
-            // </div>
         )
     }
 }
