@@ -14,8 +14,8 @@ import 'material-design-lite/material.min.css'
 import { Loading } from '../../../components/loading'
 
 export { Form }
-class FormFieldISBN extends React.Component<{ f: Function }, { isbn: string }> {
-    constructor(props: { f: Function }) {
+class FormFieldISBN extends React.Component<{ f: Function, setBookInfo: Function }, { isbn: string }> {
+    constructor(props: { f: Function, setBookInfo: Function }) {
         super(props)
         this.state = { isbn: '' }
         this.handleChange = this.handleChange.bind(this)
@@ -39,11 +39,31 @@ class FormFieldISBN extends React.Component<{ f: Function }, { isbn: string }> {
      * 
      * @param event 
      */
-    handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    async handleChange(event: React.ChangeEvent<HTMLInputElement>) {
         // If reference target in the async function, to do persit().
         event.persist()
-        this.setState({ isbn: event.target.value })
-        this.props.f(event.target.value)
+        let value: string = event.target.value
+        this.setState({ isbn: value })
+        // Set value to parent class.
+        this.props.f(value)
+        // Use OpenBD API.
+        // Stateへの入力値反映には若干の遅延があるため, eventの値を使用してAPI通信を行う
+        if (value.length === 10 || value.length === 13) {
+            let bookInfo: BookInfo = await this.fetchBookInfo(event.target.value)
+            this.props.setBookInfo(bookInfo)
+        } else {
+            this.props.setBookInfo(null)
+        }
+    }
+    /**
+     * 
+     */
+    public async fetchBookInfo(isbn: string): Promise<BookInfo> {
+        // Fetch OpenBD
+        const O: OpenBD = new OpenBD()
+        let bookInfo: BookInfo = await O.search(isbn)
+        console.log(`bookInfo: ${JSON.stringify(bookInfo)}`)
+        return bookInfo
     }
     /**
      * 
@@ -80,7 +100,6 @@ class FormFieldSystemID extends React.Component<{ f: Function }> {
         this.props.f(event.target.value)
     }
     render() {
-        console.log(TokyoLibraryData)
         return (
             <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" >
                 <select name="system_id" className="mdl-textfield__input" id='systemid' onChange={this.handleChangeSelect}>
@@ -96,7 +115,7 @@ class FormFieldSystemID extends React.Component<{ f: Function }> {
     }
 }
 
-class Form extends React.Component<{ f: Function }, { o: options, isLoading: boolean }> {
+class Form extends React.Component<{ f: Function }, { o: options, isLoading: boolean, bookInfo: BookInfo }> {
     constructor(props: { f: Function }) {
         super(props)
         this.state = {
@@ -105,14 +124,16 @@ class Form extends React.Component<{ f: Function }, { o: options, isLoading: boo
                 'isbn': '',
                 'systemid': ''
             },
-            isLoading: false
+            isLoading: false,
+            bookInfo: null
         }
         this.setAppkey = this.setAppkey.bind(this)
         this.setISBN = this.setISBN.bind(this)
         this.setSystemID = this.setSystemID.bind(this)
-        this.fetchBook = this.fetchBook.bind(this)
+        this.fetchLibrayInfo = this.fetchLibrayInfo.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
         this.initModal = this.initModal.bind(this)
+        this.setBookInfo = this.setBookInfo.bind(this)
     }
     //
     componentDidMount() {
@@ -160,12 +181,16 @@ class Form extends React.Component<{ f: Function }, { o: options, isLoading: boo
             }
         })
     }
+    //
+    setBookInfo(bookInfo: BookInfo): void {
+        this.setState({bookInfo: bookInfo})
+    }
     /**
      * Use Calil API.
      */
-    public async fetchBook(o: options): Promise<data> {
-        this.setState({ isLoading: true})
-        
+    public async fetchLibrayInfo(o: options): Promise<data> {
+        this.setState({ isLoading: true })
+
         let c: Calil = new Calil(o)
         let data: data = await c.search()
         if (!data) {
@@ -174,23 +199,22 @@ class Form extends React.Component<{ f: Function }, { o: options, isLoading: boo
             this.props.f(data)
         }
 
-        this.setState({ isLoading: false})
+        // debug
+        // await this.fetchBookInfo(o.isbn)
 
-        // Fetch OpenBD
-        const O: OpenBD = new OpenBD()
-        let bookInfo: BookInfo = await O.search(o.isbn)
-        console.log(`bookInfo: ${JSON.stringify(bookInfo)}`)
+        this.setState({ isLoading: false })
 
         // dialog
         this.initModal()
 
         return data
     }
+
     /**
      * 
      */
     handleSubmit(event: React.FormEvent): void {
-        this.fetchBook(this.state.o)
+        this.fetchLibrayInfo(this.state.o)
         event.preventDefault()
     }
     /**
@@ -202,17 +226,41 @@ class Form extends React.Component<{ f: Function }, { o: options, isLoading: boo
                 <div className="mdl-cell mdl-cell--4-col div-isbn">
                     ISBNで調べる
                     <form onSubmit={this.handleSubmit}>
-                        <FormFieldISBN f={this.setISBN} />
+                        <FormFieldISBN f={this.setISBN} setBookInfo={this.setBookInfo} />
                         <FormFieldSystemID f={this.setSystemID} />
                         <div id='submit'>
                             <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
                                 Submit
                             </button>
                         </div>
+                        <FormBookInfo bookInfo={this.state.bookInfo} />
                     </form>
                 </div>
                 <Loading isLoading={this.state.isLoading} />
             </div>
         )
+    }
+}
+
+// OpenBD を使用してISBN入力時に自動で表示するエリア
+class FormBookInfo extends React.Component<{ bookInfo: BookInfo }>{
+    constructor(props: { bookInfo: BookInfo }) {
+        super(props)
+    }
+    render() {
+        if (this.props.bookInfo) {
+            console.log(this.props.bookInfo)
+            return (
+                <div>
+                    Title: {this.props.bookInfo.title}
+                    <img src={this.props.bookInfo.coverurl} alt={this.props.bookInfo.coverurl} />
+                </div>
+            )
+        } else {
+            return (
+                <div></div>
+            )
+        }
+
     }
 }
