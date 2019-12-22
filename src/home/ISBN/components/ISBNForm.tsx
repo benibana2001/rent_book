@@ -11,6 +11,8 @@ import { faTimesCircle } from '@fortawesome/free-regular-svg-icons'
 import 'material-design-lite'
 import 'material-design-lite/material.min.css'
 
+import { Loading } from '../../../components/loading'
+
 export { Form }
 class FormFieldISBN extends React.Component<{ f: Function }, { isbn: string }> {
     constructor(props: { f: Function }) {
@@ -59,6 +61,10 @@ class FormFieldISBN extends React.Component<{ f: Function }, { isbn: string }> {
     }
 }
 
+/**
+ * Systemid indicates Tokyo_XXX-Ku at Calil API
+ * Systemid はCalilAPI において市区町村の指定に使用されます。
+ */
 class FormFieldSystemID extends React.Component<{ f: Function }> {
     constructor(props: { f: Function }) {
         super(props)
@@ -90,7 +96,7 @@ class FormFieldSystemID extends React.Component<{ f: Function }> {
     }
 }
 
-class Form extends React.Component<{ f: Function }, { o: options }> {
+class Form extends React.Component<{ f: Function }, { o: options, isLoading: boolean }> {
     constructor(props: { f: Function }) {
         super(props)
         this.state = {
@@ -98,7 +104,8 @@ class Form extends React.Component<{ f: Function }, { o: options }> {
                 'appkey': '',
                 'isbn': '',
                 'systemid': ''
-            }
+            },
+            isLoading: false
         }
         this.setAppkey = this.setAppkey.bind(this)
         this.setISBN = this.setISBN.bind(this)
@@ -157,6 +164,8 @@ class Form extends React.Component<{ f: Function }, { o: options }> {
      * Use Calil API.
      */
     public async fetchBook(o: options): Promise<data> {
+        this.setState({ isLoading: true})
+        
         let c: Calil = new Calil(o)
         let data: data = await c.search()
         if (!data) {
@@ -164,6 +173,8 @@ class Form extends React.Component<{ f: Function }, { o: options }> {
         } else {
             this.props.f(data)
         }
+
+        this.setState({ isLoading: false})
 
         // Fetch OpenBD
         const O: OpenBD = new OpenBD()
@@ -200,6 +211,7 @@ class Form extends React.Component<{ f: Function }, { o: options }> {
                         </div>
                     </form>
                 </div>
+                <Loading isLoading={this.state.isLoading} />
             </div>
         )
     }

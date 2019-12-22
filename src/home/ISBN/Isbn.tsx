@@ -9,6 +9,7 @@ import { ResultList } from './components/ResultList'
 import 'material-design-lite'
 import 'material-design-lite/material.min.css'
 //
+import '../../components/loading.scss'
 export { Isbn }
 
 class Isbn extends React.Component<{}, { libkey: dataRow[], reserveurl: string }> {
