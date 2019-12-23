@@ -2,7 +2,6 @@
 import * as React from 'react'
 import './styles.scss'
 import { Calil, options, dataRow, data } from '../../api/Calil'
-import { TitleSearch } from './components/ISBNTitleSearch'
 import { Form} from './components/ISBNForm'
 import { ResultList } from './components/ResultList'
 // Library
@@ -62,7 +61,6 @@ class Isbn extends React.Component<{}, { libkey: dataRow[], reserveurl: string }
                 {/* / DIALOG */}
 
                 <Form f={this.setData} />
-                <TitleSearch />
             </div>
         )
     }

@@ -1,6 +1,6 @@
 import * as React from 'react'
-export { TitleSearch }
-class TitleSearch extends React.Component {
+export { Title }
+class Title extends React.Component {
     render() {
         return (
             <div className="mdl-grid">
