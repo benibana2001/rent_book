@@ -1,9 +1,9 @@
 import * as React from 'react'
-import { Calil, options, dataRow, data } from '../../../api/Calil'
+import { dataRow } from '../../api/Calil'
 // Library
 import { config, dom, library } from '@fortawesome/fontawesome-svg-core'
-import { faBook, faUniversity } from '@fortawesome/free-solid-svg-icons'
-export { ResultList }
+import { faUniversity } from '@fortawesome/free-solid-svg-icons'
+export { Result }
 class Card extends React.Component<{ libData: { id: number, name: string, status: string }, reserveurl: string }> {
     constructor(props: { libData: { id: number, name: string, status: string }, reserveurl: string }) {
         super(props)
@@ -33,12 +33,9 @@ class Card extends React.Component<{ libData: { id: number, name: string, status
     }
 }
 
-class ResultList extends React.Component<{ data: dataRow[], reserveurl: string }, { data: dataRow[] }> {
+class Result extends React.Component<{ data: dataRow[], reserveurl: string }> {
     constructor(props: { data: dataRow[], reserveurl: string }) {
         super(props)
-        this.state = {
-            data: null
-        }
     }
 
     componentDidMount() {
