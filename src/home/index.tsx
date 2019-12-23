@@ -9,7 +9,7 @@ import { Calil, options, dataRow, data } from '../api/Calil'
 import 'material-design-lite'
 import 'material-design-lite/material.min.css'
 import '../components/material_icon.scss'
-import { OpenBD, BookInfo } from '../api/OpenBD'
+import { BookInfo } from '../api/OpenBD'
 
 export { Home }
 class Home extends React.Component<{}, {
@@ -127,16 +127,6 @@ class Home extends React.Component<{}, {
 
         return data
     }
-    /**
-     * 
-    */
-    public async fetchBookInfo(isbn: string): Promise<BookInfo> {
-        // Fetch OpenBD
-        const O: OpenBD = new OpenBD()
-        let bookInfo: BookInfo = await O.search(isbn)
-        console.log(`bookInfo: ${JSON.stringify(bookInfo)}`)
-        return bookInfo
-    }
 
     render() {
         return (
@@ -154,6 +144,8 @@ class Home extends React.Component<{}, {
                 <Title />
 
                 <Camera />
+
+                <BookData setBookInfo={this.setBookInfo} isbn={this.state.options.isbn} />
             </React.Fragment>
         )
     }

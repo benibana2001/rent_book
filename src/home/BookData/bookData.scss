@@ -1,0 +1,25 @@
+.snack-container{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 1;
+}
+.snack-inner {
+    padding: 10px 10px;
+    padding-right: 60px;
+}
+
+.snack-image {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    width: 60px;
+    .thumbnail{
+        max-width: 100%;
+    }
+}
+
+.snack-title{
+    padding: 10px 10px;
+    padding-left: 80px;
+}
