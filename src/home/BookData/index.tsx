@@ -47,11 +47,11 @@ class BookData extends React.Component<{ setBookInfo: Function, isbn: string }, 
             return (
                 <div className="snack-container">
                     <a className="snack-inner">
-                        <div className="snack-image">
-                            <img className="thumbnail" src={this.state.bookInfo.coverurl} alt={this.state.bookInfo.coverurl} />
-                        </div>
-                        <div className="snack-title">
-                            {this.state.bookInfo.title}
+                        <img className="thumbnail" src={this.state.bookInfo.coverurl} alt={this.state.bookInfo.coverurl} />
+                        <div className="snack-content">
+                            <div className="snack-title">
+                                {this.state.bookInfo.title}
+                            </div>
                         </div>
                     </a>
                 </div>
