@@ -10,6 +10,7 @@ import 'material-design-lite'
 import 'material-design-lite/material.min.css'
 import '../components/material_icon.scss'
 import { BookInfo } from '../api/OpenBD'
+import './home.scss'
 
 export { Home }
 class Home extends React.Component<{}, {

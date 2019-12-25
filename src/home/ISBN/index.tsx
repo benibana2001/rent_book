@@ -1,6 +1,5 @@
 // View
 import * as React from 'react'
-import './styles.scss'
 import { Form } from './components/ISBNForm'
 // Library
 import 'material-design-lite'

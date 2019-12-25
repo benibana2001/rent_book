@@ -4,13 +4,14 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 import { Header } from './components/header'
 import { Menu } from './components/menu'
 import { Home } from './home'
+import './index.scss'
 
 let parent: HTMLElement | null = document.getElementById('root')
 
 class Apps extends React.Component {
     render() {
         return (
-            <div className="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-tabs">
+            <div className="container mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-tabs">
                 <Header />
                 <Router >
                     <Switch>
