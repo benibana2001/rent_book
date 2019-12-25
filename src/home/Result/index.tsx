@@ -4,7 +4,13 @@ import { dataRow } from '../../api/Calil'
 import { config, dom, library } from '@fortawesome/fontawesome-svg-core'
 import { faUniversity } from '@fortawesome/free-solid-svg-icons'
 export { Result }
-class Card extends React.Component<{ libData: { id: number, name: string, status: string }, reserveurl: string }> {
+class Card extends React.Component<
+    {
+        libData: { id: number, name: string, status: string },
+        reserveurl: string
+    }
+    >
+{
     constructor(props: { libData: { id: number, name: string, status: string }, reserveurl: string }) {
         super(props)
     }

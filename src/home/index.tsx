@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Isbn } from './ISBN'
+import { Form } from './ISBN/components/ISBNForm'
 import { Title } from './Title'
 import { Camera } from './Camera'
 import { BookData } from './BookData'
@@ -37,23 +37,32 @@ class Home extends React.Component<{}, {
         this.removeData = this.removeData.bind(this)
         this.setAppkey = this.setAppkey.bind(this)
         this.setISBN = this.setISBN.bind(this)
+        this.setIsLoading = this.setIsLoading.bind(this)
         this.setSystemID = this.setSystemID.bind(this)
-        this.fetchLibrayInfo = this.fetchLibrayInfo.bind(this)
         this.initModal = this.initModal.bind(this)
     }
     componentDidMount() {
         // Set API_KEY
         this.setAppkey(process.env.APP_API_KEY)
         // Init dialog
-        let dialog = document.querySelector('dialog')
-        dialog.querySelector('.close').addEventListener('click', () => {
-            dialog.close()
-        })
+        // let dialog = document.querySelector('dialog')
+        // dialog.querySelector('.close').addEventListener('click', () => {
+        //     dialog.close()
+        // })
         // Add link to reserve-button
-        const reserve: HTMLElement = document.getElementById('buttonReserve')
-        reserve.addEventListener('click', () => {
-            location.href = this.state.reserveurl
-        })
+        // const reserve: HTMLElement = document.getElementById('buttonReserve')
+        // reserve.addEventListener('click', () => {
+        //     location.href = this.state.reserveurl
+        // })
+    }
+    // BOokinfo が変わったらモーダルを表示する
+    componentDidUpdate(prevProps: any, prevState: any) {
+        if(prevState.libkey !== this.state.libkey){
+            alert('changed bookInfo')
+            if(this.state.libkey !== null) {
+                this.initModal()
+            }
+        }
     }
     setAppkey(appkey: string): void {
         this.setState({
@@ -87,6 +96,10 @@ class Home extends React.Component<{}, {
     setBookInfo(bookInfo: BookInfo): void {
         this.setState({ bookInfo: bookInfo })
     }
+    //
+    setIsLoading(state: boolean): void {
+        this.setState({ isLoading: state })
+    }
     setData(d: data): void {
         this.setState({ libkey: d.libkey })
         this.setState({ reserveurl: d.reserveurl })
@@ -99,53 +112,44 @@ class Home extends React.Component<{}, {
 
     // modal
     initModal(): void {
-        const dialog = document.querySelector('dialog')
-        dialog.showModal()
+        // const dialog = document.querySelector('dialog')
+        // dialog.showModal()
     }
 
-    /**
-     * Use Calil API.
-     */
-    public async fetchLibrayInfo(o: options): Promise<data> {
-        this.setState({ isLoading: true })
-
-        let c: Calil = new Calil(o)
-        let data: data = await c.search()
-        if (!data) {
-            console.log('Data is none')
-        } else {
-            this.setData(data)
-        }
-
-        // debug
-        // await this.fetchBookInfo(o.isbn)
-
-        this.setState({ isLoading: false })
-
-        // dialog
-        this.initModal()
-
-        return data
-    }
-
+    //
     render() {
         return (
             <React.Fragment>
-                <Isbn
-                    f={{
-                        removeData: this.removeData
-                    }}
-                    setOptions={{
-                        isbn: this.setISBN,
-                        systemID: this.setSystemID
-                    }
-                    } />
+                
+                {/* DIALOG */}
+                <div>
+                    <dialog className="mdl-dialog">
+                        <div className="mdl-dialog__actions">
+                            <Result data={this.state.libkey} reserveurl={this.state.reserveurl} />
+                            {/* <button id="buttonReserve" type="button" className="mdl-button">予約</button> */}
+                            {/* <button type="button" className="mdl-button close" onClick={this.removeData}>とじる</button> */}
+                        </div>
+                    </dialog>
+                </div>
+                {/* / DIALOG */}
+
+                <Form setOptions={{
+                    isbn: this.setISBN,
+                    systemID: this.setSystemID
+                }} />
 
                 <Title />
 
                 <Camera />
 
-                <BookData setBookInfo={this.setBookInfo} isbn={this.state.options.isbn} />
+                <BookData
+                    setter={{
+                        bookInfo: this.setBookInfo,
+                        isLoading: this.setIsLoading,
+                        data: this.setData
+                    }}
+                    isbn={this.state.options.isbn}
+                    options={this.state.options} />
             </React.Fragment>
         )
     }
