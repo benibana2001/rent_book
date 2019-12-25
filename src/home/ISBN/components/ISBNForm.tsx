@@ -112,17 +112,12 @@ class Form extends React.Component<{ setOptions: { isbn: Function, systemID: Fun
     
     render() {
         return (
-            <div className="mdl-grid">
-                <div className="mdl-cell mdl-cell--4-col div-isbn">
+            <div className="">
+                <div className="div-isbn">
                     ISBNで調べる
                     <form onSubmit={this.handleSubmit}>
                         <FormFieldISBN setISBN={this.props.setOptions.isbn} />
                         <FormFieldSystemID setSystemID={this.props.setOptions.systemID} />
-                        <div id='submit'>
-                            <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-                                Submit
-                            </button>
-                        </div>
                     </form>
                 </div>
             </div>

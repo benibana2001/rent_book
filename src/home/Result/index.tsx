@@ -42,37 +42,58 @@ class Card extends React.Component<
 class Result extends React.Component<{ data: dataRow[], reserveurl: string }> {
     constructor(props: { data: dataRow[], reserveurl: string }) {
         super(props)
+        // bind
+        this.moveTo = this.moveTo.bind(this)
     }
 
-    componentDidMount() {
+    componentDidMount() {}
+
+    componentDidUpdate(prevProps: any) {
+        if (prevProps.data !== this.props.data) {
+            this.displayModal()
+        }    }
+
+    displayModal(): void {
+        const dialog = document.querySelector('dialog')
+        dialog.showModal()
+    }
+
+    closeModal(): void {
+        const dialog = document.querySelector('dialog')
+        dialog.close()
+    }
+
+    isData(): boolean {
+        if (this.props.data !== null) return true
+        return false
+    }
+
+    moveTo(): void {
+        location.href = this.props.reserveurl
     }
 
     render() {
-        if (this.props.data !== null) {
+        if (this.isData()) {
             console.log(JSON.stringify(this.props.data))
             return (
-                <ul className='demo-list-two mdl-list'>
-                    {this.props.data.map(data =>
-                        <Card key={data.id} libData={data} reserveurl={this.props.reserveurl} />
-                    )}
-                </ul>
+                <div>
+                    <dialog >
+                        <div >
+                            <ul className='mdl-list'>
+                                {this.props.data.map(data =>
+                                    <Card key={data.id} libData={data} reserveurl={this.props.reserveurl} />
+                                )}
+                            </ul>
+                            <button id="buttonReserve" type="button" className="mdl-button" onClick={this.moveTo}>予約</button>
+                            <button type="button" className="mdl-button close" onClick={this.closeModal}>とじる</button>
+                        </div>
+                    </dialog>
+                </div>
             )
         } else {
             // Dummy Data
             return (
-                <ul className="demo-list-two mdl-list">
-                    <li className="mdl-list__item">
-                        <span className="mdl-list__item-primary-content">
-                            <i className="fas fa-university  fa-1x"></i>
-                            <span>世田谷</span>
-                        </span>
-                        <span className="mdl-list__item-secondary-content">
-                            <a className="mdl-list__item-secondary-action" href="#">
-                                蔵書あり<i className="fas fa-book fa-1x"></i>
-                            </a>
-                        </span>
-                    </li>
-                </ul>
+                <div></div>
             )
         }
     }

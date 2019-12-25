@@ -39,7 +39,7 @@ class Home extends React.Component<{}, {
         this.setISBN = this.setISBN.bind(this)
         this.setIsLoading = this.setIsLoading.bind(this)
         this.setSystemID = this.setSystemID.bind(this)
-        this.initModal = this.initModal.bind(this)
+        // this.initModal = this.initModal.bind(this)
     }
     componentDidMount() {
         // Set API_KEY
@@ -57,13 +57,18 @@ class Home extends React.Component<{}, {
     }
     // BOokinfo が変わったらモーダルを表示する
     componentDidUpdate(prevProps: any, prevState: any) {
-        if(prevState.libkey !== this.state.libkey){
-            alert('changed bookInfo')
-            if(this.state.libkey !== null) {
-                this.initModal()
+        if (prevState.libkey !== this.state.libkey) {
+            if (this.state.libkey !== null) {
+                this.displayModal()
             }
         }
     }
+    // modal
+    displayModal(): void {
+        // const dialog = document.querySelector('dialog')
+        // dialog.showModal()
+    }
+    //
     setAppkey(appkey: string): void {
         this.setState({
             options: {
@@ -110,27 +115,13 @@ class Home extends React.Component<{}, {
         this.setState({ reserveurl: '' })
     }
 
-    // modal
-    initModal(): void {
-        // const dialog = document.querySelector('dialog')
-        // dialog.showModal()
-    }
-
     //
     render() {
         return (
             <React.Fragment>
-                
+
                 {/* DIALOG */}
-                <div>
-                    <dialog className="mdl-dialog">
-                        <div className="mdl-dialog__actions">
-                            <Result data={this.state.libkey} reserveurl={this.state.reserveurl} />
-                            {/* <button id="buttonReserve" type="button" className="mdl-button">予約</button> */}
-                            {/* <button type="button" className="mdl-button close" onClick={this.removeData}>とじる</button> */}
-                        </div>
-                    </dialog>
-                </div>
+                <Result data={this.state.libkey} reserveurl={this.state.reserveurl} />
                 {/* / DIALOG */}
 
                 <Form setOptions={{
