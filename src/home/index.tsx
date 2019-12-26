@@ -45,16 +45,6 @@ class Home extends React.Component<{}, {
     componentDidMount() {
         // Set API_KEY
         this.setAppkey(process.env.APP_API_KEY)
-        // Init dialog
-        // let dialog = document.querySelector('dialog')
-        // dialog.querySelector('.close').addEventListener('click', () => {
-        //     dialog.close()
-        // })
-        // Add link to reserve-button
-        // const reserve: HTMLElement = document.getElementById('buttonReserve')
-        // reserve.addEventListener('click', () => {
-        //     location.href = this.state.reserveurl
-        // })
     }
     // BOokinfo が変わったらモーダルを表示する
     componentDidUpdate(prevProps: any, prevState: any) {
@@ -130,6 +120,8 @@ class Home extends React.Component<{}, {
                     }}
                 />
                 {/* / DIALOG */}
+
+                <Loading isLoading={this.state.isLoading}/>
 
                 <ISBN setOptions={{
                     isbn: this.setISBN,

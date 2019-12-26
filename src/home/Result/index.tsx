@@ -1,43 +1,7 @@
 import * as React from 'react'
+import { ResultList } from './components/ResultList'
 import { dataRow } from '../../api/Calil'
-// Library
-import { dom, library } from '@fortawesome/fontawesome-svg-core'
-import { faUniversity } from '@fortawesome/free-solid-svg-icons'
 export { Result }
-class Card extends React.Component<
-    {
-        libData: { id: number, name: string, status: string },
-        reserveurl: string
-    }
-    >
-{
-    constructor(props: { libData: { id: number, name: string, status: string }, reserveurl: string }) {
-        super(props)
-    }
-    componentDidMount() {
-        library.add(faUniversity)
-        dom.i2svg()
-    }
-    card =
-        <li className="card mdl-list__item ">
-            <span className="mdl-list__item-primary-content">
-                <i className="fas fa-university fa-1x"></i>
-                <span>{this.props.libData.name}</span>
-            </span>
-            <span className="mdl-list__item-secondary-content">
-                <span className="mdl-list__item-secondary-action">
-                    {this.props.libData.status}<i className="fas fa-book fa-1x"></i>
-                </span>
-            </span>
-        </li>
-    render() {
-        if (this.props.reserveurl === '') {
-            return this.card
-        } else {
-            return this.card
-        }
-    }
-}
 
 class Result extends React.Component<{ data: dataRow[], reserveurl: string, setter: { data: Function } }> {
     constructor(props: { data: dataRow[], reserveurl: string, setter: { data: Function } }) {
@@ -58,7 +22,7 @@ class Result extends React.Component<{ data: dataRow[], reserveurl: string, sett
     }
 
     displayModal(): void {
-        const dialog = document.querySelector('dialog')
+        const dialog: HTMLDialogElement = document.getElementById('result') as HTMLDialogElement
         dialog.showModal()
     }
 
@@ -91,11 +55,11 @@ class Result extends React.Component<{ data: dataRow[], reserveurl: string, sett
             console.log(JSON.stringify(this.props.data))
             return (
                 <div>
-                    <dialog >
+                    <dialog id='result' >
                         <div >
                             <ul className='mdl-list'>
                                 {this.props.data.map(data =>
-                                    <Card key={data.id} libData={data} reserveurl={this.props.reserveurl} />
+                                    <ResultList key={data.id} libData={data} reserveurl={this.props.reserveurl} />
                                 )}
                             </ul>
                             <button id="buttonReserve" type="button" className="mdl-button" onClick={this.moveTo}>予約</button>

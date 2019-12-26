@@ -69,6 +69,7 @@ class BookData extends React.Component<
       */
     public async fetchLibrayInfo(o: options): Promise<data> {
         this.props.setter.isLoading(true)
+        console.log('set isLoading')
 
         let c: Calil = new Calil(o)
         let data: data = await c.search()
@@ -82,6 +83,7 @@ class BookData extends React.Component<
         // await this.fetchBookInfo(o.isbn)
 
         this.props.setter.isLoading(false)
+        console.log('delete isLoading')
 
         // dialog
         // this.initModal()
