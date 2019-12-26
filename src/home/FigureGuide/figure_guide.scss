@@ -1,0 +1,22 @@
+figure{
+    margin: 0;
+    padding: 0;
+}
+.figureGuide {
+    width: 100%;
+    overflow: hidden;
+}
+
+.guideHome {
+    float: left;
+    width: 74%;
+}
+
+#figureHome {
+    float: left;
+    width: 26%;
+
+    img {
+        max-width: 100%;
+    }
+}

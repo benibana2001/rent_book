@@ -5,6 +5,7 @@ import { Camera } from './Camera'
 import { BookData } from './BookData'
 import { Result } from './Result'
 import { Loading } from '../components/loading'
+import { FigureGuide } from './FigureGuide'
 import { Calil, options, dataRow, data } from '../api/Calil'
 import 'material-design-lite'
 import 'material-design-lite/material.min.css'
@@ -131,6 +132,8 @@ class Home extends React.Component<{}, {
                 <Title />
 
                 <Camera />
+
+                <FigureGuide />
 
                 <BookData
                     setter={{

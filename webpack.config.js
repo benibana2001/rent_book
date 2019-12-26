@@ -70,7 +70,20 @@ module.exports = {
             {
                 test: /\.(woff|woff2|eot|ttf|svg)$/,
                 loader: 'file?name=fonts/[name].[ext]'
-            }
+            },
+            {
+				test: /\.png$/,
+				include: [path.resolve(__dirname, 'src')],
+				use: [
+					{
+						loader: 'file-loader',
+						options: {
+							// limit: 20000,
+							name: '[name].[ext]'
+						}
+					}
+				],
+			},
         ]
     },
 

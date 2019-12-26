@@ -9,7 +9,15 @@
         "jsx": "react",
         "baseUrl": ".",
         "paths": {
-            "quagga": ["node_modules/quagga/type-definitions/quagga.d.ts"]
-        }
+            "quagga": [
+                "node_modules/quagga/type-definitions/quagga.d.ts"
+            ],
+            "import-png": [
+                "types/import-png"
+            ],
+        },
+        "typeRoots": [
+            "types"
+        ]
     }
 }
