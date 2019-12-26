@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Form } from './ISBN/components/ISBNForm'
+import { ISBN } from './ISBN'
 import { Title } from './Title'
 import { Camera } from './Camera'
 import { BookData } from './BookData'
@@ -122,10 +122,16 @@ class Home extends React.Component<{}, {
             <React.Fragment>
 
                 {/* DIALOG */}
-                <Result data={this.state.libkey} reserveurl={this.state.reserveurl} />
+                <Result
+                    data={this.state.libkey}
+                    reserveurl={this.state.reserveurl}
+                    setter={{
+                        data: this.setData
+                    }}
+                />
                 {/* / DIALOG */}
 
-                <Form setOptions={{
+                <ISBN setOptions={{
                     isbn: this.setISBN,
                     systemID: this.setSystemID
                 }} />

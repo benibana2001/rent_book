@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { dataRow } from '../../api/Calil'
 // Library
-import { config, dom, library } from '@fortawesome/fontawesome-svg-core'
+import { dom, library } from '@fortawesome/fontawesome-svg-core'
 import { faUniversity } from '@fortawesome/free-solid-svg-icons'
 export { Result }
 class Card extends React.Component<
@@ -39,19 +39,23 @@ class Card extends React.Component<
     }
 }
 
-class Result extends React.Component<{ data: dataRow[], reserveurl: string }> {
-    constructor(props: { data: dataRow[], reserveurl: string }) {
+class Result extends React.Component<{ data: dataRow[], reserveurl: string, setter: { data: Function } }> {
+    constructor(props: { data: dataRow[], reserveurl: string, setter: { data: Function } }) {
         super(props)
         // bind
         this.moveTo = this.moveTo.bind(this)
+        this.closeModal = this.closeModal.bind(this)
     }
 
-    componentDidMount() {}
+    componentDidMount() { }
 
     componentDidUpdate(prevProps: any) {
         if (prevProps.data !== this.props.data) {
-            this.displayModal()
-        }    }
+            if (this.isData()) {
+                this.displayModal()
+            }
+        }
+    }
 
     displayModal(): void {
         const dialog = document.querySelector('dialog')
@@ -61,6 +65,16 @@ class Result extends React.Component<{ data: dataRow[], reserveurl: string }> {
     closeModal(): void {
         const dialog = document.querySelector('dialog')
         dialog.close()
+        //
+        this.clearLibData()
+    }
+
+    clearLibData(): void {
+        let defaultData: any = {
+            libkey: null,
+            reserveurl: ''
+        }
+        this.props.setter.data(defaultData)
     }
 
     isData(): boolean {
