@@ -1,24 +1,16 @@
 import * as React from 'react'
-// import Quagga from 'quagga'
-// import Quagga from './node_modules/quagga/type-definitions/quagga.d.ts'
 const Quagga = require('quagga')
-export { Camera }
-class Camera extends React.Component {
+export { FieldCamera }
+class FieldCamera extends React.Component {
     constructor(props: any) {
         super(props)
     }
-    componentDidMount() {
-        console.log(document.getElementById('camera'))
+    //
+    handleClick(): void {
+        // Camera Init
         console.log(Quagga)
+        //
         Quagga.init({
-            // inputStream: {
-            //     name: 'Live',
-            //     type: 'LiveStream',
-            //     target: document.getElementById('camera')    // Or '#yourElement' (optional)
-            // },
-            // decoder: {
-            //     readers: ['code_128_reader']
-            // },
             inputStream: {
                 type: 'LiveStream',
                 target: document.getElementById('camera'),    // Or '#yourElement' (optional),
@@ -50,7 +42,8 @@ class Camera extends React.Component {
             console.log('Initialization finished. Ready to start')
             // Quagga.start()
         })
-        //
+    }
+    componentDidMount() {
         Quagga.onDetected((success: any) => {
             console.log(`detected!: ${JSON.stringify(success)}`)
             alert(JSON.stringify(success))
@@ -60,10 +53,11 @@ class Camera extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <div className="">
-                    <div className="div-isbn">バーコードから調べる</div>
-                    <div id="camera"></div>
-                </div>
+                {/* バーコードから調べる */}
+                <button onClick={this.handleClick} className="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    カメラ起動
+                </button>
+                <div id="camera"></div>
             </React.Fragment>
         )
     }

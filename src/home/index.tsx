@@ -131,8 +131,6 @@ class Home extends React.Component<{}, {
 
                 <Title />
 
-                <Camera />
-
                 <FigureGuide />
 
                 <BookData

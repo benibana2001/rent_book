@@ -113,7 +113,7 @@ class BookData extends React.Component<
                             {/* Button */}
                             <div>
                                 <button onClick={this.handleClick} className="mdl-button mdl-js-button mdl-js-ripple-effect">
-                                    Submit
+                                    蔵書検索
                                 </button>
                             </div>
                         </div>

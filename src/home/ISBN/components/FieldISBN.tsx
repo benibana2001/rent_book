@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { FieldCamera } from './FieldCamera'
 // Library
 import { dom, library } from '@fortawesome/fontawesome-svg-core'
 import { faBook, faUniversity } from '@fortawesome/free-solid-svg-icons'
@@ -43,6 +44,7 @@ class FieldISBN extends React.Component<{ setISBN: Function }> {
                     <label className="mdl-textfield__label" htmlFor="sample4">ISBNを入力</label>
                     <span className="mdl-textfield__error">Input is not a number!</span>
                 </div>
+                <FieldCamera />
             </div>
         )
     }
