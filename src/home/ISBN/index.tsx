@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { FieldISBN } from './components/FieldISBN'
-import { FieldSystemID } from './components/FieldSystemID'
 
 export { ISBN }
 class ISBN extends React.Component<{ setOptions: { isbn: Function, systemID: Function } }> {
@@ -28,7 +27,7 @@ class ISBN extends React.Component<{ setOptions: { isbn: Function, systemID: Fun
                     ISBNで調べる
                     <form onSubmit={this.handleSubmit}>
                         <FieldISBN setISBN={this.props.setOptions.isbn} />
-                        <FieldSystemID setSystemID={this.props.setOptions.systemID} />
+                        {/* <FieldSystemID setSystemID={this.props.setOptions.systemID} /> */}
                     </form>
                 </div>
             </div>

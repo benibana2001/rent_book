@@ -10,7 +10,8 @@ class BookData extends React.Component<
         setter: {
             bookInfo: Function,
             isLoading: Function,
-            data: Function
+            data: Function,
+            inputtingPref: Function
         },
         options: options
     },
@@ -23,7 +24,8 @@ class BookData extends React.Component<
         setter: {
             bookInfo: Function,
             isLoading: Function,
-            data: Function
+            data: Function,
+            inputtingPref: Function
         },
         options: options
     }) {
@@ -65,37 +67,11 @@ class BookData extends React.Component<
     }
 
     /**
-      * Use Calil API.
-      */
-    public async fetchLibrayInfo(o: options): Promise<data> {
-        this.props.setter.isLoading(true)
-        console.log('set isLoading')
-
-        let c: Calil = new Calil(o)
-        let data: data = await c.search()
-        if (!data) {
-            console.log('Data is none')
-        } else {
-            this.props.setter.data(data)
-        }
-
-        // debug
-        // await this.fetchBookInfo(o.isbn)
-
-        this.props.setter.isLoading(false)
-        console.log('delete isLoading')
-
-        // dialog
-        // this.initModal()
-
-        return data
-    }
-
-    /**
      * When Submit button clicked
      */
     handleClick(): void {
-        this.fetchLibrayInfo(this.props.options)
+        // this.fetchLibrayInfo(this.props.options)
+        this.props.setter.inputtingPref(true)
     }
 
     render() {
@@ -113,7 +89,7 @@ class BookData extends React.Component<
                             {/* Button */}
                             <div>
                                 <button onClick={this.handleClick} className="mdl-button mdl-js-button mdl-js-ripple-effect">
-                                    蔵書検索
+                                    蔵書を調べる
                                 </button>
                             </div>
                         </div>

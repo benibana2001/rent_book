@@ -5,6 +5,7 @@ import { Camera } from './Camera'
 import { BookData } from './BookData'
 import { Result } from './Result'
 import { Loading } from '../components/loading'
+import { SystemID } from '../components/SystemID'
 import { FigureGuide } from './FigureGuide'
 import { Calil, options, dataRow, data } from '../api/Calil'
 import 'material-design-lite'
@@ -19,6 +20,7 @@ class Home extends React.Component<{}, {
     reserveurl: string,
     options: options,
     isLoading: boolean,
+    inputtingPref: boolean,
     bookInfo: BookInfo
 }>{
     constructor(props: {}) {
@@ -32,6 +34,7 @@ class Home extends React.Component<{}, {
                 'systemid': ''
             },
             isLoading: false,
+            inputtingPref: false,
             bookInfo: null
         }
         // bind
@@ -40,6 +43,7 @@ class Home extends React.Component<{}, {
         this.setAppkey = this.setAppkey.bind(this)
         this.setISBN = this.setISBN.bind(this)
         this.setIsLoading = this.setIsLoading.bind(this)
+        this.setInputtingPref = this.setInputtingPref.bind(this)
         this.setSystemID = this.setSystemID.bind(this)
         // this.initModal = this.initModal.bind(this)
     }
@@ -90,6 +94,12 @@ class Home extends React.Component<{}, {
         })
     }
     //
+    setInputtingPref(status: boolean): void {
+        this.setState({
+            inputtingPref: status
+        })
+    }
+    //
     setBookInfo(bookInfo: BookInfo): void {
         this.setState({ bookInfo: bookInfo })
     }
@@ -112,7 +122,18 @@ class Home extends React.Component<{}, {
         return (
             <React.Fragment>
 
-                <Loading isLoading={this.state.isLoading}/>
+                <Loading isLoading={this.state.isLoading} />
+
+                <SystemID
+                    options={this.state.options}
+                    setter={{
+                        isLoading: this.setIsLoading,
+                        systemID: this.setSystemID,
+                        data: this.setData,
+                        inputtingPref: this.setInputtingPref
+                    }}
+                    inputtingPref={this.state.inputtingPref}
+                />
 
                 {/* DIALOG */}
                 <Result
@@ -137,7 +158,8 @@ class Home extends React.Component<{}, {
                     setter={{
                         bookInfo: this.setBookInfo,
                         isLoading: this.setIsLoading,
-                        data: this.setData
+                        data: this.setData,
+                        inputtingPref: this.setInputtingPref
                     }}
                     isbn={this.state.options.isbn}
                     options={this.state.options} />
