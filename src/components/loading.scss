@@ -1,8 +1,25 @@
-.outer{
-    height: 100vh;
-    width: 100vw;
-    background-color: rgba(87, 87, 87, 0.363);
+.loading {
+    width: 90%;
+    // TODO: header分の高さを引く
+    // SCSSを一つにまとめてheader高さ変数を使用
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+}
 
-    position: absolute;
-    z-index: 1;
+.outer {
+    // height: 100vh;
+    // width: 100vw;
+    background-color: rgba(87, 87, 87, 0.363);
+}
+
+.figureLoading {
+    width: 100%;
+    background: red;
+
+    img {
+        max-width: 100%;
+    }
 }

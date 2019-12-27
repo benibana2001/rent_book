@@ -112,6 +112,8 @@ class Home extends React.Component<{}, {
         return (
             <React.Fragment>
 
+                <Loading isLoading={this.state.isLoading}/>
+
                 {/* DIALOG */}
                 <Result
                     data={this.state.libkey}
@@ -121,8 +123,6 @@ class Home extends React.Component<{}, {
                     }}
                 />
                 {/* / DIALOG */}
-
-                <Loading isLoading={this.state.isLoading}/>
 
                 <ISBN setOptions={{
                     isbn: this.setISBN,

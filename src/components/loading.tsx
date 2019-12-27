@@ -1,25 +1,46 @@
 import * as React from 'react'
+import imgLoading from '../img/app_loading.png'
+import './loading.scss'
 export { Loading }
 /**
  * This class would be used while loading response of fetch api.
  */
-class Loading extends React.Component<{ isLoading: boolean }, { value: boolean }> {
+class Loading extends React.Component<{ isLoading: boolean }, { value: boolean, debug: boolean }> {
     constructor(props: { isLoading: boolean }) {
         super(props)
-        this.state = { value: true }
+        this.state = { value: true, debug: false }
         this.remove = this.remove.bind(this)
         this.closeModal = this.closeModal.bind(this)
         this.displayModal = this.displayModal.bind(this)
+    }
+    componentDidMount() {
+        // this.setDebug(true)
     }
     componentDidUpdate(prevProps: any) {
         if (prevProps.isLoading !== this.props.isLoading) {
             if (this.props.isLoading) {
                 this.displayModal()
+                this.displayImg()
             } else {
                 console.log('close')
                 // this.closeModal()
             }
         }
+        if (this.state.debug) {
+            this.displayModal()
+            this.displayImg()
+        }
+    }
+    //
+    setDebug(b: boolean) {
+        this.setState({ debug: b })
+    }
+    //
+    displayImg() {
+        let elem: HTMLImageElement = document.createElement('img')
+        let parent: HTMLElement = document.getElementById('figureLoading')
+        elem.src = imgLoading
+        parent.appendChild(elem)
     }
     //
     displayModal(): void {
@@ -37,20 +58,19 @@ class Loading extends React.Component<{ isLoading: boolean }, { value: boolean }
         this.setState({ value: false })
     }
     render() {
-        if (this.props.isLoading) {
+        if (this.props.isLoading || this.state.debug) {
             return (
-                <dialog id='loading'>
+                <dialog id='loading' className="loading">
                     <div className="outer">
-                        <div className=""></div>
+                        {/* <div className=""></div> */}
                         データを読み込んでいます。
-                        <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" onClick={this.remove}>キャンセル</button>
+                        <figure id="figureLoading" className="figureLoading"></figure>
+                        {/* <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" onClick={this.remove}>キャンセル</button> */}
                     </div>
                 </dialog>
             )
         } else {
-            return <div>
-                <dialog></dialog>
-            </div>
+            return <div></div>
         }
     }
 }
