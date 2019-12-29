@@ -122,6 +122,8 @@ class Home extends React.Component<{}, {
         return (
             <React.Fragment>
 
+                {/* DIALOG */}
+
                 <Loading isLoading={this.state.isLoading} />
 
                 <SystemID
@@ -135,7 +137,12 @@ class Home extends React.Component<{}, {
                     inputtingPref={this.state.inputtingPref}
                 />
 
-                {/* DIALOG */}
+                {/* <Failed 
+                    setter={{
+                        data: this.setData
+                    }}
+                /> */}
+
                 <Result
                     data={this.state.libkey}
                     reserveurl={this.state.reserveurl}
