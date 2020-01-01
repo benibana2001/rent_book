@@ -1,3 +1,4 @@
+import { BookInfo } from '../interfaces'
 export { OpenBD, BookInfo }
 class OpenBD {
     private _isbn: string = ''
@@ -25,9 +26,4 @@ class OpenBD {
 
         return {title: title, coverurl: coverurl}
     }
-}
-
-interface BookInfo {
-    title: string,
-    coverurl?: string
 }

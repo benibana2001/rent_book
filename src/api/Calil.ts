@@ -1,4 +1,5 @@
 import fetchJsonp = require('fetch-jsonp');
+import { options, dataRow, data } from '../interfaces'
 export { Calil, options, dataRow, data }
 
 class Calil {
@@ -219,21 +220,4 @@ class Calil {
     private sleep(ms: number): Promise<any> {
         return new Promise(resolve => setTimeout(resolve, ms))
     }
-}
-
-interface options {
-    'appkey': string,
-    'isbn': string,
-    'systemid': string
-}
-
-interface dataRow {
-    'id': number,
-    'name': string,
-    'status': string
-}
-
-interface data {
-    'libkey': dataRow[],
-    'reserveurl': string
 }
