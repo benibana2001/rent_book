@@ -1,5 +1,5 @@
-import { BookInfo } from '../interfaces'
-export { OpenBD, BookInfo }
+import { BookResponse } from '../interfaces'
+export { OpenBD }
 class OpenBD {
     private _isbn: string = ''
     private readonly HOST = 'https://api.openbd.jp/v1/get'
@@ -10,7 +10,7 @@ class OpenBD {
         return this._isbn
     }
 
-    public async search(isbn: string): Promise<BookInfo> {
+    public async search(isbn: string): Promise<BookResponse> {
         this.isbn = isbn
         let url: string = (
             this.HOST +

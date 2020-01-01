@@ -1,39 +1,39 @@
 export {
-    options,
-    dataRow,
-    data,
-    BookInfo
+    LibRequest,
+    LibData,
+    LibResponse,
+    BookResponse
 }
 
 /**
- * For Calil API
+ * For Calil API. Using for request library data.
  */
-interface options {
+interface LibRequest {
     'appkey': string,
     'isbn': string,
     'systemid': string
 }
 
 /**
- * For Calil API
+ * For Calil API. Using for response library data.
  */
-interface dataRow {
+interface LibData {
     'id': number,
     'name': string,
     'status': string
 }
 
 /**
- * For Calil API
+ * For Calil API. Using for response library data.
  */
-interface data {
-    'libkey': dataRow[],
+interface LibResponse {
+    'libkey': LibData[],
     'reserveurl': string
 }
 /**
- * For OpenBD API
+ * For OpenBD API. Using for request book data.
  */
-interface BookInfo {
+interface BookResponse {
     title: string,
     coverurl?: string
 }

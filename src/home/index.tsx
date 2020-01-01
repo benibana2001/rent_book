@@ -6,28 +6,27 @@ import { Result } from './Result'
 import { Loading } from '../components/loading'
 import { SystemID } from '../components/SystemID'
 import { FigureGuide } from './FigureGuide'
-import { options, dataRow, data } from '../interfaces'
+import { LibRequest, LibData, LibResponse, BookResponse } from '../interfaces'
 import 'material-design-lite'
 import 'material-design-lite/material.min.css'
 import '../components/material_icon.scss'
-import { BookInfo } from '../api/OpenBD'
 import './home.scss'
 
 export { Home }
 class Home extends React.Component<{}, {
-    libkey: dataRow[],
+    libkey: LibData[],
     reserveurl: string,
-    options: options,
+    request: LibRequest,
     isLoading: boolean,
     inputtingPref: boolean,
-    bookInfo: BookInfo
+    bookInfo: BookResponse
 }>{
     constructor(props: {}) {
         super(props)
         this.state = {
             libkey: null,
             reserveurl: '',
-            options: {
+            request: {
                 'appkey': '',
                 'isbn': '',
                 'systemid': ''
@@ -66,28 +65,28 @@ class Home extends React.Component<{}, {
     //
     setAppkey(appkey: string): void {
         this.setState({
-            options: {
+            request: {
                 'appkey': appkey,
-                'isbn': this.state.options.isbn,
-                'systemid': this.state.options.systemid
+                'isbn': this.state.request.isbn,
+                'systemid': this.state.request.systemid
             }
         })
         console.log(`State was Changed: ${JSON.stringify(this.state)}`)
     }
     setISBN(isbn: string): void {
         this.setState({
-            options: {
-                'appkey': this.state.options.appkey,
+            request: {
+                'appkey': this.state.request.appkey,
                 'isbn': isbn,
-                'systemid': this.state.options.systemid
+                'systemid': this.state.request.systemid
             }
         })
     }
     setSystemID(systemid: string): void {
         this.setState({
-            options: {
-                'appkey': this.state.options.appkey,
-                'isbn': this.state.options.isbn,
+            request: {
+                'appkey': this.state.request.appkey,
+                'isbn': this.state.request.isbn,
                 'systemid': systemid
             }
         })
@@ -99,14 +98,14 @@ class Home extends React.Component<{}, {
         })
     }
     //
-    setBookInfo(bookInfo: BookInfo): void {
+    setBookInfo(bookInfo: BookResponse): void {
         this.setState({ bookInfo: bookInfo })
     }
     //
     setIsLoading(state: boolean): void {
         this.setState({ isLoading: state })
     }
-    setData(d: data): void {
+    setData(d: LibResponse): void {
         this.setState({ libkey: d.libkey })
         this.setState({ reserveurl: d.reserveurl })
         console.log(this.state.libkey)
@@ -126,7 +125,7 @@ class Home extends React.Component<{}, {
                 <Loading isLoading={this.state.isLoading} />
 
                 <SystemID
-                    options={this.state.options}
+                    libRequest={this.state.request}
                     setter={{
                         isLoading: this.setIsLoading,
                         systemID: this.setSystemID,
@@ -167,8 +166,8 @@ class Home extends React.Component<{}, {
                         data: this.setData,
                         inputtingPref: this.setInputtingPref
                     }}
-                    isbn={this.state.options.isbn}
-                    options={this.state.options} />
+                    isbn={this.state.request.isbn}
+                    request={this.state.request} />
             </React.Fragment>
         )
     }

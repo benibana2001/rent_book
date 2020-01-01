@@ -1,6 +1,6 @@
 import fetchJsonp = require('fetch-jsonp');
-import { options, dataRow, data } from '../interfaces'
-export { Calil, options, dataRow, data }
+import { LibRequest, LibResponse, LibData } from '../interfaces'
+export { Calil }
 
 class Calil {
     //----------------------------------------
@@ -10,7 +10,7 @@ class Calil {
     //
     private readonly HOST: string = 'https://api.calil.jp/check'
     //
-    private _options: options
+    private _request: LibRequest
     //
     private _server_status: number = 0
     set server_status(status: number) { this._server_status = status }
@@ -20,13 +20,13 @@ class Calil {
     set session(session: string) { this._session = session }
     get session() { return this._session }
     //
-    private _data: data | null = null
-    set data(data: data) { this._data = data }
-    get data() { return this._data }
+    private _response: LibResponse | null = null
+    set response(data: LibResponse) { this._response = data }
+    get response() { return this._response }
     //----------------------------------------
-    constructor(O: options) {
+    constructor(req: LibRequest) {
         // Set Arguments.
-        this._options = O
+        this._request = req
         // Check Arguments.
         this.init()
     }
@@ -43,7 +43,7 @@ class Calil {
      * setTestOptions
      */
     private setTestOptions(): void {
-        this._options = {
+        this._request = {
             'appkey': process.env.APP_API_KEY,
             'isbn': '4834000826',
             'systemid': 'Tokyo_Setagaya'
@@ -55,7 +55,7 @@ class Calil {
      */
     private checkOptions(): void {
         // Set AppKey
-        if (!this._options.appkey) {
+        if (!this._request.appkey) {
             alert('Please enter appkey')
         }
         // Set ISBN to property.
@@ -78,15 +78,15 @@ class Calil {
      * I think it occured because server judged my request as wrong one when I request many times by same isbn probably.
      * 
      */
-    public async search(): Promise<data> {
+    public async search(): Promise<LibResponse> {
         // Create url
         // https://api.calil.jp/check?appkey={}&isbn=4334926940&systemid=Tokyo_Setagaya&format=json
         // https://api.calil.jp/check?appkey={}&isbn=4834000826&systemid=Aomori_Pref&format=json
         let url: string = (
             this.HOST +
-            '?appkey=' + this._options.appkey +
-            '&isbn=' + this._options.isbn +
-            '&systemid=' + this._options.systemid + '&format=json')
+            '?appkey=' + this._request.appkey +
+            '&isbn=' + this._request.isbn +
+            '&systemid=' + this._request.systemid + '&format=json')
         console.log(url)
         // Request
         let json: any = await this.callApi(url)
@@ -102,7 +102,7 @@ class Calil {
         // DONE
         console.log('search() is finished.')
         // Parse Data
-        return this._data
+        return this._response
     }
     /**
      * checkServerStatus
@@ -121,9 +121,9 @@ class Calil {
         } else if (this.server_status === 0) {
             // Done
             // Parse
-            const data: data = this.parse(json)
+            const res: LibResponse = this.parse(json)
             // Set data
-            this.data = data
+            this.response = res
             return
 
         } else {
@@ -142,7 +142,7 @@ class Calil {
         console.log('Start polling.')
         const url: string = (
             this.HOST +
-            '?appkey=' + this._options.appkey +
+            '?appkey=' + this._request.appkey +
             '&session=' + this._session + '&format=json')
         // request polling
         let json: any = await this.callApi(url)
@@ -159,17 +159,17 @@ class Calil {
      * When display some data in JSX, you are recommended to use Array.map() function, 
      * and raw JSON data is difficult to display. So that this function parse JSON data to array.
      */
-    public parse(json: any): data {
-        let libkey: any = json.books[this._options.isbn][this._options.systemid].libkey
-        let reserveurl: string = json.books[this._options.isbn][this._options.systemid].reserveurl
-        let data: data = { libkey: [], reserveurl: reserveurl }
+    public parse(json: any): LibResponse {
+        let libkey: any = json.books[this._request.isbn][this._request.systemid].libkey
+        let reserveurl: string = json.books[this._request.isbn][this._request.systemid].reserveurl
+        let res: LibResponse = { libkey: [], reserveurl: reserveurl }
         let i: number = 1
         for (let key in libkey) {
-            let d: dataRow = { id: i, name: key, status: libkey[key] }
-            data.libkey.push(d)
+            let d: LibData = { id: i, name: key, status: libkey[key] }
+            res.libkey.push(d)
             i++
         }
-        return data
+        return res
     }
     /**
      * callApi
@@ -191,12 +191,12 @@ class Calil {
      */
     private getServerStatus(data: any): number {
         let c = data.continue
-        let status = data.books[this._options.isbn][this._options.systemid].status
+        let status = data.books[this._request.isbn][this._request.systemid].status
         if (c === 1) {
             return 1
         } else if (c === 0) {
             if (status === 'OK' || status === 'Cache') {
-                let libkey: any = data.books[this._options.isbn][this._options.systemid].libkey
+                let libkey: any = data.books[this._request.isbn][this._request.systemid].libkey
                 if (!libkey || !Object.keys(libkey).length) {
                     return -2
                 } else {

@@ -1,6 +1,6 @@
 import * as React from 'react'
-import { OpenBD, BookInfo } from '../../api/OpenBD'
-import { Calil, options, dataRow, data } from '../../api/Calil'
+import { OpenBD } from '../../api/OpenBD'
+import { LibRequest, BookResponse } from '../../interfaces'
 import './bookData.scss'
 // OpenBD を使用してISBN入力時に自動で表示する
 export { BookData }
@@ -13,10 +13,10 @@ class BookData extends React.Component<
             data: Function,
             inputtingPref: Function
         },
-        options: options
+        request: LibRequest
     },
     {
-        bookInfo: BookInfo
+        bookResponse: BookResponse
     }
     >{
     constructor(props: {
@@ -27,11 +27,11 @@ class BookData extends React.Component<
             data: Function,
             inputtingPref: Function
         },
-        options: options
+        request: LibRequest
     }) {
         super(props)
         this.state = {
-            bookInfo: {
+            bookResponse: {
                 title: ''
             }
         }
@@ -49,21 +49,21 @@ class BookData extends React.Component<
             if (this.props.isbn.length === 13 || this.props.isbn.length === 10) {
                 this.fetchBookInfo(this.props.isbn)
             } else {
-                this.setState({ bookInfo: { title: '' } })
+                this.setState({ bookResponse: { title: '' } })
             }
         } else {
             // console.log('no-change')
         }
     }
     //
-    public async fetchBookInfo(isbn: string): Promise<BookInfo> {
+    public async fetchBookInfo(isbn: string): Promise<BookResponse> {
         // Fetch OpenBD
         const O: OpenBD = new OpenBD()
-        let bookInfo: BookInfo = await O.search(isbn)
-        this.setState({ bookInfo: bookInfo })
-        console.log(`bookInfo: ${JSON.stringify(bookInfo)}`)
+        let bookResponse: BookResponse = await O.search(isbn)
+        this.setState({ bookResponse: bookResponse })
+        console.log(`bookResponse: ${JSON.stringify(bookResponse)}`)
 
-        return bookInfo
+        return bookResponse
     }
 
     /**
@@ -75,16 +75,16 @@ class BookData extends React.Component<
     }
 
     render() {
-        if (this.state.bookInfo.title !== '') {
-            console.log(this.state.bookInfo)
+        if (this.state.bookResponse.title !== '') {
+            console.log(this.state.bookResponse)
             return (
                 <div className="snack-container">
                     <a className="snack-inner">
-                        <img className="thumbnail" src={this.state.bookInfo.coverurl} alt={this.state.bookInfo.coverurl} />
+                        <img className="thumbnail" src={this.state.bookResponse.coverurl} alt={this.state.bookResponse.coverurl} />
                         <div className="snack-content">
                             {/* Fetched content */}
                             <div className="snack-title">
-                                {this.state.bookInfo.title}
+                                {this.state.bookResponse.title}
                             </div>
                             {/* Button */}
                             <div>

@@ -1,16 +1,17 @@
 import * as React from 'react'
 import { data as TokyoLibraryData } from '../api/data_tokyo_library'
-import { Calil, options, dataRow, data } from '../api/Calil'
+import { Calil } from '../api/Calil'
+import { LibRequest, LibResponse, LibData } from 'src/interfaces'
 //
 export { SystemID }
 //
 class SystemID extends React.Component<{
-    options: options,
+    libRequest: LibRequest,
     setter: { isLoading: Function, systemID: Function, data: Function, inputtingPref: Function },
     inputtingPref: boolean
 }>  {
     constructor(props: {
-        options: options,
+        libRequest: LibRequest,
         setter: { isLoading: Function, systemID: Function, data: Function, inputtingPref: Function },
         inputtingPref: boolean
     }) {
@@ -44,22 +45,22 @@ class SystemID extends React.Component<{
     }
     //
     handleClick(): void {
-        this.fetchLibrayInfo(this.props.options)
+        this.fetchLibrayInfo(this.props.libRequest)
         this.props.setter.inputtingPref(false)
     }
     /**
       * Use Calil API.
       */
-    public async fetchLibrayInfo(o: options): Promise<data> {
+    public async fetchLibrayInfo(o: LibRequest): Promise<LibResponse> {
         this.props.setter.isLoading(true)
         console.log('set isLoading')
 
         let c: Calil = new Calil(o)
-        let data: data = await c.search()
-        if (!data) {
+        let res: LibResponse = await c.search()
+        if (!res) {
             console.log('Data is none')
         } else {
-            this.props.setter.data(data)
+            this.props.setter.data(res)
         }
 
         // debug
@@ -71,7 +72,7 @@ class SystemID extends React.Component<{
         // dialog
         // this.initModal()
 
-        return data
+        return res
     }
     render() {
         if (this.props.inputtingPref) {

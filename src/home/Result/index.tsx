@@ -1,10 +1,10 @@
 import * as React from 'react'
 import { ResultList } from './components/ResultList'
-import { dataRow } from '../../api/Calil'
+import { LibData } from '../../interfaces'
 export { Result }
 
-class Result extends React.Component<{ data: dataRow[], reserveurl: string, setter: { data: Function } }> {
-    constructor(props: { data: dataRow[], reserveurl: string, setter: { data: Function } }) {
+class Result extends React.Component<{ data: LibData[], reserveurl: string, setter: { data: Function } }> {
+    constructor(props: { data: LibData[], reserveurl: string, setter: { data: Function } }) {
         super(props)
         // bind
         this.moveTo = this.moveTo.bind(this)
