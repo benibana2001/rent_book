@@ -157,7 +157,7 @@ class Home extends React.Component<{}, {
 
                 <Title />
 
-                <FigureGuide />
+                {/* <FigureGuide /> */}
 
                 <BookData
                     setter={{

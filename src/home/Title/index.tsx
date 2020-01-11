@@ -3,8 +3,10 @@ export { Title }
 class Title extends React.Component {
     render() {
         return (
-            <div className="">
-                <div className="div-isbn">タイトルから調べる</div>
+            <div className="content">
+                <div className="div-isbn">
+                    <p>タイトルから調べる</p>
+                </div>
             </div>
         )
     }
