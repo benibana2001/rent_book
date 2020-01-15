@@ -59,6 +59,12 @@ class SystemID extends React.Component<{
         let res: LibResponse = await c.search()
         if (!res) {
             console.log('Data is none')
+            // 伝搬のため、空のデータをセットする
+            const nullkey: string = 'xxx'
+            this.props.setter.data({
+                'libkey': [],
+                'reserveurl': nullkey
+            })
         } else {
             this.props.setter.data(res)
         }

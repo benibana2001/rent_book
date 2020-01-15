@@ -46,30 +46,45 @@ class Result extends React.Component<{ data: LibData[], reserveurl: string, sett
         return false
     }
 
+    existBook(): boolean {
+        const nullkey: string = 'xxx'
+        return this.isData() && this.props.reserveurl !== nullkey
+    }
+
     moveTo(): void {
         location.href = this.props.reserveurl
     }
 
     render() {
         if (this.isData()) {
-            console.log(JSON.stringify(this.props.data))
-            return (
-                <div>
-                    <dialog id='result' >
-                        <div >
-                            <ul className='mdl-list'>
-                                {this.props.data.map(data =>
-                                    <ResultList key={data.id} libData={data} reserveurl={this.props.reserveurl} />
-                                )}
-                            </ul>
-                            <button id="buttonReserve" type="button" className="mdl-button" onClick={this.moveTo}>予約</button>
+            if (this.existBook()) {
+                console.log(JSON.stringify(this.props.data))
+                return (
+                    <div>
+                        <dialog id='result' >
+                            <div >
+                                <ul className='mdl-list'>
+                                    {this.props.data.map(data =>
+                                        <ResultList key={data.id} libData={data} reserveurl={this.props.reserveurl} />
+                                    )}
+                                </ul>
+                                <button id="buttonReserve" type="button" className="mdl-button" onClick={this.moveTo}>予約</button>
+                                <button type="button" className="mdl-button close" onClick={this.closeModal}>とじる</button>
+                            </div>
+                        </dialog>
+                    </div>
+                )
+            } else {
+                return (
+                    <div>
+                        <dialog id='result' >
+                            <p>蔵書はありませんでした。</p>
                             <button type="button" className="mdl-button close" onClick={this.closeModal}>とじる</button>
-                        </div>
-                    </dialog>
-                </div>
-            )
+                        </dialog>
+                    </div>
+                )
+            }
         } else {
-            // Dummy Data
             return (
                 <div></div>
             )
