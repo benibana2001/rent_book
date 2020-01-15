@@ -5,7 +5,8 @@ class Title extends React.Component {
         return (
             <div className="content">
                 <div className="div-isbn">
-                    <p>タイトルから調べる</p>
+                    <p>B. タイトルから調べる</p>
+                    開発中です。
                 </div>
             </div>
         )

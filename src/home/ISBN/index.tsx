@@ -24,7 +24,7 @@ class ISBN extends React.Component<{ setOptions: { isbn: Function, systemID: Fun
         return (
             <div className="content">
                 <div className="div-isbn">
-                    <p>ISBNで調べる</p>
+                    <p>A. ISBNから調べる</p>
                     <form onSubmit={this.handleSubmit}>
                         <FieldISBN setISBN={this.props.setOptions.isbn} />
                         {/* <FieldSystemID setSystemID={this.props.setOptions.systemID} /> */}
