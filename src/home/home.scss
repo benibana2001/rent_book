@@ -24,3 +24,11 @@ $img: $root+'/img';
         padding-left: 40px;
     }
 }
+
+// OverWrite Material Lite Icons
+header {
+    .material-icons {
+        font-size: 29px;
+        line-height: 1.7;
+    }
+}

@@ -1,3 +1,8 @@
+figure {
+    margin: 0;
+    padding: 0;
+}
+
 .loading {
     width: 90%;
     // TODO: header分の高さを引く
@@ -10,14 +15,11 @@
 }
 
 .outer {
-    // height: 100vh;
-    // width: 100vw;
-    background-color: rgba(87, 87, 87, 0.363);
+    width: 100%;
 }
 
 .figureLoading {
     width: 100%;
-    background: red;
 
     img {
         max-width: 100%;

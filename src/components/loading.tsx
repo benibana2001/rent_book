@@ -1,5 +1,5 @@
 import * as React from 'react'
-import imgLoading from '../img/app_loading.png'
+import imgLoading from '../img/toast_loading.png'
 import './loading.scss'
 export { Loading }
 /**
@@ -35,6 +35,17 @@ class Loading extends React.Component<{ isLoading: boolean }, { value: boolean, 
     setDebug(b: boolean) {
         this.setState({ debug: b })
     }
+    //
+    // Renderd tag is below
+    // ========================================
+    // <dialog #loading .loading>
+    //      <div .outer>
+    //          <figure #figureLoading .figureLoading>
+    //              <img>
+    //          </figure>
+    //      </div>
+    // </dialog>
+    // ========================================
     //
     displayImg() {
         let elem: HTMLImageElement = document.createElement('img')
