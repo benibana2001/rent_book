@@ -1,6 +1,8 @@
 import * as React from 'react'
 import { ResultList } from './components/ResultList'
 import { LibData } from '../../interfaces'
+import imgFailed from '../../img/toast_loading.png'
+import { Toast } from '../../components/toast'
 export { Result }
 
 class Result extends React.Component<{ data: LibData[], reserveurl: string, setter: { data: Function } }> {
@@ -17,6 +19,18 @@ class Result extends React.Component<{ data: LibData[], reserveurl: string, sett
         if (prevProps.data !== this.props.data) {
             if (this.isData()) {
                 this.displayModal()
+            }
+            // 蔵書なしToast表示
+            // SetStateでnullkeyが渡る前に、DidUpdate()判定がかかってしまう。
+            // そのため、notExistのスコープに入らない。
+            // HOME画面でcomponentDidUpdateすれば、setterでnullkeyを渡されたのちに、発火イベントを実行できるj
+            if (!this.existBook()) {
+                const dialogLoading: HTMLDialogElement = document.getElementById('loading') as HTMLDialogElement
+                console.log('NO book!!!')
+                console.log(dialogLoading)
+                // dialogLoading.showModal()
+            } else {
+                console.log('EXIST book!!!')
             }
         }
     }
@@ -76,12 +90,14 @@ class Result extends React.Component<{ data: LibData[], reserveurl: string, sett
                 )
             } else {
                 return (
-                    <div>
-                        <dialog id='result' >
-                            <p>蔵書はありませんでした。</p>
-                            <button type="button" className="mdl-button close" onClick={this.closeModal}>とじる</button>
-                        </dialog>
-                    </div>
+                    <Toast text='蔵書はありませんでした。' button={<button type="button" className="mdl-button close" onClick={this.closeModal}>とじる</button>} />
+                    // <div>
+                    //     <dialog id='result' >
+                    //         <p>蔵書はありませんでした。</p>
+                    //         <img src={imgFailed} alt=""/>
+                    //         <button type="button" className="mdl-button close" onClick={this.closeModal}>とじる</button>
+                    //     </dialog>
+                    // </div>
                 )
             }
         } else {

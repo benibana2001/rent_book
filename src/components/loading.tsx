@@ -1,15 +1,15 @@
 import * as React from 'react'
+import { Toast } from './toast'
 import imgLoading from '../img/toast_loading.png'
 import './loading.scss'
 export { Loading }
 /**
  * This class would be used while loading response of fetch api.
  */
-class Loading extends React.Component<{ isLoading: boolean }, { value: boolean, debug: boolean }> {
+class Loading extends React.Component<{ isLoading: boolean }, { debug: boolean }> {
     constructor(props: { isLoading: boolean }) {
         super(props)
-        this.state = { value: true, debug: false }
-        this.remove = this.remove.bind(this)
+        this.state = { debug: false }
         this.closeModal = this.closeModal.bind(this)
         this.displayModal = this.displayModal.bind(this)
     }
@@ -36,22 +36,17 @@ class Loading extends React.Component<{ isLoading: boolean }, { value: boolean, 
         this.setState({ debug: b })
     }
     //
-    // Renderd tag is below
-    // ========================================
-    // <dialog #loading .loading>
-    //      <div .outer>
-    //          <figure #figureLoading .figureLoading>
-    //              <img>
-    //          </figure>
-    //      </div>
-    // </dialog>
-    // ========================================
-    //
     displayImg() {
-        let elem: HTMLImageElement = document.createElement('img')
-        let parent: HTMLElement = document.getElementById('figureLoading')
-        elem.src = imgLoading
-        parent.appendChild(elem)
+        const newImage: Function = (): HTMLElement => {
+            let elem: HTMLImageElement = document.createElement('img')
+            elem.src = imgLoading
+            return elem
+        }
+        const targetElement: Function = (): HTMLElement => {
+            let target: HTMLElement = document.getElementById('figureLoading')
+            return target
+        }
+        targetElement().appendChild(newImage())
     }
     //
     displayModal(): void {
@@ -64,21 +59,10 @@ class Loading extends React.Component<{ isLoading: boolean }, { value: boolean, 
         dialogLoading.close()
     }
     //
-    remove(): void {
-        console.log('remove')
-        this.setState({ value: false })
-    }
     render() {
         if (this.props.isLoading || this.state.debug) {
             return (
-                <dialog id='loading' className="loading">
-                    <div className="outer">
-                        {/* <div className=""></div> */}
-                        データを読み込んでいます。
-                        <figure id="figureLoading" className="figureLoading"></figure>
-                        {/* <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" onClick={this.remove}>キャンセル</button> */}
-                    </div>
-                </dialog>
+                <Toast text={'通信中です。'} />
             )
         } else {
             return <div></div>
