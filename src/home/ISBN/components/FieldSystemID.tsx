@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { data as TokyoLibraryData } from '../../../api/data_tokyo_library'
 
-export { FieldSystemID}
+export { FieldSystemID }
 /**
  * Systemid indicates Tokyo_XXX-Ku at Calil API
  * Systemid はCalilAPI において市区町村の指定に使用されます。

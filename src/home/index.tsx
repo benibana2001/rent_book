@@ -1,7 +1,7 @@
 import * as React from 'react'
-import { ISBN } from './ISBN'
-import { Title } from './Title'
-import { BookData } from './BookData'
+import ISBN from './ISBN'
+import Title from './Title'
+import BookData from './BookData'
 import { Result } from './Result'
 import { Loading } from '../components/loading'
 import { SystemID } from '../components/SystemID'
@@ -11,7 +11,6 @@ import 'material-design-lite/material.min.css'
 import '../components/material_icon.scss'
 import './home.scss'
 
-export { Home }
 class Home extends React.Component<{}, {
     libkey: LibData[],
     reserveurl: string,
@@ -187,3 +186,5 @@ class Home extends React.Component<{}, {
         )
     }
 }
+
+export default Home

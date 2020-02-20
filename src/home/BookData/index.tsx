@@ -3,60 +3,43 @@ import { OpenBD } from '../../api/OpenBD'
 import { LibRequest, BookResponse } from '../../interfaces'
 import './bookData.scss'
 // OpenBD を使用してISBN入力時に自動で表示する
-export { BookData }
-class BookData extends React.Component<
-    {
-        isbn: string,
-        setter: {
-            bookInfo: Function,
-            isLoading: Function,
-            data: Function,
-            inputtingPref: Function
-        },
-        request: LibRequest
+
+interface IProps {
+    isbn: string,
+    setter: {
+        bookInfo: Function,
+        isLoading: Function,
+        data: Function,
+        inputtingPref: Function
     },
-    {
-        bookResponse: BookResponse
-    }
-    >{
-    constructor(props: {
-        isbn: string, 
-        setter: {
-            bookInfo: Function,
-            isLoading: Function,
-            data: Function,
-            inputtingPref: Function
-        },
-        request: LibRequest
-    }) {
+    request: LibRequest
+}
+
+interface IState {
+    bookResponse: BookResponse
+}
+
+class BookData extends React.Component<IProps, IState>{
+    constructor(props: IProps) {
         super(props)
         this.state = {
             bookResponse: {
                 title: ''
             }
         }
-        // bind
-        this.fetchBookInfo = this.fetchBookInfo.bind(this)
-        this.handleClick = this.handleClick.bind(this)
-    }
-    componentDidMount() {
-        // this.setState({ bookInfo: { title: 'a' } })
     }
     // ISBNがprops経由で渡ってきた場合はfetch API を使用する
-    componentDidUpdate(prevProps: any) {
+    public componentDidUpdate(prevProps: any) {
         if (prevProps !== this.props) {
-            // console.log('change')
             if (this.props.isbn.length === 13 || this.props.isbn.length === 10) {
                 this.fetchBookInfo(this.props.isbn)
             } else {
                 this.setState({ bookResponse: { title: '' } })
             }
-        } else {
-            // console.log('no-change')
         }
     }
     //
-    public async fetchBookInfo(isbn: string): Promise<BookResponse> {
+    private fetchBookInfo = async(isbn: string): Promise<BookResponse> => {
         // Fetch OpenBD
         const O: OpenBD = new OpenBD()
         let bookResponse: BookResponse = await O.search(isbn)
@@ -69,10 +52,7 @@ class BookData extends React.Component<
     /**
      * When Submit button clicked
      */
-    handleClick(): void {
-        // this.fetchLibrayInfo(this.props.options)
-        this.props.setter.inputtingPref(true)
-    }
+    private handleClick = (): void => this.props.setter.inputtingPref(true)
 
     render() {
         if (this.state.bookResponse.title !== '') {
@@ -103,3 +83,5 @@ class BookData extends React.Component<
         }
     }
 }
+
+export default BookData
