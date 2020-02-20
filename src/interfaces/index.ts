@@ -2,7 +2,8 @@ export {
     LibRequest,
     LibData,
     LibResponse,
-    BookResponse
+    BookResponse,
+    ToastStatus
 }
 
 /**
@@ -36,4 +37,15 @@ interface LibResponse {
 interface BookResponse {
     title: string,
     coverurl?: string
+}
+/**
+ * For manage Toast status
+ */
+interface ToastStatus {
+    pref: boolean,
+    load: boolean,
+    result: {
+        success: boolean,
+        failed: boolean
+    }
 }

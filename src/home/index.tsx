@@ -5,8 +5,7 @@ import { BookData } from './BookData'
 import { Result } from './Result'
 import { Loading } from '../components/loading'
 import { SystemID } from '../components/SystemID'
-import { FigureGuide } from './FigureGuide'
-import { LibRequest, LibData, LibResponse, BookResponse } from '../interfaces'
+import { LibRequest, LibData, LibResponse, BookResponse, ToastStatus } from '../interfaces'
 import 'material-design-lite'
 import 'material-design-lite/material.min.css'
 import '../components/material_icon.scss'
@@ -19,7 +18,11 @@ class Home extends React.Component<{}, {
     request: LibRequest,
     isLoading: boolean,
     inputtingPref: boolean,
-    bookInfo: BookResponse
+    bookInfo: BookResponse,
+    status: {
+        toast: ToastStatus
+    },
+    test: boolean
 }>{
     constructor(props: {}) {
         super(props)
@@ -33,7 +36,18 @@ class Home extends React.Component<{}, {
             },
             isLoading: false,
             inputtingPref: false,
-            bookInfo: null
+            bookInfo: null,
+            status: {
+                toast: {
+                    pref: false,
+                    load: false,
+                    result: {
+                        success: false,
+                        failed: false
+                    }
+                }
+            },
+            test: false
         }
         // bind
         this.setData = this.setData.bind(this)
@@ -104,6 +118,7 @@ class Home extends React.Component<{}, {
     //
     setIsLoading(state: boolean): void {
         this.setState({ isLoading: state })
+        this.setState({ test: true})
     }
     setData(d: LibResponse): void {
         this.setState({ libkey: d.libkey })
