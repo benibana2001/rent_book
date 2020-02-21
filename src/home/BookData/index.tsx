@@ -44,7 +44,7 @@ class BookData extends React.Component<IProps, IState>{
         const O: OpenBD = new OpenBD()
         let bookResponse: BookResponse = await O.search(isbn)
         this.setState({ bookResponse: bookResponse })
-        console.log(`bookResponse: ${JSON.stringify(bookResponse)}`)
+        // console.log(`bookResponse: ${JSON.stringify(bookResponse)}`)
 
         return bookResponse
     }
@@ -56,7 +56,7 @@ class BookData extends React.Component<IProps, IState>{
 
     render() {
         if (this.state.bookResponse.title !== '') {
-            console.log(this.state.bookResponse)
+            // console.log(this.state.bookResponse)
             return (
                 <div className="snack-container">
                     <a className="snack-inner">
