@@ -1,4 +1,4 @@
-import { BookResponse } from '../interfaces'
+import { BookResponse } from '../components/interfaces'
 export { OpenBD }
 class OpenBD {
     private _isbn: string = ''

@@ -1,14 +1,13 @@
 import * as React from 'react'
 
-import Toast from './toast'
+import Toast from './Common/Toast'
 import imgLoading from '../img/toast_loading.png'
-import './loading.scss'
 
 interface IProps {
     isLoading: boolean
 }
 
-const Loading: React.SFC<IProps> = props => {
+const LoadingView: React.SFC<IProps> = props => {
     const isLoading = props.isLoading
     return (
         <React.Fragment>
@@ -20,4 +19,4 @@ const Loading: React.SFC<IProps> = props => {
     )
 }
 
-export default Loading
+export default LoadingView

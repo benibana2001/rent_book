@@ -2,9 +2,9 @@ import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 
-import Header from './components/header'
-import Menu from './components/menu'
-import Home from './home'
+import Header from './components/Common/Header'
+import Menu from './components/Common/Menu'
+import Home from './components/Home'
 import './index.scss'
 
 let parent: HTMLElement | null = document.getElementById('root')

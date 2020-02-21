@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { OpenBD } from '../../api/OpenBD'
-import { LibRequest, BookResponse } from '../../interfaces'
-import './bookData.scss'
+import { LibRequest, BookResponse } from '../interfaces'
 // OpenBD を使用してISBN入力時に自動で表示する
 
 interface IProps {
@@ -19,7 +18,7 @@ interface IState {
     bookResponse: BookResponse
 }
 
-class BookData extends React.Component<IProps, IState>{
+class BookDataArea extends React.Component<IProps, IState>{
     constructor(props: IProps) {
         super(props)
         this.state = {
@@ -84,4 +83,4 @@ class BookData extends React.Component<IProps, IState>{
     }
 }
 
-export default BookData
+export default BookDataArea

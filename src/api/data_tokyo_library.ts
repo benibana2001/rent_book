@@ -1,5 +1,4 @@
-export { data }
-const data: string[][] = [
+export const data: string[][] = [
     ['Tokyo_Adachi', '足立区'],
     ['Tokyo_Akiruno', 'あきる野市'],
     ['Tokyo_Akishima', '昭島市'],

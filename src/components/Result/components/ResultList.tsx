@@ -3,7 +3,7 @@ import * as React from 'react'
 import { dom, library } from '@fortawesome/fontawesome-svg-core'
 import { faUniversity } from '@fortawesome/free-solid-svg-icons'
 //
-import { LibData } from '../../../interfaces'
+import { LibData } from '../../../components/interfaces'
 
 interface IProps {
     data: LibData[]

@@ -25,6 +25,128 @@
 //     font-size: 16px;
 // }
 
+// Maerial icons
+@font-face {
+    font-family: 'Material Icons';
+    font-style: normal;
+    font-weight: 400;
+    src: url(https://fonts.gstatic.com/s/materialicons/v48/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2) format('woff2');
+}
+
+.material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+}
+
+// Home
 .container {
     background: #ddd;
+}
+
+$root: './src';
+$img: $root+'/img';
+
+.content {
+    padding: 10px;
+}
+
+.div-isbn {
+    background-color: white;
+    // background-image: url($img + '/icon_pre.png');
+    margin: 4px 0;
+    padding: 10px;
+
+    p:first-child {
+        background-image: url($img + '/icon_pre.png');
+        background-repeat: no-repeat;
+        background-size: 40px;
+        font-size: 20px;
+        line-height: 40px;
+        height: 40px;
+        padding-left: 40px;
+    }
+}
+
+// OverWrite Material Lite Icons
+header {
+    .material-icons {
+        font-size: 29px;
+        line-height: 1.7;
+    }
+}
+
+// Loading
+figure {
+    margin: 0;
+    padding: 0;
+}
+
+.toastArea {
+    width: 90%;
+    // TODO: header分の高さを引く
+    // SCSSを一つにまとめてheader高さ変数を使用
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+}
+
+.outer {
+    width: 100%;
+}
+
+.figureArea {
+    width: 100%;
+
+    img {
+        max-width: 100%;
+    }
+}
+
+// BookData
+.snack-container {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.25);
+    background: white;
+    z-index: 1;
+}
+
+a.snack-inner {
+    display: block;
+    width: calc(100% - 10px);
+    padding: 10px 10px;
+    padding-right: 60px;
+}
+
+.thumbnail {
+    display: inline-block;
+    width: 100px;
+}
+
+.snack-content {
+    display: inline-block;
+    width: calc(100% - 106px);
+    padding-left: 10px;
+    padding-left: 6px;
+    vertical-align: top;
+    text-align: left;
+}
+
+.snack-title {
+    font-size: 22px;
+    line-height: 22px;
 }

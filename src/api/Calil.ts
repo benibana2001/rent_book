@@ -1,5 +1,5 @@
 import fetchJsonp = require('fetch-jsonp');
-import { LibRequest, LibResponse, LibData } from '../interfaces'
+import { LibRequest, LibResponse, LibData } from '../components/interfaces'
 export { Calil }
 
 class Calil {

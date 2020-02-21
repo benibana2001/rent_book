@@ -8,7 +8,7 @@ interface IProps {
     }
 }
 
-class ISBN extends React.Component<IProps> {
+class ISBNArea extends React.Component<IProps> {
     constructor(props: IProps) {
         super(props)
     }
@@ -36,4 +36,4 @@ class ISBN extends React.Component<IProps> {
     }
 }
 
-export default ISBN
+export default ISBNArea

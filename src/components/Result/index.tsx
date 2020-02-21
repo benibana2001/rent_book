@@ -1,8 +1,7 @@
 import * as React from 'react'
 
 import ResultList from './components/ResultList'
-import { LibData } from '../../interfaces'
-import Toast from '../../components/toast'
+import { LibData } from '../../components/interfaces'
 
 interface IProps {
     data: LibData[],
@@ -12,7 +11,7 @@ interface IProps {
     }
 }
 
-const Result: React.SFC<IProps> = props => {
+const ResultView: React.SFC<IProps> = props => {
     // TODO: any型やめる
     const clearLibData = (): void => {
         const defaultData: any = {
@@ -43,4 +42,4 @@ const Result: React.SFC<IProps> = props => {
 
 // <Toast text='蔵書はありませんでした。' button={<button type="button" className="mdl-button close" onClick={this.clearLibData}>とじる</button>} />
 
-export default Result
+export default ResultView

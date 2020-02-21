@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-const Title: React.SFC = () => {
+const TitleArea: React.SFC = () => {
     return (
         <div className="content">
             <div className="div-isbn">
@@ -11,4 +11,4 @@ const Title: React.SFC = () => {
     )
 }
 
-export default Title 
+export default TitleArea

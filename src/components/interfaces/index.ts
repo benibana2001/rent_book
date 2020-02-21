@@ -1,15 +1,7 @@
-export {
-    LibRequest,
-    LibData,
-    LibResponse,
-    BookResponse,
-    ToastStatus
-}
-
 /**
  * For Calil API. Using for request library data.
  */
-interface LibRequest {
+export interface LibRequest {
     'appkey': string,
     'isbn': string,
     'systemid': string
@@ -18,7 +10,7 @@ interface LibRequest {
 /**
  * For Calil API. Using for response library data.
  */
-interface LibData {
+export interface LibData {
     'id': number,
     'name': string,
     'status': string
@@ -27,25 +19,14 @@ interface LibData {
 /**
  * For Calil API. Using for response library data.
  */
-interface LibResponse {
+export interface LibResponse {
     'libkey': LibData[],
     'reserveurl': string
 }
 /**
  * For OpenBD API. Using for request book data.
  */
-interface BookResponse {
+export interface BookResponse {
     title: string,
     coverurl?: string
-}
-/**
- * For manage Toast status
- */
-interface ToastStatus {
-    pref: boolean,
-    load: boolean,
-    result: {
-        success: boolean,
-        failed: boolean
-    }
 }
