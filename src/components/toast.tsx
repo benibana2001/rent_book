@@ -1,5 +1,4 @@
 import * as React from 'react'
-export { Toast }
 //
 // Renderd tag is below
 // ========================================
@@ -12,35 +11,25 @@ export { Toast }
 // </dialog>
 // ========================================
 //
-class Toast extends React.Component<{ text: string, button?: React.ReactElement }> {
-    constructor(props: { text: string, button?: React.ReactElement }) {
-        super(props)
-    }
-    //
-    render() {
-        return (
-            <dialog id='loading' className="loading" >
-                <div className="outer">
-                    {this.props.text}
-                    <figure id="figureLoading" className="figureLoading"></figure>
-                    {/* <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" onClick={this.remove}>キャンセル</button> */}
-                </div>
-                <Btn btn={this.props.button} />
-            </dialog>
-        )
-    }
+
+interface IProps {
+    text: string,
+    button?: React.ReactElement
 }
 
-class Btn extends React.Component<{ btn?: React.ReactElement }> {
-    constructor(props: { btn: React.ReactElement }) {
-        super(props)
-    }
-    render() {
-        if (!this.props.btn) return null
-        return (
-            <div>
-                {this.props.btn}
+const Toast: React.SFC<IProps> = props => {
+    return (
+        <dialog id='loading' className="loading" >
+            <div className="outer">
+                {props.text}
+                <figure id="figureLoading" className="figureLoading"></figure>
+                {/* <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" onClick={this.remove}>キャンセル</button> */}
             </div>
-        )
-    }
+            {props.button && (
+                <div>{props.button}</div>
+            )}
+        </dialog>
+    )
 }
+
+export default Toast

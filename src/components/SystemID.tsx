@@ -1,59 +1,54 @@
 import * as React from 'react'
+
 import { data as TokyoLibraryData } from '../api/data_tokyo_library'
 import { Calil } from '../api/Calil'
-import { LibRequest, LibResponse, LibData } from 'src/interfaces'
+import { LibRequest, LibResponse } from 'src/interfaces'
 //
-export { SystemID }
-//
-class SystemID extends React.Component<{
+interface IProps {
     libRequest: LibRequest,
-    setter: { isLoading: Function, systemID: Function, data: Function, inputtingPref: Function },
+    setter: {
+        isLoading: Function,
+        systemID: Function,
+        data: Function,
+        inputtingPref: Function
+    },
     inputtingPref: boolean
-}>  {
-    constructor(props: {
-        libRequest: LibRequest,
-        setter: { isLoading: Function, systemID: Function, data: Function, inputtingPref: Function },
-        inputtingPref: boolean
-    }) {
+}
+class SystemID extends React.Component<IProps>  {
+    constructor(props: IProps) {
         super(props)
-        this.handleChange = this.handleChange.bind(this)
-        this.handleChangeSelect = this.handleChangeSelect.bind(this)
-        this.handleClick = this.handleClick.bind(this)
     }
-    componentDidUpdate(prevProps: any) {
+    public componentDidUpdate(prevProps: any) {
         if (prevProps.inputtingPref !== this.props.inputtingPref) {
             if (this.props.inputtingPref) {
                 this.displayModal()
             } else {
                 console.log('close')
-                // this.closeModal()
             }
         }
     }
-    //
-    displayModal(): void {
+    private displayModal = (): void => {
         const dialogLoading: HTMLDialogElement = document.getElementById('inputtingPref') as HTMLDialogElement
         dialogLoading.showModal()
     }
-    handleChange(event: React.ChangeEvent<HTMLInputElement>): void {
+    private handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
         event.persist()
         this.props.setter.systemID(event.target.value)
     }
-    handleChangeSelect(event: React.ChangeEvent<HTMLSelectElement>): void {
+    private handleChangeSelect = (event: React.ChangeEvent<HTMLSelectElement>): void => {
         event.persist()
         this.props.setter.systemID(event.target.value)
     }
     //
-    handleClick(): void {
+    private handleClick = (): void => {
         this.fetchLibrayInfo(this.props.libRequest)
         this.props.setter.inputtingPref(false)
     }
     /**
       * Use Calil API.
       */
-    public async fetchLibrayInfo(o: LibRequest): Promise<LibResponse> {
+    public fetchLibrayInfo = async (o: LibRequest): Promise<LibResponse> => {
         this.props.setter.isLoading(true)
-        console.log('set isLoading')
 
         let c: Calil = new Calil(o)
         let res: LibResponse = await c.search()
@@ -99,8 +94,8 @@ class SystemID extends React.Component<{
                     </button>
                 </dialog>
             )
-        } else {
-            return <div></div>
-        }
+        } else return null
     }
 }
+
+export default SystemID

@@ -1,13 +1,9 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 
-/**
- * MaterialDesignLiteにより実装されたサイドメニューを非表示
- * DOM操作j
- */
 const Menu: React.SFC = () => {
+    // MaterialDesignLiteにより実装されたサイドメニューを自動折りたたみ
     const invisible = () => {
-        // console.log('click')
         // DOM操作
         let drawers: HTMLCollection = document.getElementsByClassName('mdl-layout__drawer')
         let drawer: HTMLElement = drawers.item(0) as HTMLElement
@@ -18,7 +14,6 @@ const Menu: React.SFC = () => {
         let arias: HTMLCollection = document.getElementsByClassName('mdl-layout__drawer-button')
         let aria: HTMLElement = arias.item(0) as HTMLElement
 
-        // console.log(drawers)
         drawer.classList.remove('is-visible')
         overlay.classList.remove('is-visible')
         aria.setAttribute('aria-expanded', 'false')

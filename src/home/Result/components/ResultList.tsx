@@ -3,38 +3,31 @@ import * as React from 'react'
 import { dom, library } from '@fortawesome/fontawesome-svg-core'
 import { faUniversity } from '@fortawesome/free-solid-svg-icons'
 //
-export { ResultList }
-class ResultList extends React.Component<
-    {
-        libData: { id: number, name: string, status: string },
-        reserveurl: string
-    }
-    >
-{
-    constructor(props: { libData: { id: number, name: string, status: string }, reserveurl: string }) {
-        super(props)
-    }
-    componentDidMount() {
-        library.add(faUniversity)
-        dom.i2svg()
-    }
-    card =
+interface IProps {
+    libData: {
+        id: number,
+        name: string,
+        status: string
+    },
+    reserveurl: string
+}
+
+const ResultList: React.SFC<IProps> = props => {
+    library.add(faUniversity)
+    dom.i2svg()
+    return (
         <li className="card mdl-list__item ">
             <span className="mdl-list__item-primary-content">
                 <i className="fas fa-university fa-1x"></i>
-                <span>{this.props.libData.name}</span>
+                <span>{props.libData.name}</span>
             </span>
             <span className="mdl-list__item-secondary-content">
                 <span className="mdl-list__item-secondary-action">
-                    {this.props.libData.status}<i className="fas fa-book fa-1x"></i>
+                    {props.libData.status}<i className="fas fa-book fa-1x"></i>
                 </span>
             </span>
         </li>
-    render() {
-        if (this.props.reserveurl === '') {
-            return this.card
-        } else {
-            return this.card
-        }
-    }
+    )
 }
+
+export default ResultList
