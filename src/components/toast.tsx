@@ -1,34 +1,26 @@
 import * as React from 'react'
-//
-// Renderd tag is below
-// ========================================
-// <dialog #loading .loading>
-//      <div .outer>
-//          <figure #figureLoading .figureLoading>
-//              <img>
-//          </figure>
-//      </div>
-// </dialog>
-// ========================================
-//
 
 interface IProps {
     text: string,
-    button?: React.ReactElement
+    button?: React.ReactElement,
+    img?: string
 }
 
 const Toast: React.SFC<IProps> = props => {
     return (
-        <dialog id='loading' className="loading" >
+        <div id='toastArea' className="toastArea" >
             <div className="outer">
                 {props.text}
-                <figure id="figureLoading" className="figureLoading"></figure>
-                {/* <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" onClick={this.remove}>キャンセル</button> */}
+                {props.img &&
+                    <figure id="figureArea" className="figureArea">
+                        <img src={props.img} alt={props.img} />
+                    </figure>
+                }
             </div>
             {props.button && (
                 <div>{props.button}</div>
             )}
-        </dialog>
+        </div>
     )
 }
 

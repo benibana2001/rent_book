@@ -3,7 +3,7 @@ figure {
     padding: 0;
 }
 
-.loading {
+.toastArea {
     width: 90%;
     // TODO: header分の高さを引く
     // SCSSを一つにまとめてheader高さ変数を使用
@@ -18,7 +18,7 @@ figure {
     width: 100%;
 }
 
-.figureLoading {
+.figureArea {
     width: 100%;
 
     img {
