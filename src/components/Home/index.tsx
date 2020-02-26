@@ -1,7 +1,8 @@
 import * as React from 'react'
 
 import ISBNArea from './ISBN'
-import TitleArea from './Title'
+import PrefArea from './Pref'
+// import TitleArea from './Title'
 import BookDataArea from './BookData'
 import ResultView from '../Result'
 import LoadingView from '../Loading'
@@ -105,7 +106,10 @@ class Home extends React.Component<{}, IState>{
                     systemID: this.setSystemID
                 }} />
 
-                <TitleArea />
+                <PrefArea setter={{
+                    systemID: this.setSystemID
+                }} />
+                {/* <TitleArea /> */}
 
                 <BookDataArea
                     setter={{
