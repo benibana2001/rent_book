@@ -11,18 +11,13 @@ const PrefArea: React.SFC<IProps> = props => {
         event.persist()
         props.setter.systemID(event.target.value)
     }
-    const btnChange = (event: React.MouseEvent): void => {
-        event.persist()
-        event.currentTarget.innerHTML = 'Clicked!'
-    }
     return (
         <div className="content">
             <div className="div-isbn">
                 <p>市区町村を選んでね</p>
-                <button　data-testid="test-btn" onClick={btnChange}>Test</button>
                 {/* <select name="system_id" className="mdl-textfield__input" id='systemid' onChange={props.handleChangeSelect}> */}
                 <select name="system_id" className="mdl-textfield__input" id='systemid' onChange={handleChangeSelect} >
-                    <option value="">区を選択</option>
+                    <option value="">市区町村を選んでね</option>
                     {TokyoLibraryData.map((item, index) =>
                         <option key={index} value={item[0]}>{item[1]}</option>
                     )}

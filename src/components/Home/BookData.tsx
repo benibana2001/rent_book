@@ -12,6 +12,7 @@ interface IProps {
         data: Function,
         inputtingPref: Function
     },
+    submit: () => Promise<void>,
     request: LibRequest
 }
 
@@ -52,7 +53,8 @@ class BookDataArea extends React.Component<IProps, IState>{
     /**
      * When Submit button clicked
      */
-    private handleClick = (): void => this.props.setter.inputtingPref(true)
+    // private handleClick = (): void => this.props.setter.inputtingPref(true)
+    private handleClick = () => this.props.submit()
 
     render() {
         if (this.state.bookResponse.title !== '') {

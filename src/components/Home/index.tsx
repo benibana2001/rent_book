@@ -7,6 +7,7 @@ import BookDataArea from './BookData'
 import ResultView from '../Result'
 import LoadingView from '../Loading'
 import PrefectureView from '../Prefecture'
+import Calil from '../../api/Calil'
 import { LibRequest, LibData, LibResponse } from '../../api/Calil'
 import { BookResponse } from '../../api/OpenBD'
 
@@ -72,6 +73,30 @@ class Home extends React.Component<{}, IState>{
         this.setState({ libkey: null })
         this.setState({ reserveurl: '' })
     }
+    // Use Calil API.
+    fetchLibrayInfo = async (o: LibRequest): Promise<LibResponse> => {
+        let c: Calil = new Calil(o)
+        let res: LibResponse = await c.search()
+        return res
+    }
+    dispatchLibraryInfo = (res: LibResponse): void => {
+        let data = res
+        if (!res) {
+            console.log('Data is none')
+            // 伝搬のため、空のデータをセットする
+            const nullkey: string = 'xxx'
+            data = {
+                'libkey': [],
+                'reserveurl': nullkey
+            }
+        }
+        this.setData(data)
+    }
+    handleClick = async (): Promise<void> => {
+        this.setState({ isLoading: true })
+        this.dispatchLibraryInfo(await this.fetchLibrayInfo(this.state.request))
+        this.setState({ isLoading: false })
+    }
     //
     render() {
         return (
@@ -118,6 +143,7 @@ class Home extends React.Component<{}, IState>{
                         data: this.setData,
                         inputtingPref: this.setInputtingPref
                     }}
+                    submit={this.handleClick}
                     isbn={this.state.request.isbn}
                     request={this.state.request} />
             </React.Fragment>
