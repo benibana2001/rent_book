@@ -1,6 +1,29 @@
 import fetchJsonp = require('fetch-jsonp');
-import { LibRequest, LibResponse, LibData } from '../components/interfaces'
-export { Calil }
+// import { LibRequest, LibResponse, LibData } from '../components/interfaces'
+
+export interface LibRequest {
+    'appkey': string,
+    'isbn': string,
+    'systemid': string
+}
+/**
+ * For Calil API. Using for response library data.
+ */
+export interface LibResponse {
+    'libkey': LibData[],
+    'reserveurl': string
+}
+export interface LibData {
+    'id': number,
+    'name': string,
+    'status': string
+}
+enum ServerStatus {
+    SUCCESS = 0,
+    POLLING = 1,
+    SERVER_ERROR = -1,
+    NOT_EXIST = -2
+}
 
 class Calil {
     //----------------------------------------
@@ -113,12 +136,13 @@ class Calil {
         // Set session
         this.session = this.getSession(json)
         //
-        if (this.server_status === 1) {
+        // if (this.server_status === 1) {
+        if (this.server_status === ServerStatus.POLLING) {
             // Polling
             await this.sleep(2000)
             await this.poll()
 
-        } else if (this.server_status === 0) {
+        } else if (this.server_status === ServerStatus.SUCCESS) {
             // Done
             // Parse
             const res: LibResponse = this.parse(json)
@@ -127,9 +151,9 @@ class Calil {
             return
 
         } else {
-            if (this.server_status === -2) {
+            if (this.server_status === ServerStatus.NOT_EXIST) {
                 console.log('Error - book is not exist')
-            } else if (this.server_status === -1) {
+            } else if (this.server_status === ServerStatus.SERVER_ERROR) {
                 console.log(`Error - server.status: ${this.server_status}`)
             }
             return
@@ -189,21 +213,25 @@ class Calil {
      * -1: server error
      * -2: boo isn't exist
      */
-    private getServerStatus(data: any): number {
+    private getServerStatus(data: any): ServerStatus {
         let c = data.continue
         let status = data.books[this._request.isbn][this._request.systemid].status
         if (c === 1) {
-            return 1
+            // return 1
+            return ServerStatus.POLLING
         } else if (c === 0) {
             if (status === 'OK' || status === 'Cache') {
                 let libkey: any = data.books[this._request.isbn][this._request.systemid].libkey
                 if (!libkey || !Object.keys(libkey).length) {
-                    return -2
+                    // return -2
+                    return ServerStatus.NOT_EXIST
                 } else {
-                    return 0
+                    // return 0
+                    return ServerStatus.SUCCESS
                 }
             } else {
-                return -1
+                // return -1
+                return ServerStatus.SERVER_ERROR
             }
         }
     }
@@ -221,3 +249,5 @@ class Calil {
         return new Promise(resolve => setTimeout(resolve, ms))
     }
 }
+
+export default Calil 

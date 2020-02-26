@@ -1,6 +1,7 @@
 import * as React from 'react'
-import { OpenBD } from '../../api/OpenBD'
-import { LibRequest, BookResponse } from '../interfaces'
+import OpenBD from '../../api/OpenBD'
+import { LibRequest } from '../../api/Calil'
+import { BookResponse } from '../../api/OpenBD'
 // OpenBD を使用してISBN入力時に自動で表示する
 
 interface IProps {
@@ -38,7 +39,7 @@ class BookDataArea extends React.Component<IProps, IState>{
         }
     }
     //
-    private fetchBookInfo = async(isbn: string): Promise<BookResponse> => {
+    private fetchBookInfo = async (isbn: string): Promise<BookResponse> => {
         // Fetch OpenBD
         const O: OpenBD = new OpenBD()
         let bookResponse: BookResponse = await O.search(isbn)

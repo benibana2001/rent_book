@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 import ResultList from './components/ResultList'
-import { LibData } from '../../components/interfaces'
+import { LibData } from '../../api/Calil'
 
 interface IProps {
     data: LibData[],

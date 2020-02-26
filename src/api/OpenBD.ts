@@ -1,5 +1,8 @@
-import { BookResponse } from '../components/interfaces'
-export { OpenBD }
+export interface BookResponse {
+    title: string,
+    coverurl?: string
+}
+
 class OpenBD {
     private _isbn: string = ''
     private readonly HOST = 'https://api.openbd.jp/v1/get'
@@ -27,3 +30,5 @@ class OpenBD {
         return {title: title, coverurl: coverurl}
     }
 }
+
+export default OpenBD

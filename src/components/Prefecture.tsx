@@ -1,8 +1,8 @@
 import * as React from 'react'
 
 import { data as TokyoLibraryData } from '../api/data_tokyo_library'
-import { Calil } from '../api/Calil'
-import { LibRequest, LibResponse } from './interfaces'
+import Calil from '../api/Calil'
+import { LibRequest, LibResponse } from '../api/Calil'
 //
 interface IProps {
     libRequest: LibRequest,
