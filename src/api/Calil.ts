@@ -125,6 +125,7 @@ class Calil {
         // DONE
         console.log('search() is finished.')
         // Parse Data
+        console.log(this._response)
         return this._response
     }
     /**
