@@ -23,13 +23,18 @@ const ResultView: React.SFC<IProps> = props => {
     }
     return (
         <div id='result'>
-            {props.bookStatus === BookStatus.EXIST && (
+            {props.bookStatus === BookStatus.EXIST
+            ? (
                 <div>
                     <ResultList data={props.response.libkey} />
                     <button id="buttonReserve" type="button" className="mdl-button" onClick={moveTo(props.response.reserveurl)}>予約</button>
                     <button type="button" className="mdl-button close" onClick={clearLibData}>とじる</button>
                 </div>
-            )}
+            )
+            :(
+                <div>検索結果はないです</div>
+            )
+            }
         </div>
     )
 }
