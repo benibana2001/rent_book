@@ -2,32 +2,31 @@ import * as React from 'react'
 
 import ResultList from './components/ResultList'
 import { LibResponse } from '../../api/Calil'
+import { BookStatus } from '../Home'
 
 interface IProps {
+    bookStatus: BookStatus,
     response: LibResponse,
-    setLibResponse: Function
+    setLibResponse: Function,
+    setBookStatus: Function
 }
-
-const defaultData: any = {
+const defaultResponse: LibResponse = {
     libkey: null,
     reserveurl: ''
 }
+const moveTo = (url: string) => () => { location.href = url }
 
 const ResultView: React.SFC<IProps> = props => {
-    const clearLibData = (): void => props.setLibResponse(defaultData)
-    const isData = (): boolean => props.response.libkey !== null
-    // TODO: 蔵書がない時
-    const existBook = (): boolean => {
-        const nullkey: string = 'xxx'
-        return isData() && props.response.reserveurl !== nullkey
+    const clearLibData = (): void => {
+        props.setBookStatus(BookStatus.NOT_DONE)
+        props.setLibResponse(defaultResponse)
     }
-    const moveTo = (): void => { location.href = props.response.reserveurl }
     return (
         <div id='result'>
-            {existBook() && (
+            {props.bookStatus === BookStatus.EXIST && (
                 <div>
                     <ResultList data={props.response.libkey} />
-                    <button id="buttonReserve" type="button" className="mdl-button" onClick={moveTo}>予約</button>
+                    <button id="buttonReserve" type="button" className="mdl-button" onClick={moveTo(props.response.reserveurl)}>予約</button>
                     <button type="button" className="mdl-button close" onClick={clearLibData}>とじる</button>
                 </div>
             )}

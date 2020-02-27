@@ -33,7 +33,7 @@ class BookDataArea extends React.Component<IProps, IState>{
         }
     }
     // When Submit button clicked
-    private handleClick = () => this.props.submit()
+    private handleClick = async () => await this.props.submit()
 
     render() {
         return (
