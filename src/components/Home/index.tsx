@@ -2,53 +2,41 @@ import * as React from 'react'
 
 import ISBNArea from './ISBN'
 import PrefArea from './Pref'
-// import TitleArea from './Title'
 import BookDataArea from './BookData'
-import ResultView from '../Result'
 import LoadingView from '../Loading'
-import Calil from '../../api/Calil'
-import OpenBD from '../../api/OpenBD'
-import { LibRequest, LibData, LibResponse } from '../../api/Calil'
-import { BookResponse } from '../../api/OpenBD'
+import Calil, { LibRequest, LibResponse } from '../../api/Calil'
+import OpenBD, { BookResponse } from '../../api/OpenBD'
 
 import 'material-design-lite'
 import 'material-design-lite/material.min.css'
+import { BookStatus, defaultLibResponse } from '../../Routes'
 
+interface IProps {
+    setBookInfo: (bookInfo: BookResponse) => void
+    setBookStatus: (bookStatus: BookStatus) => void
+    setLibraryResponse: (libresponse: LibResponse) => void
+}
 interface IState {
-    response: LibResponse,
     request: LibRequest,
     isLoading: boolean,
-    bookInfo: BookResponse,
-    bookStatus: BookStatus
 }
 const defaultLibRequest: LibRequest = {
     appkey: '',
     isbn: '',
     systemid: ''
 }
-const defaultLibResponse: LibResponse = {
-    libkey: null,
-    reserveurl: '',
-}
-export enum BookStatus {
-    EXIST = 'EXIST',
-    NONE = 'NONE',
-    NOT_DONE = 'NOT_DONE'
-}
 const defaultState: IState = {
-    response: defaultLibResponse,
     request: defaultLibRequest,
     isLoading: false,
-    bookInfo: null,
-    bookStatus: BookStatus.NOT_DONE
 }
 
-class Home extends React.Component<{}, IState>{
-    constructor(props: {}) {
+class Home extends React.Component<IProps, IState>{
+    constructor(props: IProps) {
         super(props)
         this.state = defaultState
     }
     componentDidMount() {
+        this.setState(defaultState)
         const setAppkey = (value: string) => this.setState({
             request: { ...this.state.request, 'appkey': value },
         })
@@ -61,16 +49,10 @@ class Home extends React.Component<{}, IState>{
     public setISBN = (value: string) => this.setState({
         request: { ...this.state.request, 'isbn': value }
     })
-    public setBookInfo = (bookInfo: BookResponse): void => this.setState({ bookInfo: bookInfo })
-    public setBookStatus = (bookStatus: BookStatus): void => this.setState({ bookStatus: bookStatus })
     public setIsLoading = (state: boolean): void => this.setState({ isLoading: state })
-    public setLibResponse = (res: LibResponse): void => this.setState({ response: { ...res } })
-    public removeData = (): void => this.setState({ response: { ...defaultLibResponse } })
-    // Fetch Book Data(title, coverurl) from OpneBD server.
     private fetchBookInfo = async (isbn: string): Promise<BookResponse> => {
         const O: OpenBD = new OpenBD()
         let bookResponse: BookResponse = await O.search(isbn)
-        // console.log(`bookResponse: ${JSON.stringify(bookResponse)}`)
         return bookResponse
     }
     // Fetch a book status about each library by using Calil API.
@@ -82,12 +64,12 @@ class Home extends React.Component<{}, IState>{
     private dispatchLibraryInfo = (res: LibResponse): void => {
         if (!res) {
             console.log('Data is none')
-            this.setState({ bookStatus: BookStatus.NONE })
-            this.setLibResponse(defaultLibResponse)
+            this.props.setBookStatus(BookStatus.NONE)
+            this.props.setLibraryResponse(defaultLibResponse)
             return
         }
-        this.setLibResponse(res)
-        this.setState({ bookStatus: BookStatus.EXIST })
+        this.props.setLibraryResponse(res)
+        this.props.setBookStatus(BookStatus.EXIST)
     }
     handleClick = async (): Promise<void> => {
         // TODO: Display loading view automatically.
@@ -96,25 +78,13 @@ class Home extends React.Component<{}, IState>{
         this.dispatchLibraryInfo(res)
         this.setState({ isLoading: false })
     }
-    //
+    
     render() {
         return (
             <React.Fragment>
-
-                {/* DIALOG */}
                 <LoadingView isLoading={this.state.isLoading} />
-                {/* TODO: Create single page for ResultView */}
-                <ResultView
-                    bookStatus={this.state.bookStatus}
-                    response={this.state.response}
-                    setLibResponse={this.setLibResponse}
-                    setBookStatus={this.setBookStatus}
-                />
-
                 <ISBNArea setISBN={this.setISBN} />
-
                 <PrefArea setSystemID={this.setSystemID} />
-
                 <BookDataArea
                     fetchBookInfo={this.fetchBookInfo}
                     submit={this.handleClick}
@@ -123,6 +93,5 @@ class Home extends React.Component<{}, IState>{
         )
     }
 }
-
 
 export default Home

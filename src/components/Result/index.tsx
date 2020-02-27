@@ -2,13 +2,13 @@ import * as React from 'react'
 
 import ResultList from './components/ResultList'
 import { LibResponse } from '../../api/Calil'
-import { BookStatus } from '../Home'
+import { BookStatus } from '../../Routes'
 
 interface IProps {
     bookStatus: BookStatus,
     response: LibResponse,
-    setLibResponse: Function,
-    setBookStatus: Function
+    setBookStatus: (bookStatus: BookStatus) => void
+    setLibResponse: (res: LibResponse) => void,
 }
 const defaultResponse: LibResponse = {
     libkey: null,
@@ -24,7 +24,7 @@ const ResultView: React.SFC<IProps> = props => {
     return (
         <div id='result'>
             {props.bookStatus === BookStatus.EXIST
-            ? (
+                ? (
                 <div>
                     <ResultList data={props.response.libkey} />
                     <button id="buttonReserve" type="button" className="mdl-button" onClick={moveTo(props.response.reserveurl)}>予約</button>
