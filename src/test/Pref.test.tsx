@@ -34,13 +34,10 @@ import PrefArea from "../components/Home/Pref";
 // })
 it('be called changeHandler', () => {
     const props = {
-        setter: {
-            // systemID: () => { console.log('test') }
-            systemID: jest.fn()
-        }
+        setSystemID: jest.fn()
     }
     const { getByDisplayValue } = render(<PrefArea {...props} />)
     const select = getByDisplayValue('市区町村を選んでね')
     fireEvent.change(select)
-    expect(props.setter.systemID).toHaveBeenCalled()
+    expect(props.setSystemID).toHaveBeenCalled()
 })

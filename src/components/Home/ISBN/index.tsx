@@ -2,10 +2,7 @@ import * as React from 'react'
 import FieldISBN from './components/FieldISBN'
 
 interface IProps {
-    setOptions: {
-        isbn: Function,
-        systemID: Function
-    }
+    setISBN: Function
 }
 
 class ISBNArea extends React.Component<IProps> {
@@ -28,7 +25,7 @@ class ISBNArea extends React.Component<IProps> {
                 <div className="div-isbn">
                     <p>A. ISBNから調べる</p>
                     <form onSubmit={this.handleSubmit}>
-                        <FieldISBN setISBN={this.props.setOptions.isbn} />
+                        <FieldISBN setISBN={this.props.setISBN} />
                     </form>
                 </div>
             </div>

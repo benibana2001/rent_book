@@ -6,8 +6,8 @@ import PrefArea from './Pref'
 import BookDataArea from './BookData'
 import ResultView from '../Result'
 import LoadingView from '../Loading'
-import PrefectureView from '../Prefecture'
 import Calil from '../../api/Calil'
+import OpenBD from '../../api/OpenBD'
 import { LibRequest, LibData, LibResponse } from '../../api/Calil'
 import { BookResponse } from '../../api/OpenBD'
 
@@ -15,27 +15,28 @@ import 'material-design-lite'
 import 'material-design-lite/material.min.css'
 
 interface IState {
-    libkey: LibData[],
-    reserveurl: string,
+    response: LibResponse,
     request: LibRequest,
     isLoading: boolean,
-    inputtingPref: boolean,
     bookInfo: BookResponse,
+}
+const defaultLibRequest: LibRequest = {
+    appkey: '',
+    isbn: '',
+    systemid: ''
+}
+const defaultLibResponse: LibResponse = {
+    libkey: null,
+    reserveurl: '',
 }
 
 class Home extends React.Component<{}, IState>{
     constructor(props: {}) {
         super(props)
         this.state = {
-            libkey: null,
-            reserveurl: '',
-            request: {
-                'appkey': '',
-                'isbn': '',
-                'systemid': ''
-            },
+            response: defaultLibResponse,
+            request: defaultLibRequest,
             isLoading: false,
-            inputtingPref: false,
             bookInfo: null
         }
     }
@@ -44,42 +45,31 @@ class Home extends React.Component<{}, IState>{
     }
 
     private setRequest = (key: keyof LibRequest) => (value: string): void => {
-        const request: LibRequest = {
-            'appkey': this.state.request.appkey,
-            'isbn': this.state.request.isbn,
-            'systemid': this.state.request.systemid
-        }
+        const request: LibRequest = { ...this.state.request }
         request[key] = value
         this.setState({ request: request })
     }
-
+    private setAppkey: Function = this.setRequest('appkey')
     public setSystemID: Function = this.setRequest('systemid')
     public setISBN: Function = this.setRequest('isbn')
-    public setAppkey: Function = this.setRequest('appkey')
-    //
-    setInputtingPref = (status: boolean): void => this.setState({ inputtingPref: status })
-    //
-    setBookInfo = (bookInfo: BookResponse): void => this.setState({ bookInfo: bookInfo })
-    //
-    setIsLoading = (state: boolean): void => {
-        this.setState({ isLoading: state })
-    }
-    setData = (d: LibResponse): void => {
-        this.setState({ libkey: d.libkey })
-        this.setState({ reserveurl: d.reserveurl })
-        console.log(this.state.libkey)
-    }
-    removeData = (): void => {
-        this.setState({ libkey: null })
-        this.setState({ reserveurl: '' })
-    }
+    public setBookInfo = (bookInfo: BookResponse): void => this.setState({ bookInfo: bookInfo })
+    public setIsLoading = (state: boolean): void => this.setState({ isLoading: state })
+    public setLibResponse = (res: LibResponse): void => this.setState({ response: { ...res } })
+    public removeData = (): void => this.setState({ response: { ...defaultLibResponse } })
     // Use Calil API.
-    fetchLibrayInfo = async (o: LibRequest): Promise<LibResponse> => {
+    private fetchLibrayInfo = async (o: LibRequest): Promise<LibResponse> => {
         let c: Calil = new Calil(o)
         let res: LibResponse = await c.search()
         return res
     }
-    dispatchLibraryInfo = (res: LibResponse): void => {
+    // Fetch OpenBD
+    private fetchBookInfo = async (isbn: string): Promise<BookResponse> => {
+        const O: OpenBD = new OpenBD()
+        let bookResponse: BookResponse = await O.search(isbn)
+        // console.log(`bookResponse: ${JSON.stringify(bookResponse)}`)
+        return bookResponse
+    }
+    private dispatchLibraryInfo = (res: LibResponse): void => {
         let data = res
         if (!res) {
             console.log('Data is none')
@@ -90,7 +80,7 @@ class Home extends React.Component<{}, IState>{
                 'reserveurl': nullkey
             }
         }
-        this.setData(data)
+        this.setLibResponse(data)
     }
     handleClick = async (): Promise<void> => {
         this.setState({ isLoading: true })
@@ -103,49 +93,21 @@ class Home extends React.Component<{}, IState>{
             <React.Fragment>
 
                 {/* DIALOG */}
-
                 <LoadingView isLoading={this.state.isLoading} />
 
-                <PrefectureView
-                    libRequest={this.state.request}
-                    setter={{
-                        isLoading: this.setIsLoading,
-                        systemID: this.setSystemID,
-                        data: this.setData,
-                        inputtingPref: this.setInputtingPref
-                    }}
-                    inputtingPref={this.state.inputtingPref}
-                />
-
                 <ResultView
-                    data={this.state.libkey}
-                    reserveurl={this.state.reserveurl}
-                    setter={{
-                        data: this.setData
-                    }}
+                    response={this.state.response}
+                    setLibResponse={this.setLibResponse}
                 />
-                {/* / DIALOG */}
 
-                <ISBNArea setOptions={{
-                    isbn: this.setISBN,
-                    systemID: this.setSystemID
-                }} />
+                <ISBNArea setISBN={this.setISBN} />
 
-                <PrefArea setter={{
-                    systemID: this.setSystemID
-                }} />
-                {/* <TitleArea /> */}
+                <PrefArea setSystemID={this.setSystemID} />
 
                 <BookDataArea
-                    setter={{
-                        bookInfo: this.setBookInfo,
-                        isLoading: this.setIsLoading,
-                        data: this.setData,
-                        inputtingPref: this.setInputtingPref
-                    }}
+                    fetchBookInfo={this.fetchBookInfo}
                     submit={this.handleClick}
-                    isbn={this.state.request.isbn}
-                    request={this.state.request} />
+                    isbn={this.state.request.isbn} />
             </React.Fragment>
         )
     }

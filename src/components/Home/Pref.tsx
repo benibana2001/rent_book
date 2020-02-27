@@ -2,14 +2,12 @@ import * as React from 'react'
 import { data as TokyoLibraryData } from '../../api/data_tokyo_library'
 
 interface IProps {
-    setter: {
-        systemID: Function
-    }
+    setSystemID: Function
 }
 const PrefArea: React.SFC<IProps> = props => {
     const handleChangeSelect = (event: React.ChangeEvent<HTMLSelectElement>): void => {
         event.persist()
-        props.setter.systemID(event.target.value)
+        props.setSystemID(event.target.value)
     }
     return (
         <div className="content">
