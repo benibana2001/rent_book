@@ -1,36 +1,22 @@
 import * as React from 'react'
-import FieldISBN from './components/FieldISBN'
+import WrapContent from '../WrapContent'
+import FieldInput from './components/FieldInput'
+import FieldBtnCamera from './components/FieldBtnCamera'
 
 interface IProps {
     setISBN: Function
 }
 
-class ISBNArea extends React.Component<IProps> {
-    constructor(props: IProps) {
-        super(props)
-    }
-    //
-    public componentDidMount() {
-        let form = document.querySelector('form')
-        form.addEventListener('submit', (event) => {
-            event.preventDefault()
-        })
-    }
-    //
-    private handleSubmit = (event: React.FormEvent): void => event.preventDefault()
-    //
-    render() {
-        return (
-            <div className="content">
-                <div className="div-isbn">
-                    <p>A. ISBNから調べる</p>
-                    <form onSubmit={this.handleSubmit}>
-                        <FieldISBN setISBN={this.props.setISBN} />
-                    </form>
-                </div>
-            </div>
-        )
-    }
+const ISBNArea: React.SFC<IProps> = (props) => {
+    const handleSubmit = (event: React.FormEvent): void => event.preventDefault()
+    return (
+        < WrapContent >
+            <p>本のISBNを入力してね</p>
+            <form onSubmit={handleSubmit}>
+                <FieldInput setISBN={props.setISBN} />
+                <FieldBtnCamera />
+            </form>
+        </WrapContent >
+    )
 }
-
 export default ISBNArea

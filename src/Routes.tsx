@@ -1,5 +1,6 @@
 import * as React from 'react'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { CSSTransition, TransitionGroup } from "react-transition-group"
 
 import Header from './components/Common/Header'
 import About from './components/About'
@@ -48,24 +49,26 @@ class Routes extends React.Component<{}, IState> {
             <div className="container mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-tabs">
                 <Header />
                 <Router >
-                    <Route exact path="/" >
-                        <Home
-                            setBookInfo={this.setBookInfo}
-                            setBookStatus={this.setBookStatus}
-                            setLibraryResponse={this.setLibraryResponse}
-                        />
-                    </Route>
-                    <Route exact path="/result">
-                        <Result
-                            bookStatus={this.state.bookStatus}
-                            response={this.state.libraryResponse}
-                            setBookStatus={this.setBookStatus}
-                            setLibResponse={this.setLibraryResponse}
-                        />
-                    </Route>
-                    <Route path="/about" component={About} />
-                    {/* Side Menu created by Material design - lite */}
                     <Menu />
+                    <Switch>
+                        <Route exact path="/" >
+                            <Home
+                                setBookInfo={this.setBookInfo}
+                                setBookStatus={this.setBookStatus}
+                                setLibraryResponse={this.setLibraryResponse}
+                            />
+                        </Route>
+                        <Route exact path="/result">
+                            <Result
+                                bookStatus={this.state.bookStatus}
+                                response={this.state.libraryResponse}
+                                setBookStatus={this.setBookStatus}
+                                setLibResponse={this.setLibraryResponse}
+                            />
+                        </Route>
+                        <Route path="/about" component={About} />
+                    </Switch>
+                    {/* Side Menu created by Material design - lite */}
                 </Router>
             </div>
         )

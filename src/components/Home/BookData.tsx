@@ -6,61 +6,46 @@ interface IProps {
     fetchBookInfo: (isbn: string) => Promise<BookResponse>,
     submit: () => Promise<void>
 }
-interface IState {
-    bookResponse: BookResponse
-}
-const defaultState: IState = {
-    bookResponse: {
-        title: '',
-        coverurl: ''
-    }
+const defaultBookResponse: BookResponse = {
+    title: '',
+    coverurl: ''
 }
 
-class BookDataArea extends React.Component<IProps, IState>{
-    constructor(props: IProps) {
-        super(props)
-        this.state = defaultState
-    }
-    // ISBNがprops経由で渡ってきた場合はfetch API を使用する
-    public async componentDidUpdate(prevProps: any) {
-        if (prevProps !== this.props) {
-            if (this.props.isbn.length === 13 || this.props.isbn.length === 10) {
-                const res: BookResponse = await this.props.fetchBookInfo(this.props.isbn)
-                this.setState({ bookResponse: res })
-            } else {
-                this.setState(defaultState)
-            }
+const BookDataArea: React.SFC<IProps> = props => {
+    const [bookResponse, setBookResponse] = React.useState(defaultBookResponse)
+    React.useEffect(() => {
+        const validate = (): boolean => (props.isbn.length === 13 || props.isbn.length === 10)
+        const fetch = async () => {
+            const res: BookResponse = await props.fetchBookInfo(props.isbn)
+            setBookResponse(res)
         }
-    }
-    // When Submit button clicked
-    private handleClick = async () => await this.props.submit()
+        validate() ? fetch() : setBookResponse(defaultBookResponse)
+    }, [props.isbn])
 
-    render() {
-        return (
-            this.state.bookResponse.title && (
-                <div className="snack-container">
-                    <a className="snack-inner">
-                        {this.state.bookResponse.coverurl
-                            ? (<img className="thumbnail" src={this.state.bookResponse.coverurl} alt={this.state.bookResponse.coverurl} />)
-                            : (<span>書影なし</span>)
-                        }
-                        <div className="snack-content">
-                            {/* Fetched content */}
-                            <div className="snack-title">
-                                {this.state.bookResponse.title}
-                            </div>
-                            {/* Button */}
-                            <div>
-                                <button onClick={this.handleClick} className="mdl-button mdl-js-button mdl-js-ripple-effect">
-                                    蔵書を調べる
-                                </button>
-                            </div>
+    const handleClick = async () => await props.submit()
+
+    return (
+        bookResponse.title && (
+            <div className="snack-container">
+                <a className="snack-inner">
+                    {bookResponse.coverurl
+                        ? (<img className="thumbnail" src={bookResponse.coverurl} alt={bookResponse.coverurl} />)
+                        : (<span>書影なし</span>)
+                    }
+                    <div className="snack-content">
+                        <div className="snack-title">
+                            {bookResponse.title}
                         </div>
-                    </a>
-                </div>
-            )
+                        <div>
+                            <button onClick={handleClick} className="mdl-button mdl-js-button mdl-js-ripple-effect">
+                                蔵書を調べる
+                            </button>
+                        </div>
+                    </div>
+                </a>
+            </div>
         )
-    }
+    )
 }
 
 export default BookDataArea

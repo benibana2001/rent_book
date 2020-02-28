@@ -14,16 +14,16 @@
 // }
 
 // // RESET
-// body,
-// h1,
-// ul,
-// li,
-// div,
-// form {
-//     margin: 0;
-//     padding: 0;
-//     font-size: 16px;
-// }
+body,
+h1,
+ul,
+li,
+div,
+form {
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+}
 
 // Maerial icons
 @font-face {
@@ -61,13 +61,12 @@ $img: $root+'/img';
     padding: 10px;
 }
 
-.div-isbn {
+.content > div {
     background-color: white;
-    // background-image: url($img + '/icon_pre.png');
     margin: 4px 0;
     padding: 10px;
 
-    p:first-child {
+    p {
         background-image: url($img + '/icon_pre.png');
         background-repeat: no-repeat;
         background-size: 40px;
@@ -149,4 +148,20 @@ a.snack-inner {
 .snack-title {
     font-size: 22px;
     line-height: 22px;
+}
+
+// Router Transition
+
+.animate-enter {
+    opacity: 0;
+    z-index: 1;
+}
+
+.animate-enter-active {
+    opacity: 1;
+    transition: opacity 450ms ease-in;
+}
+
+.animate-exit {
+    display: none;
 }

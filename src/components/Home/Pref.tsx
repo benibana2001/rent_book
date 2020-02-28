@@ -1,5 +1,7 @@
 import * as React from 'react'
+
 import { data as TokyoLibraryData } from '../../api/data_tokyo_library'
+import WrapContent from './WrapContent'
 
 interface IProps {
     setSystemID: Function
@@ -10,19 +12,15 @@ const PrefArea: React.SFC<IProps> = props => {
         props.setSystemID(event.target.value)
     }
     return (
-        <div className="content">
-            <div className="div-isbn">
-                <p>市区町村を選んでね</p>
-                {/* <select name="system_id" className="mdl-textfield__input" id='systemid' onChange={props.handleChangeSelect}> */}
-                <select name="system_id" className="mdl-textfield__input" id='systemid' onChange={handleChangeSelect} >
-                    <option value="">市区町村を選んでね</option>
-                    {TokyoLibraryData.map((item, index) =>
-                        <option key={index} value={item[0]}>{item[1]}</option>
-                    )}
-                </select>
-                {/* <label className="mdl-textfield__label" htmlFor="octane">区を選択</label> */}
-            </div>
-        </div>
+        <WrapContent>
+            <p>市区町村を選んでね</p>
+            <select name="system_id" className="mdl-textfield__input" id='systemid' onChange={handleChangeSelect} >
+                <option value="">市区町村を選択</option>
+                {TokyoLibraryData.map((item, index) =>
+                    <option key={index} value={item[0]}>{item[1]}</option>
+                )}
+            </select>
+        </WrapContent>
     )
 }
 

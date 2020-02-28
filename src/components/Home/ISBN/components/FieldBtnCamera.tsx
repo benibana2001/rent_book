@@ -1,7 +1,7 @@
 import * as React from 'react'
 const Quagga = require('quagga')
-export { FieldCamera }
-class FieldCamera extends React.Component {
+
+class FieldBtnCamera extends React.Component {
     constructor(props: any) {
         super(props)
     }
@@ -62,3 +62,5 @@ class FieldCamera extends React.Component {
         )
     }
 }
+
+export default FieldBtnCamera
