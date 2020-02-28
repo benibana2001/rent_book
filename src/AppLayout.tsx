@@ -19,26 +19,37 @@ export const defaultLibResponse: LibResponse = {
 }
 
 const AppLayout: React.FunctionComponent = () => {
+    const location = useLocation()
     const [bookStatus, setBookStatus] = useState(BookStatus.NOT_DONE)
     const [bookInfo, setBookInfo] = useState(null)
     const [libraryResponse, setLibraryResponse] = useState(defaultLibResponse)
     return (
         <React.Fragment>
-            <Route exact path="/home" >
-                <Home
-                    setBookInfo={setBookInfo}
-                    setBookStatus={setBookStatus}
-                    setLibraryResponse={setLibraryResponse}
-                />
-            </Route>
-            <Route path="/home/result">
-                <Result
-                    bookStatus={bookStatus}
-                    response={libraryResponse}
-                    setBookStatus={setBookStatus}
-                    setLibResponse={setLibraryResponse}
-                />
-            </Route>
+            <TransitionGroup>
+                <CSSTransition
+                    key={location.key}
+                    timeout={500}
+                    classNames="animate"
+                >
+                    <Switch location={location}>
+                        <Route exact path="/home" >
+                            <Home
+                                setBookInfo={setBookInfo}
+                                setBookStatus={setBookStatus}
+                                setLibraryResponse={setLibraryResponse}
+                            />
+                        </Route>
+                        <Route path="/home/result">
+                            <Result
+                                bookStatus={bookStatus}
+                                response={libraryResponse}
+                                setBookStatus={setBookStatus}
+                                setLibResponse={setLibraryResponse}
+                            />
+                        </Route>
+                    </Switch>
+                </CSSTransition>
+            </TransitionGroup>
         </React.Fragment>
     )
 }

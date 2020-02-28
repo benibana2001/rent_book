@@ -58,7 +58,7 @@ const Home: React.FunctionComponent<IProps> = (props) => {
         history.push('/home/result')
     }
     return (
-        <React.Fragment>
+        <div id="home">
             <LoadingView isLoading={isLoading} />
             <ISBNArea setISBN={setISBN} />
             <PrefArea setSystemID={setSystemID} />
@@ -66,7 +66,7 @@ const Home: React.FunctionComponent<IProps> = (props) => {
                 fetchBookInfo={fetchBookInfo}
                 submit={handleClick}
                 isbn={request.isbn} />
-        </React.Fragment>
+        </div>
     )
 }
 

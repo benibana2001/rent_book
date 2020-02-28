@@ -3,6 +3,7 @@ import * as React from 'react'
 import ResultList from './components/ResultList'
 import { LibResponse } from '../../api/Calil'
 import { BookStatus } from '../../AppLayout'
+import { useHistory } from 'react-router-dom'
 
 interface IProps {
     bookStatus: BookStatus,
@@ -17,6 +18,7 @@ const defaultResponse: LibResponse = {
 const moveTo = (url: string) => () => { location.href = url }
 
 const ResultView: React.FunctionComponent<IProps> = props => {
+    const history = useHistory()
     const clearLibData = (): void => {
         props.setBookStatus(BookStatus.NOT_DONE)
         props.setLibResponse(defaultResponse)
@@ -25,15 +27,17 @@ const ResultView: React.FunctionComponent<IProps> = props => {
         <div id='result'>
             {props.bookStatus === BookStatus.EXIST
                 ? (
-                <div>
-                    <ResultList data={props.response.libkey} />
-                    <button id="buttonReserve" type="button" className="mdl-button" onClick={moveTo(props.response.reserveurl)}>予約</button>
-                    <button type="button" className="mdl-button close" onClick={clearLibData}>とじる</button>
-                </div>
-            )
-            :(
-                <div>検索結果はないです</div>
-            )
+                    <div>
+                        <ResultList data={props.response.libkey} />
+                        <button id="buttonReserve" type="button" className="mdl-button" onClick={moveTo(props.response.reserveurl)}>予約</button>
+                        {/* <button type="button" className="mdl-button close" onClick={clearLibData}>とじる</button> */}
+                        <button type="button" className="mdl-button close" onClick={() => history.push('/home')}>もどる</button>
+
+                    </div>
+                )
+                : (
+                    <div>検索結果はないです</div>
+                )
             }
         </div>
     )
