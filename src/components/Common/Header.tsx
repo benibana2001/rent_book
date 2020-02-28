@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-const Header: React.SFC = () => {
+const Header: React.FunctionComponent = () => {
     return (
         <header className="mdl-layout__header">
             <div className="mdl-layout__header-row">

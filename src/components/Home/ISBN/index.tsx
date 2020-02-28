@@ -7,7 +7,7 @@ interface IProps {
     setISBN: Function
 }
 
-const ISBNArea: React.SFC<IProps> = (props) => {
+const ISBNArea: React.FunctionComponent<IProps> = (props) => {
     const handleSubmit = (event: React.FormEvent): void => event.preventDefault()
     return (
         < WrapContent >

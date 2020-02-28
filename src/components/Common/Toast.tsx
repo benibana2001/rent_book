@@ -6,7 +6,7 @@ interface IProps {
     img?: string
 }
 
-const Toast: React.SFC<IProps> = props => {
+const Toast: React.FunctionComponent<IProps> = props => {
     return (
         <div id='toastArea' className="toastArea" >
             <div className="outer">

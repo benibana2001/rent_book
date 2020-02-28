@@ -8,7 +8,7 @@ interface IProps {
     setISBN: Function
 }
 
-const FieldInput: React.SFC<IProps> = props => {
+const FieldInput: React.FunctionComponent<IProps> = props => {
     // To use fontawsome, we need to replace <i> to <svg>, so that do these function.
     //   - https://fontawesome.com/how-to-use/on-the-web/advanced/svg-javascript-core
     //   - https://fontawesome.com/how-to-use/with-the-api/setup/getting-started

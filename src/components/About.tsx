@@ -1,5 +1,5 @@
 import * as React from 'react'
-const About: React.SFC = () => {
+const About: React.FunctionComponent = () => {
     return (
         <div>
             <h2>About</h2>

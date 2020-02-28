@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 
-const Menu: React.SFC = () => {
+const Menu: React.FunctionComponent = () => {
     // MaterialDesignLiteにより実装されたサイドメニューを自動折りたたみ
     const invisible = () => {
         // DOM操作

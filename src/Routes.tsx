@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { useEffect, useState } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { CSSTransition, TransitionGroup } from "react-transition-group"
 
@@ -16,63 +17,42 @@ export enum BookStatus {
     NONE = 'NONE',
     NOT_DONE = 'NOT_DONE'
 }
-interface IState {
-    libraryResponse: LibResponse
-    bookStatus: BookStatus
-    bookInfo: BookResponse
-}
 export const defaultLibResponse: LibResponse = {
     libkey: null,
     reserveurl: '',
 }
-const defaultState: IState = {
-    libraryResponse: defaultLibResponse,
-    bookInfo: null,
-    bookStatus: BookStatus.NOT_DONE
-}
 
-class Routes extends React.Component<{}, IState> {
-    public constructor(props: {}) {
-        super(props)
-        this.state = defaultState
-    }
-    public componentDidMount() {
-        this.setState(defaultState)
-    }
-
-    public setBookInfo = (bookInfo: BookResponse): void => this.setState({ bookInfo: bookInfo })
-    public setBookStatus = (bookStatus: BookStatus): void => this.setState({ bookStatus: bookStatus })
-    public setLibraryResponse = (res: LibResponse): void => this.setState({ libraryResponse: { ...res } })
-    public removeData = (): void => this.setState({ libraryResponse: { ...defaultLibResponse } })
-    render() {
-        return (
-            <div className="container mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-tabs">
-                <Header />
-                <Router >
-                    <Menu />
-                    <Switch>
-                        <Route exact path="/" >
-                            <Home
-                                setBookInfo={this.setBookInfo}
-                                setBookStatus={this.setBookStatus}
-                                setLibraryResponse={this.setLibraryResponse}
-                            />
-                        </Route>
-                        <Route exact path="/result">
-                            <Result
-                                bookStatus={this.state.bookStatus}
-                                response={this.state.libraryResponse}
-                                setBookStatus={this.setBookStatus}
-                                setLibResponse={this.setLibraryResponse}
-                            />
-                        </Route>
-                        <Route path="/about" component={About} />
-                    </Switch>
-                    {/* Side Menu created by Material design - lite */}
-                </Router>
-            </div>
-        )
-    }
+const Routes: React.FunctionComponent = () => {
+    const [bookStatus, setBookStatus] = useState(BookStatus.NOT_DONE)
+    const [bookInfo, setBookInfo] = useState(null)
+    const [libraryResponse, setLibraryResponse] = useState(defaultLibResponse)
+    return (
+        <div className="container mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-tabs">
+            <Header />
+            <Router >
+                <Menu />
+                <Switch>
+                    <Route exact path="/" >
+                        <Home
+                            setBookInfo={setBookInfo}
+                            setBookStatus={setBookStatus}
+                            setLibraryResponse={setLibraryResponse}
+                        />
+                    </Route>
+                    <Route exact path="/result">
+                        <Result
+                            bookStatus={bookStatus}
+                            response={libraryResponse}
+                            setBookStatus={setBookStatus}
+                            setLibResponse={setLibraryResponse}
+                        />
+                    </Route>
+                    <Route path="/about" component={About} />
+                </Switch>
+                {/* Side Menu created by Material design - lite */}
+            </Router>
+        </div>
+    )
 }
 
 export default Routes

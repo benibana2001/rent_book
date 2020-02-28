@@ -9,7 +9,7 @@ interface IProps {
     data: LibData[]
 }
 
-const ResultList: React.SFC<IProps> = props => {
+const ResultList: React.FunctionComponent<IProps> = props => {
     library.add(faUniversity)
     dom.i2svg()
     return (

@@ -6,7 +6,7 @@ import WrapContent from './WrapContent'
 interface IProps {
     setSystemID: Function
 }
-const PrefArea: React.SFC<IProps> = props => {
+const PrefArea: React.FunctionComponent<IProps> = props => {
     const handleChangeSelect = (event: React.ChangeEvent<HTMLSelectElement>): void => {
         event.persist()
         props.setSystemID(event.target.value)

@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-const TitleArea: React.SFC = () => {
+const TitleArea: React.FunctionComponent = () => {
     return (
         <div className="content">
             <div className="div-isbn">

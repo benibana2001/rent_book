@@ -16,7 +16,7 @@ const defaultResponse: LibResponse = {
 }
 const moveTo = (url: string) => () => { location.href = url }
 
-const ResultView: React.SFC<IProps> = props => {
+const ResultView: React.FunctionComponent<IProps> = props => {
     const clearLibData = (): void => {
         props.setBookStatus(BookStatus.NOT_DONE)
         props.setLibResponse(defaultResponse)

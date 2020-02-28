@@ -7,7 +7,7 @@ interface IProps {
     isLoading: boolean
 }
 
-const LoadingView: React.SFC<IProps> = props => {
+const LoadingView: React.FunctionComponent<IProps> = props => {
     const isLoading = props.isLoading
     return (
         <React.Fragment>

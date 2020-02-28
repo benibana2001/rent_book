@@ -11,14 +11,11 @@ const defaultBookResponse: BookResponse = {
     coverurl: ''
 }
 
-const BookDataArea: React.SFC<IProps> = props => {
+const BookDataArea: React.FunctionComponent<IProps> = props => {
     const [bookResponse, setBookResponse] = React.useState(defaultBookResponse)
     React.useEffect(() => {
         const validate = (): boolean => (props.isbn.length === 13 || props.isbn.length === 10)
-        const fetch = async () => {
-            const res: BookResponse = await props.fetchBookInfo(props.isbn)
-            setBookResponse(res)
-        }
+        const fetch = async () => { setBookResponse(await props.fetchBookInfo(props.isbn)) }
         validate() ? fetch() : setBookResponse(defaultBookResponse)
     }, [props.isbn])
 
