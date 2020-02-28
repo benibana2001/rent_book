@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { useEffect, useState } from 'react'
 
 import ISBNArea from './ISBN'
 import PrefArea from './Pref'
@@ -16,82 +17,58 @@ interface IProps {
     setBookStatus: (bookStatus: BookStatus) => void
     setLibraryResponse: (libresponse: LibResponse) => void
 }
-interface IState {
-    request: LibRequest,
-    isLoading: boolean,
-}
+const CALIL_KEY = process.env.APP_API_KEY
 const defaultLibRequest: LibRequest = {
-    appkey: '',
+    appkey: CALIL_KEY,
     isbn: '',
     systemid: ''
 }
-const defaultState: IState = {
-    request: defaultLibRequest,
-    isLoading: false,
-}
 
-class Home extends React.Component<IProps, IState>{
-    constructor(props: IProps) {
-        super(props)
-        this.state = defaultState
-    }
-    componentDidMount() {
-        this.setState(defaultState)
-        const setAppkey = (value: string) => this.setState({
-            request: { ...this.state.request, 'appkey': value },
-        })
-        setAppkey(process.env.APP_API_KEY)
-    }
-
-    public setSystemID = (value: string) => this.setState({
-        request: { ...this.state.request, 'systemid': value }
-    })
-    public setISBN = (value: string) => this.setState({
-        request: { ...this.state.request, 'isbn': value }
-    })
-    public setIsLoading = (state: boolean): void => this.setState({ isLoading: state })
-    private fetchBookInfo = async (isbn: string): Promise<BookResponse> => {
+const Home: React.FunctionComponent<IProps> = props => {
+    const [request, setRequest] = useState(defaultLibRequest)
+    const [isLoading, setIsLoading] = useState(false)
+    const setSystemID = (value: string) => setRequest({ ...request, 'systemid': value })
+    const setISBN = (value: string) => setRequest({ ...request, 'isbn': value })
+    const fetchBookInfo = async (isbn: string): Promise<BookResponse> => {
         const O: OpenBD = new OpenBD()
         let bookResponse: BookResponse = await O.search(isbn)
         return bookResponse
     }
     // Fetch a book status about each library by using Calil API.
-    private fetchLibrayInfo = async (o: LibRequest): Promise<LibResponse> => {
+    // TODO: 関数実行のたびにインスタンを作成するのは不要
+    const fetchLibrayInfo = async (o: LibRequest): Promise<LibResponse> => {
         let c: Calil = new Calil(o)
         let res: LibResponse = await c.search()
         return res
     }
-    private dispatchLibraryInfo = (res: LibResponse): void => {
+    const dispatchLibraryInfo = (res: LibResponse): void => {
         if (!res) {
             console.log('Data is none')
-            this.props.setBookStatus(BookStatus.NONE)
-            this.props.setLibraryResponse(defaultLibResponse)
+            props.setBookStatus(BookStatus.NONE)
+            props.setLibraryResponse(defaultLibResponse)
             return
         }
-        this.props.setLibraryResponse(res)
-        this.props.setBookStatus(BookStatus.EXIST)
+        props.setLibraryResponse(res)
+        props.setBookStatus(BookStatus.EXIST)
     }
-    handleClick = async (): Promise<void> => {
+    const handleClick = async (): Promise<void> => {
         // TODO: Display loading view automatically.
-        this.setState({ isLoading: true })
-        const res = await this.fetchLibrayInfo(this.state.request)
-        this.dispatchLibraryInfo(res)
-        this.setState({ isLoading: false })
+        setIsLoading(true)
+        const res = await fetchLibrayInfo(request)
+        dispatchLibraryInfo(res)
+        setIsLoading(false)
     }
-    
-    render() {
-        return (
-            <React.Fragment>
-                <LoadingView isLoading={this.state.isLoading} />
-                <ISBNArea setISBN={this.setISBN} />
-                <PrefArea setSystemID={this.setSystemID} />
-                <BookDataArea
-                    fetchBookInfo={this.fetchBookInfo}
-                    submit={this.handleClick}
-                    isbn={this.state.request.isbn} />
-            </React.Fragment>
-        )
-    }
+    return (
+        <React.Fragment>
+            <LoadingView isLoading={isLoading} />
+            <ISBNArea setISBN={setISBN} />
+            <PrefArea setSystemID={setSystemID} />
+            <BookDataArea
+                fetchBookInfo={fetchBookInfo}
+                submit={handleClick}
+                isbn={request.isbn} />
+        </React.Fragment>
+    )
 }
 
 export default Home
