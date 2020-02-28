@@ -23,8 +23,8 @@ const Menu: React.FunctionComponent = () => {
             <span className="mdl-layout-title">Rent Books</span>
             <nav className="mdl-navigation">
                 {/* NavLink にしておくと、activeClassNameを設定できる */}
-                <Link to="/" className="mdl-navigation__link" onClick={invisible}>本を検索する</Link>
-                <Link to="/result" className="mdl-navigation__link" onClick={invisible}>検索結果</Link>
+                <Link to="/home" className="mdl-navigation__link" onClick={invisible}>本を検索する</Link>
+                <Link to="/home/result" className="mdl-navigation__link" onClick={invisible}>検索結果</Link>
                 <Link to="/about" className="mdl-navigation__link" onClick={invisible}>About</Link>
             </nav>
         </div>

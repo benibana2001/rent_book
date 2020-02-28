@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { useEffect, useState } from 'react'
+import { Link, withRouter, useHistory, useLocation } from 'react-router-dom'
 
 import ISBNArea from './ISBN'
 import PrefArea from './Pref'
@@ -10,7 +11,7 @@ import OpenBD, { BookResponse } from '../../api/OpenBD'
 
 import 'material-design-lite'
 import 'material-design-lite/material.min.css'
-import { BookStatus, defaultLibResponse } from '../../Routes'
+import { BookStatus, defaultLibResponse } from '../../AppLayout'
 
 interface IProps {
     setBookInfo: (bookInfo: BookResponse) => void
@@ -24,7 +25,8 @@ const defaultLibRequest: LibRequest = {
     systemid: ''
 }
 
-const Home: React.FunctionComponent<IProps> = props => {
+const Home: React.FunctionComponent<IProps> = (props) => {
+    const history = useHistory()
     const [request, setRequest] = useState(defaultLibRequest)
     const [isLoading, setIsLoading] = useState(false)
     const setSystemID = (value: string) => setRequest({ ...request, 'systemid': value })
@@ -34,13 +36,8 @@ const Home: React.FunctionComponent<IProps> = props => {
         let bookResponse: BookResponse = await O.search(isbn)
         return bookResponse
     }
-    // Fetch a book status about each library by using Calil API.
+    const calil = new Calil(request)
     // TODO: 関数実行のたびにインスタンを作成するのは不要
-    const fetchLibrayInfo = async (o: LibRequest): Promise<LibResponse> => {
-        let c: Calil = new Calil(o)
-        let res: LibResponse = await c.search()
-        return res
-    }
     const dispatchLibraryInfo = (res: LibResponse): void => {
         if (!res) {
             console.log('Data is none')
@@ -51,12 +48,14 @@ const Home: React.FunctionComponent<IProps> = props => {
         props.setLibraryResponse(res)
         props.setBookStatus(BookStatus.EXIST)
     }
+    // Fetch a book status about each library by using Calil API.
     const handleClick = async (): Promise<void> => {
         // TODO: Display loading view automatically.
         setIsLoading(true)
-        const res = await fetchLibrayInfo(request)
+        const res = await calil.search(request)
         dispatchLibraryInfo(res)
         setIsLoading(false)
+        history.push('/home/result')
     }
     return (
         <React.Fragment>

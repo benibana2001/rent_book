@@ -2,7 +2,7 @@ import * as React from 'react'
 
 import ResultList from './components/ResultList'
 import { LibResponse } from '../../api/Calil'
-import { BookStatus } from '../../Routes'
+import { BookStatus } from '../../AppLayout'
 
 interface IProps {
     bookStatus: BookStatus,

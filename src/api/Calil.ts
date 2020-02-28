@@ -34,6 +34,8 @@ class Calil {
     private readonly HOST: string = 'https://api.calil.jp/check'
     //
     private _request: LibRequest
+    get request() { return this._request }
+    set request(request: LibRequest) {this._request = request}
     //
     private _server_status: number = 0
     set server_status(status: number) { this._server_status = status }
@@ -101,10 +103,11 @@ class Calil {
      * I think it occured because server judged my request as wrong one when I request many times by same isbn probably.
      * 
      */
-    public async search(): Promise<LibResponse> {
+    public async search(req: LibRequest = this._request): Promise<LibResponse> {
         // Create url
         // https://api.calil.jp/check?appkey={}&isbn=4334926940&systemid=Tokyo_Setagaya&format=json
         // https://api.calil.jp/check?appkey={}&isbn=4834000826&systemid=Aomori_Pref&format=json
+        this._request = req
         let url: string = (
             this.HOST +
             '?appkey=' + this._request.appkey +
