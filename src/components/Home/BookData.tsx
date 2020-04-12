@@ -6,6 +6,7 @@ interface IProps {
     fetchBookInfo: (isbn: string) => Promise<BookResponse>,
     submit: () => Promise<void>
 }
+
 const defaultBookResponse: BookResponse = {
     title: '',
     coverurl: ''
@@ -13,11 +14,11 @@ const defaultBookResponse: BookResponse = {
 
 const BookDataArea: React.FunctionComponent<IProps> = props => {
     const [bookResponse, setBookResponse] = React.useState(defaultBookResponse)
-    React.useEffect(() => {
-        const validate = (): boolean => (props.isbn.length === 13 || props.isbn.length === 10)
-        const fetch = async () => { setBookResponse(await props.fetchBookInfo(props.isbn)) }
-        validate() ? fetch() : setBookResponse(defaultBookResponse)
-    }, [props.isbn])
+
+    React.useEffect(
+        fetchBook,
+        [props.isbn]
+    )
 
     const handleClick = async () => await props.submit()
 
@@ -26,23 +27,45 @@ const BookDataArea: React.FunctionComponent<IProps> = props => {
             <div className="snack-container">
                 <a className="snack-inner">
                     {bookResponse.coverurl
-                        ? (<img className="thumbnail" src={bookResponse.coverurl} alt={bookResponse.coverurl} />)
+                        ? (<img className="thumbnail"
+                            src={bookResponse.coverurl}
+                            alt={bookResponse.coverurl} />)
                         : (<span>書影なし</span>)
                     }
+
                     <div className="snack-content">
                         <div className="snack-title">
                             {bookResponse.title}
                         </div>
+
                         <div>
-                            <button onClick={handleClick} className="mdl-button mdl-js-button mdl-js-ripple-effect">
+                            <button onClick={handleClick}
+                                className="mdl-button mdl-js-button mdl-js-ripple-effect">
                                 蔵書を調べる
                             </button>
                         </div>
+
                     </div>
                 </a>
             </div>
         )
     )
+
+    function fetchBook() {
+        validate()
+            ? fetch()
+            : setBookResponse(defaultBookResponse)
+    }
+
+
+    function validate(): boolean {
+        return (props.isbn.length === 13 || props.isbn.length === 10)
+    }
+
+    async function fetch() {
+        setBookResponse(await props.fetchBookInfo(props.isbn))
+    }
+
 }
 
 export default BookDataArea

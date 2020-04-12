@@ -5,11 +5,11 @@ class FieldBtnCamera extends React.Component {
     constructor(props: any) {
         super(props)
     }
-    //
+
     handleClick(): void {
         // Camera Init
         console.log(Quagga)
-        //
+
         Quagga.init({
             inputStream: {
                 type: 'LiveStream',
@@ -43,6 +43,7 @@ class FieldBtnCamera extends React.Component {
             // Quagga.start()
         })
     }
+
     componentDidMount() {
         Quagga.onDetected((success: any) => {
             console.log(`detected!: ${JSON.stringify(success)}`)

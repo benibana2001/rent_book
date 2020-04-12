@@ -1,9 +1,11 @@
 import * as React from 'react'
+import { useHistory } from 'react-router-dom'
 
 import ResultList from './components/ResultList'
+
 import { LibResponse } from '../../api/Calil'
 import { BookStatus } from '../../AppLayout'
-import { useHistory } from 'react-router-dom'
+
 
 interface IProps {
     bookStatus: BookStatus,
@@ -11,38 +13,55 @@ interface IProps {
     setBookStatus: (bookStatus: BookStatus) => void
     setLibResponse: (res: LibResponse) => void,
 }
-const defaultResponse: LibResponse = {
-    libkey: null,
-    reserveurl: ''
-}
-const moveTo = (url: string) => () => { location.href = url }
 
 const ResultView: React.FunctionComponent<IProps> = props => {
     const history = useHistory()
-    const clearLibData = (): void => {
-        props.setBookStatus(BookStatus.NOT_DONE)
-        props.setLibResponse(defaultResponse)
-    }
+
     return (
         <div id='result'>
-            {props.bookStatus === BookStatus.EXIST
-                ? (
-                    <div>
-                        <ResultList data={props.response.libkey} />
-                        <button id="buttonReserve" type="button" className="mdl-button" onClick={moveTo(props.response.reserveurl)}>予約</button>
-                        {/* <button type="button" className="mdl-button close" onClick={clearLibData}>とじる</button> */}
-                        <button type="button" className="mdl-button close" onClick={() => history.push('/home')}>もどる</button>
-
-                    </div>
-                )
-                : (
-                    <div>検索結果はないです</div>
-                )
+            {existBook()
+                ? resultView()
+                : <div>検索結果はありません</div>
             }
         </div>
     )
+
+    function resultView() {
+        return (
+            <div>
+                <ResultList data={props.response.libkey} />
+                {reserveButton()}
+                {backButton()}
+            </div>
+        )
+    }
+
+    function existBook() {
+        return props.bookStatus === BookStatus.EXIST
+    }
+
+    function reserveButton() {
+        return (
+            <button id="buttonReserve"
+                type="button"
+                className="mdl-button"
+                onClick={moveTo(props.response.reserveurl)}>
+                予約
+            </button>
+        )
+    }
+
+    function backButton() {
+        return (
+            <button type="button"
+                className="mdl-button close"
+                onClick={() => history.push('/home')}>
+                もどる
+            </button>
+        )
+    }
 }
 
-// <Toast text='蔵書はありませんでした。' button={<button type="button" className="mdl-button close" onClick={this.clearLibData}>とじる</button>} />
+const moveTo = (url: string) => () => location.href = url
 
 export default ResultView

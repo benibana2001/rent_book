@@ -13,6 +13,7 @@ export enum BookStatus {
     NONE = 'NONE',
     NOT_DONE = 'NOT_DONE'
 }
+
 export const defaultLibResponse: LibResponse = {
     libkey: null,
     reserveurl: '',
@@ -23,6 +24,24 @@ const AppLayout: React.FunctionComponent = () => {
     const [bookStatus, setBookStatus] = useState(BookStatus.NOT_DONE)
     const [bookInfo, setBookInfo] = useState(null)
     const [libraryResponse, setLibraryResponse] = useState(defaultLibResponse)
+
+    const renderHome = () => (
+        <Home
+            setBookInfo={setBookInfo}
+            setBookStatus={setBookStatus}
+            setLibraryResponse={setLibraryResponse}
+        />
+    )
+
+    const renderResult = () => (
+        <Result
+            bookStatus={bookStatus}
+            response={libraryResponse}
+            setBookStatus={setBookStatus}
+            setLibResponse={setLibraryResponse}
+        />
+    )
+
     return (
         <React.Fragment>
             <TransitionGroup>
@@ -33,21 +52,14 @@ const AppLayout: React.FunctionComponent = () => {
                 >
                     <Switch location={location}>
                         <Route exact path="/home" >
-                            <Home
-                                setBookInfo={setBookInfo}
-                                setBookStatus={setBookStatus}
-                                setLibraryResponse={setLibraryResponse}
-                            />
+                            {renderHome()}
                         </Route>
+
                         <Route path="/home/result">
-                            <Result
-                                bookStatus={bookStatus}
-                                response={libraryResponse}
-                                setBookStatus={setBookStatus}
-                                setLibResponse={setLibraryResponse}
-                            />
+                            {renderResult()}
                         </Route>
                     </Switch>
+
                 </CSSTransition>
             </TransitionGroup>
         </React.Fragment>
