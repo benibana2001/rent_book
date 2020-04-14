@@ -62,7 +62,7 @@ class FieldBtnCamera extends React.Component {
         {/* バーコードから調べる */}
         <button
           onClick={this.handleClick}
-          className="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
+          className=""
         >
           カメラ起動
         </button>

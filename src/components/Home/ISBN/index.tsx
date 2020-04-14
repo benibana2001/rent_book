@@ -13,7 +13,7 @@ const ISBNArea: React.FunctionComponent<IProps> = (props) => {
 
   return (
     <WrapContent>
-      <p>本のISBNを入力してね</p>
+      <p>探したい本</p>
 
       <form onSubmit={handleSubmit}>
         <FieldInput setISBN={props.setISBN} />

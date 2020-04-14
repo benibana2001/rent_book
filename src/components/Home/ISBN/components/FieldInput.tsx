@@ -18,28 +18,35 @@ const FieldInput: React.FunctionComponent<IProps> = (props) => {
   const handleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     // If reference target in the async function, to do persit() is required.
     event.persist()
-    props.setISBN(event.target.value)
+
+    const isbn = event.target.value as string
+    props.setISBN(isbn)
+    console.log(isbn.split(''))
   }
 
   return (
     <React.Fragment>
-      <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+      <div className="">
         <input
-          className="mdl-textfield__input"
+          id="input-isbn"
+          className=""
           type="text"
           pattern="-?[0-9]*(\.[0-9]+)?"
-          id="sample4"
           onChange={handleChange}
+          placeholder="ISBNを入力"
         />
-
-        <label className="mdl-textfield__label" htmlFor="sample4">
-          ISBNを入力
-        </label>
-
-        <span className="mdl-textfield__error">Input is not a number!</span>
+        {debugButton()}
       </div>
     </React.Fragment>
   )
+
+  function debugButton() {
+    const debug = () => {
+      const isbn = document.getElementById('input-isbn') as HTMLInputElement
+      isbn.value = '4334926940'
+    }
+    return <button onClick={debug}>debug</button>
+  }
 }
 
 export default FieldInput

@@ -41,7 +41,7 @@ const ResultView: React.FunctionComponent<IProps> = (props) => {
       <button
         id="buttonReserve"
         type="button"
-        className="mdl-button"
+        className=""
         onClick={moveTo(props.response.reserveurl)}
       >
         予約
@@ -53,7 +53,7 @@ const ResultView: React.FunctionComponent<IProps> = (props) => {
     return (
       <button
         type="button"
-        className="mdl-button close"
+        className=""
         onClick={() => history.push('/home')}
       >
         もどる

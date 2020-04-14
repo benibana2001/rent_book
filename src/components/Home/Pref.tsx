@@ -23,11 +23,11 @@ const PrefArea: React.FunctionComponent<IProps> = (props) => {
 
   return (
     <WrapContent>
-      <p>市区町村を選んでね</p>
+      <p>探す場所</p>
 
       <select
         name="system_id"
-        className="mdl-textfield__input"
+        className="selectbox"
         id="systemid"
         onChange={handleChangeSelect}
       >

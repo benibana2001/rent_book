@@ -17,38 +17,52 @@ const BookDataArea: React.FunctionComponent<IProps> = (props) => {
 
   React.useEffect(fetchBook, [props.isbn])
 
-  const handleClick = async () => await props.submit()
+  const bookDataArea = (
+    <div className="bookdata">
+      <a className="bookdata__inner">
+        {coverURL()}
 
-  return (
-    bookResponse.title && (
-      <div className="snack-container">
-        <a className="snack-inner">
-          {bookResponse.coverurl ? (
-            <img
-              className="thumbnail"
-              src={bookResponse.coverurl}
-              alt={bookResponse.coverurl}
-            />
-          ) : (
-            <span>書影なし</span>
-          )}
+        <div className="bookdata__content">
+          <div className="bookdata__title">{bookResponse.title}</div>
 
-          <div className="snack-content">
-            <div className="snack-title">{bookResponse.title}</div>
-
-            <div>
-              <button
-                onClick={handleClick}
-                className="mdl-button mdl-js-button mdl-js-ripple-effect"
-              >
-                蔵書を調べる
-              </button>
-            </div>
-          </div>
-        </a>
-      </div>
-    )
+          <div>{searchButton()}</div>
+        </div>
+      </a>
+    </div>
   )
+
+  return isBookResponse() && bookDataArea
+
+  function coverURL() {
+    return bookResponse.coverurl ? (
+      <img
+        className="bookdata__thumbnail"
+        src={bookResponse.coverurl}
+        alt={bookResponse.coverurl}
+      />
+    ) : (
+      <span>書影なし</span>
+    )
+  }
+
+  function searchButton() {
+    return (
+      <button
+        onClick={handleClick}
+        className=""
+      >
+        蔵書を調べる
+      </button>
+    )
+  }
+
+  async function handleClick() {
+    return await props.submit()
+  }
+
+  function isBookResponse() {
+    return bookResponse.title
+  }
 
   function fetchBook() {
     validate() ? fetch() : setBookResponse(defaultBookResponse)

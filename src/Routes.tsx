@@ -10,6 +10,7 @@ import AppLayout from './AppLayout'
 import Header from './components/Common/Header'
 import About from './components/About'
 import Menu from './components/Common/Menu'
+import TabBar from './components/Common/TabBar'
 import './index.scss'
 
 const Routes: React.FunctionComponent = () => {
@@ -25,6 +26,7 @@ const Routes: React.FunctionComponent = () => {
           <Route path="/about" component={About} />
         </Switch>
       </Router>
+      <TabBar />
     </div>
   )
 }
