@@ -5,7 +5,7 @@
 // INPUT: URL
 // OUTPUT: XML
 // METHOD: GET
-// HOST: 
+// HOST:
 //  - SRU: https://iss.ndl.go.jp/api/sru
 //    - example: https://iss.ndl.go.jp/api/sru?operation=searchRetrieve&maximumRecords=10&query=title%3d%22%e6%a1%9c%22%20AND%20from=%222018%22
 //  - 書影: http://iss.ndl.go.jp/thumbnail
@@ -13,45 +13,40 @@
 export { NDL }
 
 class NDL {
-    constructor() {
-        console.log('Hello NDL!')
+  constructor() {
+    console.log('Hello NDL!')
+  }
+  //----------------------------------------
+  /**
+   * search
+   */
+  public async search(): Promise<any> {
+    let url: string = this.createURL()
+    // Set Dummy
+    url =
+      'https://iss.ndl.go.jp/api/sru?operation=searchRetrieve&maximumRecords=10&query=title%3d%22%e6%a1%9c%22%20AND%20from=%222018%22'
+    //
+    const xml: any = await this.callApi(url)
+    console.log(xml)
+  }
+  /**
+   * callApi
+   */
+  private async callApi(url: string): Promise<any> {
+    // Return type is XML.
+    const header: {} = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/xml',
+      },
     }
-    //----------------------------------------
-    /**
-     * search
-     */
-    public async search(): Promise<any> {
-        let url: string = this.createURL()
-        // Set Dummy
-        url = 'https://iss.ndl.go.jp/api/sru?operation=searchRetrieve&maximumRecords=10&query=title%3d%22%e6%a1%9c%22%20AND%20from=%222018%22'
-        //
-        let xml: any = await this.callApi(url)
-        console.log(xml)
-    }
-    /**
-     * callApi
-     */
-    private async callApi(url: string): Promise<any> {
-        // Return type is XML.
-        let header: {} = {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/xml'
-            }
-        }
-        let xml: any = await fetch(url, header)
-        return xml
-    }
-    /**
-     * createURL
-     */
-    private createURL(): string {
-        return 'xxx'
-    }
-    /**
-     * createQuery
-     */
-    private createQuery(): void {
-
-    }
+    const xml: any = await fetch(url, header)
+    return xml
+  }
+  /**
+   * createURL
+   */
+  private createURL(): string {
+    return 'xxx'
+  }
 }

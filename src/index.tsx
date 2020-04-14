@@ -3,11 +3,9 @@ import * as ReactDOM from 'react-dom'
 
 import Routes from './Routes'
 
-let parent: HTMLElement | null = document.getElementById('root')
+const parent: HTMLElement | null = document.getElementById('root')
 const Apps: React.FunctionComponent = () => {
-    return (
-        <Routes />
-    )
+  return <Routes />
 }
 
 ReactDOM.render(<Apps />, parent)

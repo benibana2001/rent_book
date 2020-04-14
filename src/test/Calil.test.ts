@@ -2,11 +2,10 @@ import Calil from '../api/Calil'
 import { LibData, LibResponse, LibRequest } from '../api/Calil'
 
 const fetch = async (req: LibRequest) => {
-    const calil: Calil = new Calil(req)
-    const res: LibResponse = await calil.search()
-    return res
+  const calil: Calil = new Calil(req)
+  const res: LibResponse = await calil.search()
+  return res
 }
-
 
 // const mockSuccess: LibResponse = {
 //     libkey: [
