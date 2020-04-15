@@ -3,9 +3,15 @@ import * as ReactDOM from 'react-dom'
 
 import Routes from './Routes'
 
+import './index.scss'
+
 const parent: HTMLElement | null = document.getElementById('root')
 const Apps: React.FunctionComponent = () => {
-  return <Routes />
+  return (
+    <div className="container">
+        <Routes />
+    </div>
+  )
 }
 
 ReactDOM.render(<Apps />, parent)

@@ -1,10 +1,6 @@
 import * as React from 'react'
 import { useState } from 'react'
-import {
-  Route,
-  Switch,
-  useLocation,
-} from 'react-router-dom'
+import { Route, Switch, useLocation } from 'react-router-dom'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 
 import Home from './components/Home'
@@ -47,19 +43,17 @@ const AppLayout: React.FunctionComponent = () => {
   )
 
   return (
-    <React.Fragment>
-      <TransitionGroup>
-        <CSSTransition key={location.key} timeout={500} classNames="animate">
-          <Switch location={location}>
-            <Route exact path="/home">
-              {renderHome()}
-            </Route>
+    <TransitionGroup>
+      <CSSTransition key={location.key} timeout={500} classNames="animate">
+        <Switch location={location}>
+          <Route exact path="/home">
+            {renderHome()}
+          </Route>
 
-            <Route path="/home/result">{renderResult()}</Route>
-          </Switch>
-        </CSSTransition>
-      </TransitionGroup>
-    </React.Fragment>
+          <Route path="/home/result">{renderResult()}</Route>
+        </Switch>
+      </CSSTransition>
+    </TransitionGroup>
   )
 }
 
