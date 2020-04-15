@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Link, useLocation } from 'react-router-dom'
 
 import Icon from '@mdi/react'
-import { mdiBank, mdiHome } from '@mdi/js'
+import { mdiBank, mdiHome, mdiBookshelf } from '@mdi/js'
 
 const TabBar: React.FunctionComponent = () => {
   const [currentPage, setCurrentPage] = React.useState('/home')
@@ -17,8 +17,13 @@ const TabBar: React.FunctionComponent = () => {
   return (
     <Outer>
       <LinkItem move={'home'} icon={'home'} location={currentPage} />
-      <LinkItem move={'result'} icon={'library'} location={currentPage} />
+      <LinkItem
+        move={'librarysearch'}
+        icon={'library'}
+        location={currentPage}
+      />
       <LinkItem move={'about'} icon={'library'} location={currentPage} />
+      <LinkItem move={'newbooks'} icon={'book'} location={currentPage} />
     </Outer>
   )
 }
@@ -44,10 +49,14 @@ const LinkItem = (props: { move: string; icon: string; location: string }) => {
     switch (props.move) {
       case 'home':
         return '/home'
+      case 'librarysearch':
+        return '/librarysearch'
       case 'about':
         return '/about'
       case 'result':
-        return '/home/result'
+        return '/librarysearch/result'
+      case 'newbooks':
+        return '/newbooks'
       default:
         return '/home'
     }
@@ -59,6 +68,8 @@ const LinkItem = (props: { move: string; icon: string; location: string }) => {
         return mdiHome
       case 'library':
         return mdiBank
+      case 'book':
+        return mdiBookshelf
     }
   })()
 
@@ -75,7 +86,7 @@ const LinkItem = (props: { move: string; icon: string; location: string }) => {
       <TabIcon>
         <Icon
           path={linkIcon}
-          title="User Profile"
+          title="Tab Icon"
           size="26px"
           color={linkColor()}
         />

@@ -47,10 +47,7 @@ const BookDataArea: React.FunctionComponent<IProps> = (props) => {
 
   function searchButton() {
     return (
-      <button
-        onClick={handleClick}
-        className=""
-      >
+      <button onClick={handleClick} className="">
         蔵書を調べる
       </button>
     )

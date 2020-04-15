@@ -9,7 +9,7 @@ const parent: HTMLElement | null = document.getElementById('root')
 const Apps: React.FunctionComponent = () => {
   return (
     <div className="container">
-        <Routes />
+      <Routes />
     </div>
   )
 }

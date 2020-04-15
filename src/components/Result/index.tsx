@@ -54,7 +54,7 @@ const ResultView: React.FunctionComponent<IProps> = (props) => {
       <button
         type="button"
         className=""
-        onClick={() => history.push('/home')}
+        onClick={() => history.push('/librarysearch')}
       >
         もどる
       </button>

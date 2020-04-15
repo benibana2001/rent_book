@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Route, Switch, useLocation } from 'react-router-dom'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 
-import Home from './components/Home'
+import LibrarySearch from './components/LibrarySearch'
 import Result from './components/Result'
 import './index.scss'
 import { LibResponse } from './api/Calil'
@@ -25,8 +25,8 @@ const AppLayout: React.FunctionComponent = () => {
   const [bookInfo, setBookInfo] = useState(null)
   const [libraryResponse, setLibraryResponse] = useState(defaultLibResponse)
 
-  const renderHome = () => (
-    <Home
+  const renderLibrarySearch = () => (
+    <LibrarySearch
       setBookInfo={setBookInfo}
       setBookStatus={setBookStatus}
       setLibraryResponse={setLibraryResponse}
@@ -46,11 +46,11 @@ const AppLayout: React.FunctionComponent = () => {
     <TransitionGroup>
       <CSSTransition key={location.key} timeout={500} classNames="animate">
         <Switch location={location}>
-          <Route exact path="/home">
-            {renderHome()}
+          <Route exact path="/librarysearch">
+            {renderLibrarySearch()}
           </Route>
 
-          <Route path="/home/result">{renderResult()}</Route>
+          <Route path="/librarysearch/result">{renderResult()}</Route>
         </Switch>
       </CSSTransition>
     </TransitionGroup>

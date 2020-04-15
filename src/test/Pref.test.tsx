@@ -5,7 +5,7 @@ import * as React from 'react'
 import '@testing-library/jest-dom/extend-expect'
 import { getByTestId, render, fireEvent } from '@testing-library/react'
 
-import PrefArea from '../components/Home/Pref'
+import PrefArea from '../components/LibrarySearch/Pref'
 
 // let container: HTMLElement | null = null
 // beforeEach(() => {

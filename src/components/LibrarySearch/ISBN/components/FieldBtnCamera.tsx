@@ -60,10 +60,7 @@ class FieldBtnCamera extends React.Component {
     return (
       <React.Fragment>
         {/* バーコードから調べる */}
-        <button
-          onClick={this.handleClick}
-          className=""
-        >
+        <button onClick={this.handleClick} className="">
           カメラ起動
         </button>
         <div id="camera"></div>
