@@ -21,7 +21,7 @@ form {
 // FONT
 * {
   font-feature-settings: 'palt' 1;
-  font-family: "游ゴシック", "Yu Gothic", "游ゴシック体", YuGothic, sans-serif;
+  font-family: '游ゴシック', 'Yu Gothic', '游ゴシック体', YuGothic, sans-serif;
 }
 
 // VARIABLE
@@ -155,34 +155,3 @@ header {
     line-height: 1.7;
   }
 }
-
-.material-icons {
-  font-family: 'Material Icons';
-  font-weight: normal;
-  font-style: normal;
-  font-size: 24px;
-  line-height: 1;
-  letter-spacing: normal;
-  text-transform: none;
-  display: inline-block;
-  white-space: nowrap;
-  word-wrap: normal;
-  direction: ltr;
-  -webkit-font-feature-settings: 'liga';
-  -webkit-font-smoothing: antialiased;
-}
-
-// // VARIABLE
-// $pc: 'screen and (min-width: 1024px)';
-// $tab: 'screen and (min-width: 788px)';
-// //
-// $header-fix-top: 44px; // ヘッダをpostion:fixとした際のオフセット
-// $input-size: 24px;
-// //
-// $view-max-width: 700px;
-
-// @mixin mediaquery($bp) {
-//     @media #{$bp} {
-//         @content;
-//     }
-// }

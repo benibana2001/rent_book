@@ -22,4 +22,16 @@ export default [
     image: imgComicSample01,
     title: 'タイトル タイトル XX巻',
   },
+  {
+    image: imgComicSample02,
+    title: 'タイトル タイトル YY巻',
+  },
+  {
+    image: imgComicSample01,
+    title: 'タイトル タイトル XX巻',
+  },
+  {
+    image: imgComicSample02,
+    title: 'タイトル タイトル YY巻',
+  },
 ]

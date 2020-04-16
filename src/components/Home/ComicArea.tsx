@@ -6,11 +6,11 @@ import comicList from './comiclist'
 const ComicArea: React.FunctionComponent = () => {
   return (
     <React.Fragment>
-      <ContentsOuter>
-        <ContentsInner>
+      <ComicContentsOuter>
+        <ComicContentsInner>
           <WriteComicContents />
-        </ContentsInner>
-      </ContentsOuter>
+        </ComicContentsInner>
+      </ComicContentsOuter>
     </React.Fragment>
   )
 }
@@ -47,7 +47,7 @@ const comicStyle = {
   marginRight: margin.small,
 }
 
-const ContentsOuter = styled.div`
+const ComicContentsOuter = styled.div`
   overflow: scroll;
 `
 
@@ -61,7 +61,7 @@ const innerWidth = () => {
   return comicsWidth + comicsSpan + padding
 }
 
-const ContentsInner = styled.div`
+const ComicContentsInner = styled.div`
   display: flex;
   width: ${innerWidth()}px;
 `

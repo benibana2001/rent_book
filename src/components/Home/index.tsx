@@ -5,11 +5,22 @@ import ComicArea from './ComicArea'
 
 const Home: React.FunctionComponent = () => {
   return (
-    <ContentsArea
-      title={'新刊コミックピックアップ'}
-      component={<ComicArea />}
-    />
+    <React.Fragment>
+      <ContentsArea
+        title={'新刊コミックピックアップ'}
+        component={<ComicArea />}
+      />
+
+      <ContentsArea
+        title={'図書館で本を予約する'}
+        component={<LibraryArea />}
+      />
+    </React.Fragment>
   )
+}
+
+const LibraryArea: React.FunctionComponent = () => {
+  return <div>Library Search</div>
 }
 
 interface PropsContentsArea {

@@ -10,8 +10,6 @@ import LoadingView from '../Loading'
 import Calil, { LibRequest, LibResponse } from '../../api/Calil'
 import OpenBD, { BookResponse } from '../../api/OpenBD'
 
-import 'material-design-lite'
-import 'material-design-lite/material.min.css'
 import { BookStatus, defaultLibResponse } from '../../AppLayout'
 
 interface IProps {

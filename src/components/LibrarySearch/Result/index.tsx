@@ -3,8 +3,8 @@ import { useHistory } from 'react-router-dom'
 
 import ResultList from './components/ResultList'
 
-import { LibResponse } from '../../api/Calil'
-import { BookStatus } from '../../AppLayout'
+import { LibResponse } from '../../../api/Calil'
+import { BookStatus } from '../../../AppLayout'
 
 interface IProps {
   bookStatus: BookStatus

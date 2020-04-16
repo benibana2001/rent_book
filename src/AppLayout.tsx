@@ -4,7 +4,7 @@ import { Route, Switch, useLocation } from 'react-router-dom'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 
 import LibrarySearch from './components/LibrarySearch'
-import Result from './components/Result'
+import Result from './components/LibrarySearch/Result'
 import './index.scss'
 import { LibResponse } from './api/Calil'
 

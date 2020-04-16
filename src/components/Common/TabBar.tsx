@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Link, useLocation } from 'react-router-dom'
 
 import Icon from '@mdi/react'
-import { mdiBank, mdiHome, mdiBookshelf } from '@mdi/js'
+import { mdiBank, mdiHome, mdiBookshelf, mdiQrcodeScan, mdiHelp } from '@mdi/js'
 
 const TabBar: React.FunctionComponent = () => {
   const [currentPage, setCurrentPage] = React.useState('/home')
@@ -22,8 +22,8 @@ const TabBar: React.FunctionComponent = () => {
         icon={'library'}
         location={currentPage}
       />
-      <LinkItem move={'about'} icon={'library'} location={currentPage} />
       <LinkItem move={'newbooks'} icon={'book'} location={currentPage} />
+      <LinkItem move={'about'} icon={'about'} location={currentPage} />
     </Outer>
   )
 }
@@ -68,6 +68,8 @@ const LinkItem = (props: { move: string; icon: string; location: string }) => {
         return mdiHome
       case 'library':
         return mdiBank
+      case 'about':
+        return mdiHelp
       case 'book':
         return mdiBookshelf
     }
@@ -77,8 +79,8 @@ const LinkItem = (props: { move: string; icon: string; location: string }) => {
     const page: string = props.location
     const link = linkTo
 
-    if (page.includes(link)) return 'red'
-    return '#9f9f9f'
+    if (page.includes(link)) return '#3D3D3D'
+    return '#9F9F9F'
   }
 
   return (
