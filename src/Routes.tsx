@@ -7,7 +7,7 @@ import {
   Redirect,
 } from 'react-router-dom'
 
-import TabBar from './components/Common/TabBar'
+import { TabBar } from './components/Common'
 import Home from './components/Home'
 import AppLayout from './AppLayout'
 import About from './components/About'

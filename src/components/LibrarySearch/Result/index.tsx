@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { useHistory } from 'react-router-dom'
 
-import ResultList from './components/ResultList'
+import ResultList from './ResultList'
 
 import { LibResponse } from '../../../api/Calil'
 import { BookStatus } from '../../../AppLayout'

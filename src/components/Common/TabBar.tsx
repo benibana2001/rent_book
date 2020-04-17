@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Link, useLocation } from 'react-router-dom'
 
 import Icon from '@mdi/react'
-import { mdiBank, mdiHome, mdiBookshelf, mdiQrcodeScan, mdiHelp } from '@mdi/js'
+import { mdiBank, mdiHome, mdiBookshelf, mdiHelp } from '@mdi/js'
 
 const TabBar: React.FunctionComponent = () => {
   const [currentPage, setCurrentPage] = React.useState('/home')

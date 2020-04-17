@@ -28,16 +28,6 @@ form {
 $root: './src';
 $img: $root + '/img';
 
-// Utils
-.selectbox {
-  option {
-    color: #4f4f4f;
-    &:first-child {
-      display: none;
-    }
-  }
-}
-
 // LibrarySearch
 body {
   background: #f7f7f7;

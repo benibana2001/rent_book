@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { LibData } from '../../../../api/Calil'
+import { LibData } from '../../../api/Calil'
 
 import Icon from '@mdi/react'
 import { mdiBank, mdiHome, mdiBookshelf, mdiBookSearch } from '@mdi/js'
