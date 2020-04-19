@@ -23,7 +23,7 @@ const margin = {
 }
 
 const ContentsTitle = styled.h3`
-  font-size: 12px;
+  font-size: 16px;
   margin-left: ${margin.middle}px;
   padding: ${margin.middle}px;
   padding-left: 0;
