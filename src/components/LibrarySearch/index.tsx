@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import FieldISBN from './FieldISBN'
 import FieldPrefecture from './FieldPref'
 import BookDataArea from './BookData'
-import LoadingView from '../Loading'
+import LoadingView from './Loading'
 
 import Calil, { LibRequest, LibResponse } from '../../api/Calil'
 import OpenBD, { BookResponse } from '../../api/OpenBD'

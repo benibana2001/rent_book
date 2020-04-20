@@ -15,6 +15,7 @@ module.exports = {
         "@typescript-eslint/explicit-function-return-type": "off",
         "@typescript-eslint/interface-name-prefix": 0,
         "@typescript-eslint/no-use-before-define": 0,
+        "@typescript-eslint/no-var-requires": 0,
         "react/jsx-uses-vars": 1
 
     }

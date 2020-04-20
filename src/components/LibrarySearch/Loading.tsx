@@ -1,7 +1,7 @@
 import * as React from 'react'
 
-import { Toast } from './Common'
-import imgLoading from '../img/toast_loading.png'
+import { Toast } from '../Common'
+import imgLoading from '../../img/toast_loading.png'
 
 interface IProps {
   isLoading: boolean
