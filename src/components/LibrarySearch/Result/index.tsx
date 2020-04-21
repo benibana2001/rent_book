@@ -4,7 +4,10 @@ import { useHistory } from 'react-router-dom'
 import ResultList from './ResultList'
 
 import { LibResponse } from '../../../api/Calil'
-import { BookStatus } from '../../../AppLayout'
+import { BookStatus } from '../index'
+
+import ContentsArea from '../../Common/ContentsArea'
+import styled from 'styled-components'
 
 interface IProps {
   bookStatus: BookStatus
@@ -17,17 +20,33 @@ const ResultView: React.FunctionComponent<IProps> = (props) => {
   const history = useHistory()
 
   return (
-    <div id="result">
-      {existBook() ? resultView() : <div>検索結果はありません</div>}
-    </div>
+    <ContentsArea title={'本の検索結果'}>
+      {resultView()}
+      {/* {existBook() ? resultView() : <div>検索結果はありません</div>} */}
+    </ContentsArea>
   )
 
   function resultView() {
+    const dummyData = [
+      { id: 1, name: '新田', status: '貸出可' },
+      { id: 2, name: '鹿浜', status: '貸出可' },
+      { id: 3, name: '竹の塚', status: '貸出可' },
+      { id: 4, name: '江南', status: '貸出可' },
+      { id: 5, name: '中央', status: '貸出可' },
+      { id: 6, name: '保塚', status: '貸出可' },
+      { id: 7, name: '興本', status: '貸出中' },
+    ]
+
     return (
       <div>
-        <ResultList data={props.response.libkey} />
-        {reserveButton()}
-        {backButton()}
+        <Outer>
+          <ResultList data={dummyData} />
+          {/* <ResultList data={props.response.libkey} /> */}
+        </Outer>
+        <ButtonWrapper>
+          {backButton()}
+          {reserveButton()}
+        </ButtonWrapper>
       </div>
     )
   }
@@ -38,30 +57,67 @@ const ResultView: React.FunctionComponent<IProps> = (props) => {
 
   function reserveButton() {
     return (
-      <button
+      <ButtonGoTo
         id="buttonReserve"
-        type="button"
-        className=""
         onClick={moveTo(props.response.reserveurl)}
       >
-        予約
-      </button>
+        予約画面へ
+      </ButtonGoTo>
     )
   }
 
   function backButton() {
     return (
-      <button
-        type="button"
-        className=""
-        onClick={() => history.push('/librarysearch')}
-      >
+      <ButtonBack onClick={() => history.push('/librarysearch')}>
         もどる
-      </button>
+      </ButtonBack>
     )
   }
 }
 
 const moveTo = (url: string) => () => (location.href = url)
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+
+  margin-top: 16px;
+  border-radius: 3px;
+
+`
+
+const Button = styled.div`
+  width: 124px;
+  height: 38px;
+
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 16px;
+  font-weight: bold;
+`
+
+const ButtonBack = styled(Button)`
+  background: #ffffff;
+  color: #9d9d9d;
+  margin-right: 6px;
+`
+
+const ButtonGoTo = styled(Button)`
+  background: #51e9d7;
+  color: #ffffff;
+  margin-left: 6px;
+`
+
+const Outer = styled.div`
+  background: #ffffff;
+  margin-left: 16px;
+  border-radius: 3px;
+
+  width: calc(100% - 32px);
+  padding: 14px 0px;
+`
 
 export default ResultView

@@ -1,125 +1,58 @@
 import * as React from 'react'
-import { useHistory } from 'react-router-dom'
-import styled from 'styled-components'
+import { useState } from 'react'
+import { Route, Switch, useLocation, useRouteMatch, Link } from 'react-router-dom'
+import { CSSTransition, TransitionGroup } from 'react-transition-group'
 
-import FieldISBN from './FieldISBN'
-import FieldPrefecture from './FieldPref'
-import BookDataArea from './BookData'
-import LoadingView from './Loading'
+import Search from './Search'
+import Result from './Result'
+import '../../index.scss'
+import { LibResponse } from '../../api/Calil'
 
-import Calil, { LibRequest, LibResponse } from '../../api/Calil'
-import OpenBD, { BookResponse } from '../../api/OpenBD'
-
-import { BookStatus, defaultLibResponse } from '../../AppLayout'
-
-import { ContentsArea } from '../Common'
-
-interface IProps {
-  setBookInfo: (bookInfo: BookResponse) => void
-  setBookStatus: (bookStatus: BookStatus) => void
-  setLibraryResponse: (libresponse: LibResponse) => void
+export enum BookStatus {
+  EXIST = 'EXIST',
+  NONE = 'NONE',
+  NOT_DONE = 'NOT_DONE',
 }
 
-const CALIL_KEY = process.env.APP_API_KEY
-
-const defaultLibRequest: LibRequest = {
-  appkey: CALIL_KEY,
-  isbn: '',
-  systemid: '',
+export const defaultLibResponse: LibResponse = {
+  libkey: null,
+  reserveurl: '',
 }
 
-const LibrarySearch: React.FunctionComponent<IProps> = (props) => {
-  const history = useHistory()
-  const [request, setRequest] = React.useState(defaultLibRequest)
-  const [isLoading, setIsLoading] = React.useState(false)
+const LibrarySearchRouter: React.FunctionComponent = () => {
+  const location = useLocation()
+  const [bookStatus, setBookStatus] = useState(BookStatus.NOT_DONE)
+  const [bookInfo, setBookInfo] = useState(null)
+  const [libraryResponse, setLibraryResponse] = useState(defaultLibResponse)
+  const { path, url } = useRouteMatch()
 
-  const calil = new Calil(request)
-
-  return (
-    <div>
-      <LoadingView isLoading={isLoading} />
-
-      <ContentsArea title={'図書館で本を予約する'}>
-        <ContentsLibrarySearch>
-          <FieldISBN setISBN={setISBN} />
-          <FieldPrefecture setSystemID={setSystemID} />
-        </ContentsLibrarySearch>
-      </ContentsArea>
-      <BookDataArea
-        fetchBookInfo={fetchBookInfo}
-        submit={handleClick}
-        isbn={request.isbn}
-      />
-      {debugButton()}
-    </div>
+  const renderLibrarySearch = () => (
+    <Search
+      setBookInfo={setBookInfo}
+      setBookStatus={setBookStatus}
+      setLibraryResponse={setLibraryResponse}
+    />
   )
 
-  function setSystemID(value: string) {
-    setRequest({
-      ...request,
-      systemid: value,
-    })
-  }
+  const renderResult = () => (
+    <Result
+      bookStatus={bookStatus}
+      response={libraryResponse}
+      setBookStatus={setBookStatus}
+      setLibResponse={setLibraryResponse}
+    />
+  )
 
-  function setISBN(value: string) {
-    setRequest({
-      ...request,
-      isbn: value,
-    })
-  }
+  return (
+    <Switch location={location}>
+      <Route exact path={path}>
+        {renderLibrarySearch()}
+        <Link to={`${url}/result`}>Result</Link>
+      </Route>
 
-  async function fetchBookInfo(isbn: string): Promise<BookResponse> {
-    const O: OpenBD = new OpenBD()
-    const bookResponse: BookResponse = await O.search(isbn)
-    return bookResponse
-  }
-
-  // TODO: 関数実行のたびにインスタンを作成するのは不要
-  function dispatchLibraryInfo(res: LibResponse): void {
-    if (!res) {
-      console.log('Data is none')
-      props.setBookStatus(BookStatus.NONE)
-      props.setLibraryResponse(defaultLibResponse)
-      return
-    }
-
-    props.setLibraryResponse(res)
-    props.setBookStatus(BookStatus.EXIST)
-  }
-
-  // Fetch a book status about each library by using Calil API.
-  async function handleClick(): Promise<void> {
-    // TODO: Display loading view automatically.
-    setIsLoading(true)
-
-    const res = await calil.search(request)
-
-    dispatchLibraryInfo(res)
-    setIsLoading(false)
-
-    history.push('/librarysearch/result')
-  }
+      <Route path={`${path}/result`}>{renderResult()}</Route>
+    </Switch>
+  )
 }
 
-const ContentsLibrarySearch = styled.div`
-  background-color: #ffffff;
-  border-radius: 4px;
-
-  width: calc(100% - (2 * 16px));
-  margin: 16px;
-  margin-top: 0;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-`
-
-function debugButton() {
-  const debug = () => {
-    const isbn = document.getElementById('input-isbn') as HTMLInputElement
-    isbn.value = '4334926940'
-  }
-  return <button onClick={debug}>debug</button>
-}
-
-export default LibrarySearch
+export default LibrarySearchRouter

@@ -26,6 +26,8 @@ const About: React.FunctionComponent = () => {
             <br />
             styled components, Sass
             <br />
+            Figma
+            <br />
             Firebase Hosting
             <br />
             Fetch API
