@@ -50,22 +50,41 @@ const Search: React.FunctionComponent<IProps> = (props) => {
         submit={handleClick}
         isbn={request.isbn}
       />
-      {debugButton()}
+      <DebugButton
+        isbn={'4334926940'}
+        pref={'Tokyo_Adachi'}
+        func={{ isbn: setISBN, pref: setSystemID }}
+      />
     </div>
   )
 
   function setSystemID(value: string) {
-    setRequest({
+    console.group('setPref')
+    console.log(request)
+
+    const obj = {
       ...request,
       systemid: value,
-    })
+    }
+
+    console.log(obj)
+    setRequest(obj)
+
+    console.groupEnd()
   }
 
   function setISBN(value: string) {
-    setRequest({
+    console.group('setISBN')
+    console.log(request)
+
+    const obj = {
       ...request,
       isbn: value,
-    })
+    }
+
+    console.log(obj)
+    setRequest(obj)
+    console.groupEnd()
   }
 
   async function fetchBookInfo(isbn: string): Promise<BookResponse> {
@@ -114,12 +133,32 @@ const ContentsLibrarySearch = styled.div`
   justify-content: center;
 `
 
-function debugButton() {
-  const debug = () => {
-    const isbn = document.getElementById('input-isbn') as HTMLInputElement
-    isbn.value = '4334926940'
+interface DebugProps {
+  isbn: string
+  pref: string
+  func: { isbn: Function; pref: Function }
+}
+
+const DebugButton: React.FunctionComponent<DebugProps> = (
+  props: DebugProps
+) => {
+  const setPrefecture = async () => {
+    const testPref = props.pref
+    props.func.pref(testPref)
   }
-  return <button onClick={debug}>debug</button>
+
+  const setISBN = () => {
+    const isbn = document.getElementById('input-isbn') as HTMLInputElement
+    isbn.value = props.isbn
+    props.func.isbn(props.isbn)
+  }
+
+  return (
+    <React.Fragment>
+      <button onClick={setISBN}>debug-setISBN</button>
+      <button onClick={setPrefecture}>debug-setPrefecture</button>
+    </React.Fragment>
+  )
 }
 
 export default Search

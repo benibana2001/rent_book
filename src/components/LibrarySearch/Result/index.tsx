@@ -21,8 +21,8 @@ const ResultView: React.FunctionComponent<IProps> = (props) => {
 
   return (
     <ContentsArea title={'本の検索結果'}>
-      {resultView()}
-      {/* {existBook() ? resultView() : <div>検索結果はありません</div>} */}
+      {/* {resultView()} */}
+      {existBook() ? resultView() : <div>検索結果はありません</div>}
     </ContentsArea>
   )
 
@@ -40,8 +40,8 @@ const ResultView: React.FunctionComponent<IProps> = (props) => {
     return (
       <div>
         <Outer>
-          <ResultList data={dummyData} />
-          {/* <ResultList data={props.response.libkey} /> */}
+          {/* <ResultList data={dummyData} /> */}
+          <ResultList data={props.response.libkey} />
         </Outer>
         <ButtonWrapper>
           {backButton()}
@@ -52,6 +52,7 @@ const ResultView: React.FunctionComponent<IProps> = (props) => {
   }
 
   function existBook() {
+    console.log(props.bookStatus)
     return props.bookStatus === BookStatus.EXIST
   }
 
@@ -83,7 +84,6 @@ const ButtonWrapper = styled.div`
 
   margin-top: 16px;
   border-radius: 3px;
-
 `
 
 const Button = styled.div`

@@ -22,6 +22,7 @@ class OpenBD {
     const title: string =
       data.onix.DescriptiveDetail.TitleDetail.TitleElement.TitleText.content
     const coverurl: string = data.summary.cover
+    console.log(ary)
     // console.log(`url: ${url}`)
     // console.log(`title: ${title}`)
     // console.log(`coverurl: ${coverurl}`)
