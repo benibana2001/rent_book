@@ -11,22 +11,22 @@ interface IProps {
 }
 
 const List = styled.li`
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 
-    margin-bottom: 8px;
+  margin-bottom: 8px;
 `
 
 const LibraryName = styled.span`
-    font-size: 16px;
-    padding-left: 6px;
-    color: #3D3D3D;
+  font-size: 16px;
+  padding-left: 6px;
+  color: #3d3d3d;
 `
 
 const BookStatus = styled.span`
-    font-size: 16px;
-    margin-right: 16px;
-    color: #9F9F9F;
+  font-size: 16px;
+  margin-right: 16px;
+  color: #9f9f9f;
 `
 
 const ResultList: React.FunctionComponent<IProps> = (props) => {
@@ -39,13 +39,23 @@ const ResultList: React.FunctionComponent<IProps> = (props) => {
       return (
         <List key={data.id}>
           <div>
-            <Icon path={mdiBank} title="Library Icon" size="20px" color="#9F9F9F" />
+            <Icon
+              path={mdiBank}
+              title="Library Icon"
+              size="20px"
+              color="#9F9F9F"
+            />
             <LibraryName>{libraryName}</LibraryName>
           </div>
 
           <div>
             <span>
-              <Icon path={mdiBookshelf} title="Tab Icon" size="20px" color="#9F9F9F" />
+              <Icon
+                path={mdiBookshelf}
+                title="Tab Icon"
+                size="20px"
+                color="#9F9F9F"
+              />
               <BookStatus>{bookStatus}</BookStatus>
             </span>
           </div>

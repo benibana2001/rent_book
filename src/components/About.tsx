@@ -63,8 +63,8 @@ const InnerH2 = styled.h2`
 `
 
 const OverflowDiv = styled.div`
-    overflow: hidden;
-    height: 100vh;
+  overflow: hidden;
+  height: 100vh;
 `
 
 const InnerPhrase = styled.p`
@@ -110,7 +110,7 @@ const ImageDiv01 = styled(ImageDiv)`
 
 const ImageDiv02 = styled(ImageDiv)`
   top: 10em;
-  left: -10%
+  left: -10%;
 `
 
 export default About

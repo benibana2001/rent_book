@@ -5,11 +5,11 @@ const list = json.list
 export const comics: comicProps[] = []
 
 export type comicProps = {
-    isbn: number,
-    author: string,
-    title: string,
-    maker: string,
-    date: string
+  isbn: number
+  author: string
+  title: string
+  maker: string
+  date: string
 }
 
 list.map((item: any[]) => {
@@ -23,4 +23,3 @@ list.map((item: any[]) => {
 
   comics.push(comic)
 })
-

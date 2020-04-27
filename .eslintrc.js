@@ -18,5 +18,10 @@ module.exports = {
         "@typescript-eslint/no-var-requires": 0,
         "react/jsx-uses-vars": 1
 
+    },
+    env: {
+        "browser": true,
+        "node": true,
+        "commonjs": true
     }
   };

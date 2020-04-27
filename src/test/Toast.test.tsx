@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom'
 import { unmountComponentAtNode } from 'react-dom'
 import { act } from 'react-dom/test-utils'
 
-import {Toast} from '../components/Common'
+import { Toast } from '../components/Common'
 
 let container: HTMLElement | null = null
 beforeEach(() => {

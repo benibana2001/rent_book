@@ -7,8 +7,9 @@
     "storybook": "start-storybook",
     "test": "npx jest",
     "prettier": "npx prettier --write src",
-    "build": "webpack",
-    "start": "webpack-dev-server --history-api-fallback"
+    "start": "webpack-dev-server",
+    "build": "npm run prettier && webpack",
+    "deploy": "firebase deploy --only hosting"
   },
   "keywords": [],
   "author": "",

@@ -24,12 +24,12 @@ const Outer = styled.div`
   justify-content: center;
   padding-top: 16px;
 
-  &:first-child{
-      padding-top: 20px;
+  &:first-child {
+    padding-top: 20px;
   }
 
-  &:last-child{
-      padding-bottom: 20px;
+  &:last-child {
+    padding-bottom: 20px;
   }
 `
 

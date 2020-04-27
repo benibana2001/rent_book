@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { useState } from 'react'
-import { Route, Switch, useLocation, useRouteMatch, Link } from 'react-router-dom'
-import { CSSTransition, TransitionGroup } from 'react-transition-group'
+import { Route, Switch, useRouteMatch, Link, useParams } from 'react-router-dom'
 
 import Search from './Search'
 import Result from './Result'
@@ -20,10 +19,10 @@ export const defaultLibResponse: LibResponse = {
 }
 
 const LibrarySearchRouter: React.FunctionComponent = () => {
-  const location = useLocation()
   const [bookStatus, setBookStatus] = useState(BookStatus.NOT_DONE)
   const [bookInfo, setBookInfo] = useState(null)
   const [libraryResponse, setLibraryResponse] = useState(defaultLibResponse)
+
   const { path, url } = useRouteMatch()
 
   const renderLibrarySearch = () => (
@@ -34,23 +33,29 @@ const LibrarySearchRouter: React.FunctionComponent = () => {
     />
   )
 
-  const renderResult = () => (
-    <Result
-      bookStatus={bookStatus}
-      response={libraryResponse}
-      setBookStatus={setBookStatus}
-      setLibResponse={setLibraryResponse}
-    />
-  )
+  const RenderResult = () => {
+    const { result } = useParams()
+    console.log(result)
+    return (
+      <Result
+        bookStatus={bookStatus}
+        response={libraryResponse}
+        setBookStatus={setBookStatus}
+        setLibResponse={setLibraryResponse}
+      />
+    )
+  }
 
   return (
-    <Switch location={location}>
+    <Switch>
       <Route exact path={path}>
         {renderLibrarySearch()}
         <Link to={`${url}/result`}>Result</Link>
       </Route>
 
-      <Route path={`${path}/result`}>{renderResult()}</Route>
+      <Route path={`${path}/:result`}>
+        <RenderResult />
+      </Route>
     </Switch>
   )
 }

@@ -52,7 +52,6 @@ const Cover = styled.img`
   width: 100px;
 `
 
-
 const BookDataArea: React.FunctionComponent<IProps> = (props) => {
   const [bookResponse, setBookResponse] = React.useState(defaultBookResponse)
 
@@ -81,7 +80,11 @@ const BookDataArea: React.FunctionComponent<IProps> = (props) => {
   return isBookResponse() && bookDataArea
 
   function searchButton() {
-    return <Button.MediumColored onClick={handleClick}>蔵書を調べる</Button.MediumColored>
+    return (
+      <Button.MediumColored onClick={handleClick}>
+        蔵書を調べる
+      </Button.MediumColored>
+    )
   }
 
   async function handleClick() {
