@@ -10,12 +10,28 @@ import { comicProps } from '../../api/BookListParser'
 
 const NewBooks: React.FunctionComponent = () => {
   return (
-    <ContentsArea title={'今月の新刊コミック'}>{WriteComics()}</ContentsArea>
+    <ContentsArea title={'今月の新刊コミック'}>
+      <WriteComics />
+    </ContentsArea>
   )
 }
 
-const WriteComics = () =>
-  comics.map((comic: comicProps, index) => (
+const WriteComics = () => {
+  React.useEffect(() => {
+    const fetchBooksJSON = async () => {
+      const booksJSONurl =
+        'http://tk2-255-37178.vs.sakura.ne.jp/rent_book_server/json/booklist.json'
+      const booksJSON = await fetch(booksJSONurl, {
+        method: 'GET',
+        mode: 'cors',
+      })
+      console.log(await booksJSON.json())
+    }
+
+    fetchBooksJSON()
+  })
+  const chunk = comics.slice(0, 19)
+  const comicsChunk = chunk.map((comic: comicProps, index) => (
     <Comics
       key={index}
       isbn={comic.isbn}
@@ -25,10 +41,17 @@ const WriteComics = () =>
       maker={comic.maker}
     />
   ))
+  return <React.Fragment>{comicsChunk}</React.Fragment>
+}
 
 const Comics: React.FunctionComponent<comicProps> = (props) => (
   <Comic>
-    <ComicCover />
+    <ComicCover
+      imageurl={
+        'http://tk2-255-37178.vs.sakura.ne.jp/rent_book_server/downloadimage/9784040645070.jpg'
+      }
+    />
+    {/* <ComicCover imageurl={imgBackground}/> */}
     <ComicContext>
       <ContextDate>{props.date}</ContextDate>
       <ContextTitle>{props.title}</ContextTitle>
@@ -77,10 +100,11 @@ const ContextAppendix = styled.p`
   margin-bottom: 1px;
 `
 
-const ComicCover = styled.div`
+const ComicCover = styled.div<{ imageurl: string }>`
   width: ${coverSize.w}px;
   height: ${coverSize.h}px;
-  background: top url(${imgBackground});
+  background: top url(${(props) => props.imageurl});
+  /* background: top url(${imgBackground}); */
   background-size: cover;
 
   border-radius: 4px 0 0 4px;
