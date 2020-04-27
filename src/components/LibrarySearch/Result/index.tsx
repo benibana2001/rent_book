@@ -9,6 +9,8 @@ import { BookStatus } from '../index'
 import ContentsArea from '../../Common/ContentsArea'
 import styled from 'styled-components'
 
+import { Button } from '../../Common'
+
 interface IProps {
   bookStatus: BookStatus
   response: LibResponse
@@ -86,28 +88,13 @@ const ButtonWrapper = styled.div`
   border-radius: 3px;
 `
 
-const Button = styled.div`
-  width: 124px;
-  height: 38px;
-
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-size: 16px;
-  font-weight: bold;
-`
-
-const ButtonBack = styled(Button)`
+const ButtonBack = styled(Button.Medium)`
   background: #ffffff;
   color: #9d9d9d;
   margin-right: 6px;
 `
 
-const ButtonGoTo = styled(Button)`
-  background: #51e9d7;
-  color: #ffffff;
+const ButtonGoTo = styled(Button.MediumColored)`
   margin-left: 6px;
 `
 
