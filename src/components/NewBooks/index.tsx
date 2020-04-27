@@ -5,7 +5,6 @@ import { ContentsArea } from '../Common'
 
 import imgBackground from '../../img/comic_sample_01.png'
 
-import { comics } from '../../api/BookListParser'
 import { comicProps } from '../../api/BookListParser'
 
 const NewBooks: React.FunctionComponent = () => {
@@ -17,49 +16,79 @@ const NewBooks: React.FunctionComponent = () => {
 }
 
 const WriteComics = () => {
+  const [comics, setComics] = React.useState([])
+
+  const booksJSONurl =
+    'http://tk2-255-37178.vs.sakura.ne.jp/rent_book_server/json/booklist.json'
+
   React.useEffect(() => {
     const fetchBooksJSON = async () => {
-      const booksJSONurl =
-        'http://tk2-255-37178.vs.sakura.ne.jp/rent_book_server/json/booklist.json'
       const booksJSON = await fetch(booksJSONurl, {
         method: 'GET',
         mode: 'cors',
       })
-      console.log(await booksJSON.json())
+
+      const json = await booksJSON.json()
+      console.log(json)
+      setComics(json)
     }
 
-    fetchBooksJSON()
+    if (!comics.length) fetchBooksJSON()
   })
+
   const chunk = comics.slice(0, 19)
-  const comicsChunk = chunk.map((comic: comicProps, index) => (
-    <Comics
-      key={index}
-      isbn={comic.isbn}
-      title={comic.title}
-      date={comic.date}
-      author={comic.author}
-      maker={comic.maker}
-    />
-  ))
-  return <React.Fragment>{comicsChunk}</React.Fragment>
+
+  const isComics = comics.length
+
+  let comicsChunk
+
+  if (isComics) {
+    comicsChunk = chunk.map((comic: comicProps, index) => (
+      <Comics
+        key={index}
+        isbn={comic.isbn}
+        title={comic.title}
+        pubdate={comic.pubdate}
+        author={comic.author}
+        publisher={comic.publisher}
+        cover={comic.cover}
+      />
+    ))
+  }
+
+  return <React.Fragment>{comicsChunk && comicsChunk}</React.Fragment>
 }
 
-const Comics: React.FunctionComponent<comicProps> = (props) => (
-  <Comic>
-    <ComicCover
-      imageurl={
-        'http://tk2-255-37178.vs.sakura.ne.jp/rent_book_server/downloadimage/9784040645070.jpg'
-      }
-    />
-    {/* <ComicCover imageurl={imgBackground}/> */}
-    <ComicContext>
-      <ContextDate>{props.date}</ContextDate>
-      <ContextTitle>{props.title}</ContextTitle>
-      <ContextAppendix>{props.maker}</ContextAppendix>
-      <ContextAppendix>{props.author}</ContextAppendix>
-    </ComicContext>
-  </Comic>
-)
+const Comics: React.FunctionComponent<comicProps> = (props) => {
+  const hostpath =
+    'http://tk2-255-37178.vs.sakura.ne.jp/rent_book_server/downloadimage/'
+
+  const imagefile = (): string | null => {
+    if (!props.cover) return null
+
+    const imagefilename = () => {
+      const ary = props.cover.split('/')
+      const len = ary.length
+      return ary[len - 1]
+    }
+
+    return hostpath + imagefilename()
+  }
+
+  return (
+    <Comic>
+      <ComicCover imageurl={imagefile()} />
+      {/* <ComicCover imageurl={imgBackground}/> */}
+      <ComicContext>
+        <ContextDate>{props.pubdate}</ContextDate>
+        <ContextTitle>{props.title}</ContextTitle>
+        <ContextAppendix>{props.publisher}</ContextAppendix>
+        <ContextAppendix>{props.author}</ContextAppendix>
+        <ContextAppendix>{props.cover}</ContextAppendix>
+      </ComicContext>
+    </Comic>
+  )
+}
 
 const Comic = styled.div`
   width: calc(100% - 32px);
