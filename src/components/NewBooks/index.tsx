@@ -14,12 +14,13 @@ const NewBooks: React.FunctionComponent = () => {
     </ContentsArea>
   )
 }
+const HOST = 'https://tomtomtom.cf/rent_book_server/'
+// const HOST = '//tk2-255-37178.vs.sakura.ne.jp/rent_book_server/'
 
 const WriteComics = () => {
   const [comics, setComics] = React.useState([])
 
-  const booksJSONurl =
-    'http://tk2-255-37178.vs.sakura.ne.jp/rent_book_server/json/booklist.json'
+  const booksJSONurl = HOST + 'json/booklist.json'
 
   React.useEffect(() => {
     const fetchBooksJSON = async () => {
@@ -60,8 +61,7 @@ const WriteComics = () => {
 }
 
 const Comics: React.FunctionComponent<comicProps> = (props) => {
-  const hostpath =
-    'http://tk2-255-37178.vs.sakura.ne.jp/rent_book_server/downloadimage/'
+  const hostpath = HOST + 'downloadimage/'
 
   const imagefile = (): string | null => {
     if (!props.cover) return null
