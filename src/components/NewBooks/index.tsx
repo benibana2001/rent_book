@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import { ContentsArea } from '../Common'
 
-import imgBackground from '../../img/comic_sample_01.png'
+import imgBackground from '../../img/nocover-x2.jpg'
 
 import { comicProps } from '../../api/BookListParser'
 
@@ -15,7 +15,6 @@ const NewBooks: React.FunctionComponent = () => {
   )
 }
 const HOST = 'https://tomtomtom.cf/rent_book_server/'
-// const HOST = '//tk2-255-37178.vs.sakura.ne.jp/rent_book_server/'
 
 const WriteComics = () => {
   const [comics, setComics] = React.useState([])
@@ -63,8 +62,8 @@ const WriteComics = () => {
 const Comics: React.FunctionComponent<comicProps> = (props) => {
   const hostpath = HOST + 'downloadimage/'
 
-  const imagefile = (): string | null => {
-    if (!props.cover) return null
+  const imagefile = (): string => {
+    if (!props.cover) return imgBackground
 
     const imagefilename = () => {
       const ary = props.cover.split('/')
@@ -84,7 +83,6 @@ const Comics: React.FunctionComponent<comicProps> = (props) => {
         <ContextTitle>{props.title}</ContextTitle>
         <ContextAppendix>{props.publisher}</ContextAppendix>
         <ContextAppendix>{props.author}</ContextAppendix>
-        <ContextAppendix>{props.cover}</ContextAppendix>
       </ComicContext>
     </Comic>
   )

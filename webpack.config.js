@@ -79,7 +79,7 @@ module.exports = {
         loader: 'file?name=fonts/[name].[ext]',
       },
       {
-        test: /\.png$/,
+        test: /\.(png|jpg)$/,
         include: [path.resolve(__dirname, 'src')],
         use: [
           {
