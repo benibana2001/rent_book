@@ -1,25 +1,43 @@
 import * as React from 'react'
 import styled from 'styled-components'
 
-import comicList from './comiclist'
+type Comic = {
+  image: string
+  title: string
+}
 
-const ComicArea: React.FunctionComponent = () => {
+interface Props {
+  comics: Comic[]
+}
+
+const ComicArea: React.FunctionComponent<Props> = (props) => {
+  const innerWidth = () => {
+    const len = props.comics.length
+
+    const comicsWidth = comicStyle.x * len
+    const comicsSpan = comicStyle.marginRight * (len - 1)
+    const padding = margin.middle
+
+    return comicsWidth + comicsSpan + padding
+  }
+
   return (
     <React.Fragment>
       <ComicContentsOuter>
-        <ComicContentsInner>
-          <WriteComicContents />
+        <ComicContentsInner width={innerWidth()}>
+          <WriteComicContents comics={props.comics} />
         </ComicContentsInner>
       </ComicContentsOuter>
     </React.Fragment>
   )
 }
 
-const WriteComicContents: React.FunctionComponent = () => {
-  const comics = comicList.map((comic, index) => (
+const WriteComicContents: React.FunctionComponent<Props> = (props) => {
+  const comics = props.comics
+  const comicContents = comics.map((comic, index) => (
     <ComicContents key={index} title={comic.title} image={comic.image} />
   ))
-  return <React.Fragment>{comics}</React.Fragment>
+  return <React.Fragment>{comicContents}</React.Fragment>
 }
 
 const ComicContents = (props: {
@@ -48,22 +66,13 @@ const comicStyle = {
 }
 
 const ComicContentsOuter = styled.div`
-  overflow: scroll;
+  overflow-x: scroll;
+  overflow-y: hidden;
 `
 
-const innerWidth = () => {
-  const len = comicList.length
-
-  const comicsWidth = comicStyle.x * len
-  const comicsSpan = comicStyle.marginRight * (len - 1)
-  const padding = margin.middle
-
-  return comicsWidth + comicsSpan + padding
-}
-
-const ComicContentsInner = styled.div`
+const ComicContentsInner = styled.div<{ width: number }>`
   display: flex;
-  width: ${innerWidth()}px;
+  width: ${(props) => props.width}px;
 `
 
 const ComicOuter = styled.div<{ image: string }>`

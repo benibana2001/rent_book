@@ -8,7 +8,7 @@ import './index.scss'
 const parent: HTMLElement | null = document.getElementById('root')
 const Apps: React.FunctionComponent = () => {
   return (
-    <div className="container">
+    <div>
       <Routes />
     </div>
   )
