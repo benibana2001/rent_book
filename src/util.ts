@@ -34,3 +34,11 @@ export const sum = (isbn13: string): number => {
 
   return result
 }
+
+export const shopUrl = (isbn13: number | string): string => {
+  if (typeof isbn13 === 'number') isbn13 = String(isbn13)
+  const HOST = 'https://www.amazon.co.jp/dp/'
+  const isbn10 = convertISBN13to10(isbn13)
+
+  return HOST + isbn10
+}

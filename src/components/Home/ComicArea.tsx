@@ -3,13 +3,13 @@ import styled from 'styled-components'
 
 import { comicData } from '../../api/BookListParser'
 
+import * as Util from '../../util'
 
 interface Props {
   comics: comicData[]
 }
 
 const ComicArea: React.FunctionComponent<Props> = (props) => {
-  
   const innerWidth = () => {
     const len = props.comics.length
 
@@ -35,7 +35,12 @@ const WriteComicContents: React.FunctionComponent<Props> = (props) => {
   const comics = props.comics
 
   const comicContents = comics.map((comic, index) => (
-    <ComicContents key={index} title={comic.title} image={comic.cover} />
+    <ComicContents
+      key={index}
+      isbn={comic.isbn}
+      title={comic.title}
+      image={comic.cover}
+    />
   ))
 
   return <React.Fragment>{comicContents}</React.Fragment>
@@ -43,16 +48,21 @@ const WriteComicContents: React.FunctionComponent<Props> = (props) => {
 
 const ComicContents = (props: {
   key: number
+  isbn: number
   image: string
   title: string
 }) => {
   return (
-    <ComicOuter image={props.image}>
+    <ComicOuter image={props.image} onClick={moveToShop}>
       <ComicFooter>
         <ComicTitle>{props.title}</ComicTitle>
       </ComicFooter>
     </ComicOuter>
   )
+
+  function moveToShop() {
+    location.href = Util.shopUrl(props.isbn)
+  }
 }
 
 const margin = {
