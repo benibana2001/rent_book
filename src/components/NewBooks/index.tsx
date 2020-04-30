@@ -3,92 +3,62 @@ import styled from 'styled-components'
 
 import { ContentsArea } from '../Common'
 
-import imgBackground from '../../img/nocover-x2.jpg'
+import * as Parser from '../../api/BookListParser'
 
-import { comicProps } from '../../api/BookListParser'
+interface Props {
+  test: string
+}
 
-const NewBooks: React.FunctionComponent = () => {
+const NewBooks: React.FunctionComponent<Props> = () => {
   return (
     <ContentsArea title={'今月の新刊コミック'}>
-      <WriteComics />
+      <Comics />
     </ContentsArea>
   )
 }
-const HOST = 'https://tomtomtom.cf/rent_book_server/'
 
-const WriteComics = () => {
+const Comics = () => {
   const [comics, setComics] = React.useState([])
-
-  const booksJSONurl = HOST + 'json/booklist.json'
+  const isComics = comics.length
 
   React.useEffect(() => {
-    const fetchBooksJSON = async () => {
-      const booksJSON = await fetch(booksJSONurl, {
-        method: 'GET',
-        mode: 'cors',
-      })
-
-      const json = await booksJSON.json()
-      console.log(json)
-      setComics(json)
-    }
-
-    if (!comics.length) fetchBooksJSON()
+    if (!isComics) Parser.fetchBooksJSON(setComics)
   })
 
   const chunk = comics.slice(0, 19)
 
-  const isComics = comics.length
-
-  let comicsChunk
-
-  if (isComics) {
-    comicsChunk = chunk.map((comic: comicProps, index) => (
-      <Comics
-        key={index}
-        isbn={comic.isbn}
-        title={comic.title}
-        pubdate={comic.pubdate}
-        author={comic.author}
-        publisher={comic.publisher}
-        cover={comic.cover}
-      />
-    ))
+  const comicsSliced = () => {
+    if (isComics) {
+      const comicsChunk = chunk.map((comic: Parser.comicData, index) => (
+        <Comic key={index} comic={comic} />
+      ))
+      return <React.Fragment>{comicsChunk}</React.Fragment>
+    }
+    return <React.Fragment></React.Fragment>
   }
 
-  return <React.Fragment>{comicsChunk && comicsChunk}</React.Fragment>
+  return <React.Fragment>{comicsSliced()}</React.Fragment>
 }
 
-const Comics: React.FunctionComponent<comicProps> = (props) => {
-  const hostpath = HOST + 'downloadimage/'
+type PropsComic = {
+  comic: Parser.comicData
+}
 
-  const imagefile = (): string => {
-    if (!props.cover) return imgBackground
-
-    const imagefilename = () => {
-      const ary = props.cover.split('/')
-      const len = ary.length
-      return ary[len - 1]
-    }
-
-    return hostpath + imagefilename()
-  }
-
+const Comic: React.FunctionComponent<PropsComic> = (props) => {
   return (
-    <Comic>
-      <ComicCover imageurl={imagefile()} />
-      {/* <ComicCover imageurl={imgBackground}/> */}
+    <ComicOuter>
+      <ComicCover imageurl={props.comic.cover} />
       <ComicContext>
-        <ContextDate>{props.pubdate}</ContextDate>
-        <ContextTitle>{props.title}</ContextTitle>
-        <ContextAppendix>{props.publisher}</ContextAppendix>
-        <ContextAppendix>{props.author}</ContextAppendix>
+        <ContextDate>{props.comic.pubdate}</ContextDate>
+        <ContextTitle>{props.comic.title}</ContextTitle>
+        <ContextAppendix>{props.comic.publisher}</ContextAppendix>
+        <ContextAppendix>{props.comic.author}</ContextAppendix>
       </ComicContext>
-    </Comic>
+    </ComicOuter>
   )
 }
 
-const Comic = styled.div`
+const ComicOuter = styled.div`
   width: calc(100% - 32px);
   height: 110px;
   background: #ffffff;
@@ -131,7 +101,6 @@ const ComicCover = styled.div<{ imageurl: string }>`
   width: ${coverSize.w}px;
   height: ${coverSize.h}px;
   background: top url(${(props) => props.imageurl});
-  /* background: top url(${imgBackground}); */
   background-size: cover;
 
   border-radius: 4px 0 0 4px;

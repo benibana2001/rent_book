@@ -5,15 +5,24 @@ import ComicArea from './ComicArea'
 
 import comicList from './comiclist'
 
+import * as Parser from '../../api/BookListParser'
+
+
 const Home: React.FunctionComponent = () => {
+  const [comics, setComics] = React.useState([])
+
+  React.useEffect(() => {
+    if (!comics.length) Parser.fetchBooksJSONPickup(setComics)
+  })
+
   return (
     <React.Fragment>
       <ContentsArea title={'新刊コミックピックアップ'}>
-        <ComicArea comics={comicList} />
+        <ComicArea comics={comics} />
       </ContentsArea>
 
       <ContentsArea title={'最近発売の新刊'}>
-        <ComicArea comics={comicList} />
+        <ComicArea comics={comics} />
       </ContentsArea>
     </React.Fragment>
   )

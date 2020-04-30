@@ -1,16 +1,15 @@
 import * as React from 'react'
 import styled from 'styled-components'
 
-type Comic = {
-  image: string
-  title: string
-}
+import { comicData } from '../../api/BookListParser'
+
 
 interface Props {
-  comics: Comic[]
+  comics: comicData[]
 }
 
 const ComicArea: React.FunctionComponent<Props> = (props) => {
+  
   const innerWidth = () => {
     const len = props.comics.length
 
@@ -34,9 +33,11 @@ const ComicArea: React.FunctionComponent<Props> = (props) => {
 
 const WriteComicContents: React.FunctionComponent<Props> = (props) => {
   const comics = props.comics
+
   const comicContents = comics.map((comic, index) => (
-    <ComicContents key={index} title={comic.title} image={comic.image} />
+    <ComicContents key={index} title={comic.title} image={comic.cover} />
   ))
+
   return <React.Fragment>{comicContents}</React.Fragment>
 }
 
