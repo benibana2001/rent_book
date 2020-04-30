@@ -3,10 +3,7 @@ import * as React from 'react'
 import { ContentsArea } from '../Common'
 import ComicArea from './ComicArea'
 
-import comicList from './comiclist'
-
 import * as Parser from '../../api/BookListParser'
-
 
 const Home: React.FunctionComponent = () => {
   const [comics, setComics] = React.useState([])
