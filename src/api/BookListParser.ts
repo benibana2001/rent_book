@@ -50,7 +50,7 @@ function fetchBooks(url: string) {
 
     // rewrite cover url
     json.forEach((comic: comicData) => {
-        comic.cover = getImagepath(comic)
+      comic.cover = getImagepath(comic)
     })
 
     callback(json)

@@ -30,6 +30,7 @@ const defaultLibRequest: LibRequest = {
 
 const Search: React.FunctionComponent<IProps> = (props) => {
   const history = useHistory()
+
   const [request, setRequest] = React.useState(defaultLibRequest)
   const [isLoading, setIsLoading] = React.useState(false)
 
@@ -47,7 +48,8 @@ const Search: React.FunctionComponent<IProps> = (props) => {
       </ContentsArea>
       <BookDataArea
         fetchBookInfo={fetchBookInfo}
-        submit={handleClick}
+        submit={handleSubmit}
+        request={request}
         isbn={request.isbn}
       />
       <DebugButton
@@ -60,7 +62,6 @@ const Search: React.FunctionComponent<IProps> = (props) => {
 
   function setSystemID(value: string) {
     console.group('setPref')
-    console.log(request)
 
     const obj = {
       ...request,
@@ -75,7 +76,6 @@ const Search: React.FunctionComponent<IProps> = (props) => {
 
   function setISBN(value: string) {
     console.group('setISBN')
-    console.log(request)
 
     const obj = {
       ...request,
@@ -107,15 +107,22 @@ const Search: React.FunctionComponent<IProps> = (props) => {
   }
 
   // Fetch a book status about each library by using Calil API.
-  async function handleClick(): Promise<void> {
-    // TODO: Display loading view automatically.
+  async function handleSubmit(): Promise<void> {
+    const condition = request.systemid && request.isbn && request.appkey
+    if (!condition) return
+
+    await fetchCalil()
+    moveToResultView()
+  }
+
+  async function fetchCalil() {
     setIsLoading(true)
-
     const res = await calil.search(request)
-
     dispatchLibraryInfo(res)
     setIsLoading(false)
+  }
 
+  function moveToResultView() {
     history.push('/librarysearch/result')
   }
 }
