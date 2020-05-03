@@ -42,3 +42,23 @@ export const shopUrl = (isbn13: number | string): string => {
 
   return HOST + isbn10
 }
+
+const reachedAtPoint = (position: number) => (): boolean => {
+  const elem: Element = document.body
+  const crrntWndwY: number = window.scrollY
+  const crrntWndwH: number = window.innerHeight
+  const crrntElemH: number = elem.scrollHeight
+
+  console.group()
+  console.groupEnd()
+
+  // marginTopの値を調整
+  if (crrntWndwY + crrntWndwH >= crrntElemH * position) {
+    return true
+  }
+
+  return false
+}
+
+export const reachedAtBottom = reachedAtPoint(1.0)
+export const reachedAt80 = reachedAtPoint(0.8)

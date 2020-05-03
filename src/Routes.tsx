@@ -2,6 +2,8 @@ import * as React from 'react'
 
 import styled from 'styled-components'
 
+import * as Util from './util'
+
 import {
   BrowserRouter as Router,
   Route,
@@ -29,7 +31,10 @@ const Routes: React.FunctionComponent = () => {
 
 const Container: React.FunctionComponent = () => {
   return (
-    <ContainerInner onScroll={() => console.log('scroll')}>
+    <ContainerInner
+    //   onScroll={() => {
+    //   }}
+    >
       <Redirect exact={true} from="/" to="/home" />
       <Route path="/home" component={Home} />
       <Route path="/librarysearch" component={LibrarySearchRouter} />
@@ -49,20 +54,3 @@ const ContainerInner = styled.div`
 `
 
 export default Routes
-
-const reachedAtPoint = (position: number) => (): boolean => {
-  const elem: Element = document.body
-  const crrntWndwY: number = window.scrollY
-  const crrntWndwH: number = window.innerHeight
-  const crrntElemH: number = elem.scrollHeight
-
-  // marginTopの値を調整
-  if (crrntWndwY + crrntWndwH >= crrntElemH * position) {
-    return true
-  }
-
-  return false
-}
-
-const reachedAtBottom = reachedAtPoint(1.0)
-const reachedAt80 = reachedAtPoint(0.8)
