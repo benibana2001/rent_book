@@ -28,7 +28,7 @@ const About: React.FunctionComponent = () => {
             <br />
             Figma
             <br />
-            Firebase Hosting
+            Node.js, VPS, Firebase Hosting
             <br />
             Fetch API
             <br />

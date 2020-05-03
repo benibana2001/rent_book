@@ -5,6 +5,8 @@ import { ContentsArea } from '../Common'
 
 import * as Parser from '../../api/BookListParser'
 
+import * as Util from '../../util'
+
 interface Props {
   test: string
 }
@@ -45,14 +47,20 @@ type PropsComic = {
 }
 
 const Comic: React.FunctionComponent<PropsComic> = (props) => {
+  const comic = props.comic
+
+  const moveToShop = () => {
+    location.href = Util.shopUrl(comic.isbn)
+  }
+
   return (
-    <ComicOuter>
-      <ComicCover imageurl={props.comic.cover} />
+    <ComicOuter onClick={moveToShop}>
+      <ComicCover imageurl={comic.cover} />
       <ComicContext>
-        <ContextDate>{props.comic.pubdate}</ContextDate>
-        <ContextTitle>{props.comic.title}</ContextTitle>
-        <ContextAppendix>{props.comic.publisher}</ContextAppendix>
-        <ContextAppendix>{props.comic.author}</ContextAppendix>
+        <ContextDate>{comic.pubdate}</ContextDate>
+        <ContextTitle>{comic.title}</ContextTitle>
+        <ContextAppendix>{comic.publisher}</ContextAppendix>
+        <ContextAppendix>{comic.author}</ContextAppendix>
       </ComicContext>
     </ComicOuter>
   )

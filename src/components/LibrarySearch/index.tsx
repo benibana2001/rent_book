@@ -50,7 +50,7 @@ const LibrarySearchRouter: React.FunctionComponent = () => {
     <Switch>
       <Route exact path={path}>
         {renderLibrarySearch()}
-        <Link to={`${url}/result`}>Result</Link>
+        {/* <Link to={`${url}/result`}>Result</Link> */}
       </Route>
 
       <Route path={`${path}/:result`}>
