@@ -38,6 +38,10 @@ export const fetchBooksJSON = fetchBooks(booksJSONurl)
 
 export const fetchBooksJSONPickup = fetchBooks(booksJSONPickupUrl)
 
+export const getRecentBooksJSON = (date: string) => {
+    console.log(date)
+}
+
 function fetchBooks(url: string) {
   return async (callback: Function) => {
     const booksJSON = await fetch(url, {

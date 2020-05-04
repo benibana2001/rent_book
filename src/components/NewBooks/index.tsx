@@ -8,35 +8,29 @@ import * as Parser from '../../api/BookListParser'
 import * as Util from '../../util'
 
 interface Props {
-  test: string
+  comics: Parser.comicData[]
 }
 
-const NewBooks: React.FunctionComponent<Props> = () => {
+const NewBooks: React.FunctionComponent<Props> = props => {
   return (
     <ContentsArea title={'今月の新刊コミック'}>
-      <Comics />
+      <Comics comics={props.comics} />
     </ContentsArea>
   )
 }
 
-const Comics = () => {
-  const [comics, setComics] = React.useState([])
-  const isComics = comics.length
+interface PropsComics {
+  comics: Parser.comicData[]
+}
 
-  React.useEffect(() => {
-    if (!isComics) Parser.fetchBooksJSON(setComics)
-  })
-
-  const chunk = comics.slice(0, 19)
+const Comics: React.FunctionComponent<PropsComics> = (props) => {
+  const comics = props.comics
 
   const comicsSliced = () => {
-    if (isComics) {
-      const comicsChunk = chunk.map((comic: Parser.comicData, index) => (
-        <Comic key={index} comic={comic} />
-      ))
-      return <React.Fragment>{comicsChunk}</React.Fragment>
-    }
-    return <React.Fragment></React.Fragment>
+    const comicsChunk = comics.map((comic: Parser.comicData, index) => (
+      <Comic key={index} comic={comic} />
+    ))
+    return <React.Fragment>{comicsChunk}</React.Fragment>
   }
 
   return <React.Fragment>{comicsSliced()}</React.Fragment>

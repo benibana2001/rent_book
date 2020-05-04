@@ -62,3 +62,46 @@ const reachedAtPoint = (position: number) => (): boolean => {
 
 export const reachedAtBottom = reachedAtPoint(1.0)
 export const reachedAt80 = reachedAtPoint(0.8)
+
+export const getDate = () => {
+  const today = new Date()
+  return {
+    date: today.getDate(),
+    month: today.getMonth() + 1,
+    year: today.getFullYear(),
+    data: today,
+  }
+}
+
+const singledigit = (num: number | string): boolean => {
+  if (typeof num === 'number') num = String(num)
+  return num.length === 1
+}
+
+const add0 = (num: number | string): string => {
+  if (typeof num === 'number') num = String(num)
+  if (singledigit(num)) return '0' + num
+  return num
+}
+
+export const getRecentDays = (offset: number): string[] => {
+  const date = getDate()
+  const year = String(date.year)
+  const month = add0(date.month)
+  const day = String(date.date)
+  const limit = parseInt(day) + offset
+
+  const recentDay = (n: string | number): string => {
+    if (typeof n === `number`) n = String(n)
+    return year + month + n
+  }
+
+  const recentDays = []
+  for (let i = parseInt(day); i < limit; i++) {
+    const day: string = add0(i)
+
+    recentDays.push(recentDay(day))
+  }
+
+  return recentDays
+}

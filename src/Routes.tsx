@@ -3,6 +3,7 @@ import * as React from 'react'
 import styled from 'styled-components'
 
 import * as Util from './util'
+import * as Parser from './api/BookListParser'
 
 import {
   BrowserRouter as Router,
@@ -30,18 +31,22 @@ const Routes: React.FunctionComponent = () => {
 }
 
 const Container: React.FunctionComponent = () => {
+    
+  const [comics, setComics] = React.useState([])
+  const [comicsPickup, setComicsPickup] = React.useState([])
+
+  if (!comics.length) Parser.fetchBooksJSON(setComics)
+  if (!comicsPickup.length) Parser.fetchBooksJSONPickup(setComicsPickup)
+
   return (
-    <ContainerInner
-    //   onScroll={() => {
-    //   }}
-    >
+    <ContainerInner>
       <Redirect exact={true} from="/" to="/home" />
-      <Route path="/home" component={Home} />
+      <Route path="/home" render={() => <Home comics={comics} comicsPickup={comicsPickup}/>} />
       <Route path="/librarysearch" component={LibrarySearchRouter} />
       <Route path="/about" component={About} />
       <Route
         path="/newbooks"
-        render={() => <Newbooks test={'hello world'} />}
+        render={() => <Newbooks comics={comics} />}
       />
       {/* <Route path="/newbooks" component={Newbooks} /> */}
     </ContainerInner>

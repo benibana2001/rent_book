@@ -20,6 +20,8 @@ const ComicArea: React.FunctionComponent<Props> = (props) => {
     return comicsWidth + comicsSpan + padding
   }
 
+  console.log(Util.getRecentDays(5))
+
   return (
     <React.Fragment>
       <ComicContentsOuter>

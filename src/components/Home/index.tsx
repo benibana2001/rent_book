@@ -5,21 +5,21 @@ import ComicArea from './ComicArea'
 
 import * as Parser from '../../api/BookListParser'
 
-const Home: React.FunctionComponent = () => {
-  const [comics, setComics] = React.useState([])
+interface Props {
+    comics: Parser.comicData[],
+    comicsPickup: Parser.comicData[]
+}
 
-  React.useEffect(() => {
-    if (!comics.length) Parser.fetchBooksJSONPickup(setComics)
-  })
+const Home: React.FunctionComponent<Props> = props => {
 
   return (
     <React.Fragment>
       <ContentsArea title={'新刊コミックピックアップ'}>
-        <ComicArea comics={comics} />
+        <ComicArea comics={props.comicsPickup} />
       </ContentsArea>
 
       <ContentsArea title={'最近発売の新刊'}>
-        <ComicArea comics={comics} />
+        <ComicArea comics={props.comicsPickup} />
       </ContentsArea>
     </React.Fragment>
   )
