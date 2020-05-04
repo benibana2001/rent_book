@@ -31,23 +31,27 @@ const Routes: React.FunctionComponent = () => {
 }
 
 const Container: React.FunctionComponent = () => {
-    
   const [comics, setComics] = React.useState([])
   const [comicsPickup, setComicsPickup] = React.useState([])
 
-  if (!comics.length) Parser.fetchBooksJSON(setComics)
-  if (!comicsPickup.length) Parser.fetchBooksJSONPickup(setComicsPickup)
+  React.useEffect(() => {
+    Parser.fetchBooksJSON(setComics)
+  }, [])
+
+  React.useEffect(() => {
+    Parser.fetchBooksJSONPickup(setComicsPickup)
+  }, [])
 
   return (
     <ContainerInner>
       <Redirect exact={true} from="/" to="/home" />
-      <Route path="/home" render={() => <Home comics={comics} comicsPickup={comicsPickup}/>} />
+      <Route
+        path="/home"
+        render={() => <Home comics={comics} comicsPickup={comicsPickup} />}
+      />
       <Route path="/librarysearch" component={LibrarySearchRouter} />
       <Route path="/about" component={About} />
-      <Route
-        path="/newbooks"
-        render={() => <Newbooks comics={comics} />}
-      />
+      <Route path="/newbooks" render={() => <Newbooks comics={comics} />} />
       {/* <Route path="/newbooks" component={Newbooks} /> */}
     </ContainerInner>
   )

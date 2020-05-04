@@ -39,7 +39,7 @@ export const fetchBooksJSON = fetchBooks(booksJSONurl)
 export const fetchBooksJSONPickup = fetchBooks(booksJSONPickupUrl)
 
 export const getRecentBooksJSON = (date: string) => {
-    console.log(date)
+  console.log(date)
 }
 
 function fetchBooks(url: string) {

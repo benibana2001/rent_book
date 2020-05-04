@@ -53,7 +53,11 @@ const BookDataArea: React.FunctionComponent<IProps> = (props) => {
         </Button.MediumColored>
       )
     } else {
-      return <Button.Medium onClick={handleClickNotValid}>蔵書を調べる</Button.Medium>
+      return (
+        <Button.Medium onClick={handleClickNotValid}>
+          蔵書を調べる
+        </Button.Medium>
+      )
     }
   }
 
@@ -69,7 +73,7 @@ const BookDataArea: React.FunctionComponent<IProps> = (props) => {
   }
 
   function handleClickNotValid() {
-      alert('please input prefecture')
+    alert('please input prefecture')
   }
 
   function isBookResponse() {

@@ -11,7 +11,7 @@ interface Props {
   comics: Parser.comicData[]
 }
 
-const NewBooks: React.FunctionComponent<Props> = props => {
+const NewBooks: React.FunctionComponent<Props> = (props) => {
   return (
     <ContentsArea title={'今月の新刊コミック'}>
       <Comics comics={props.comics} />
