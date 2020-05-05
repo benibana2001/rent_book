@@ -36,6 +36,8 @@ const ResultList: React.FunctionComponent<IProps> = (props) => {
     return props.data.map((data) => {
       const libraryName = data.name
       const bookStatus = data.status
+      const canRental = data.status === '貸出可'
+
       return (
         <List key={data.id}>
           <div>
@@ -50,12 +52,14 @@ const ResultList: React.FunctionComponent<IProps> = (props) => {
 
           <div>
             <span>
-              <Icon
-                path={mdiBookshelf}
-                title="Tab Icon"
-                size="20px"
-                color="#9F9F9F"
-              />
+              {canRental && (
+                <Icon
+                  path={mdiBookshelf}
+                  title="Tab Icon"
+                  size="20px"
+                  color="#9F9F9F"
+                />
+              )}
               <BookStatus>{bookStatus}</BookStatus>
             </span>
           </div>
