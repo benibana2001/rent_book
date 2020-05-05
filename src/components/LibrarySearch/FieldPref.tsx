@@ -49,7 +49,7 @@ const PrefectureSelect = styled.select`
   width: ${selectSize}px;
   height: 31px;
   padding-left: ${paddingSize}px;
-  font-size: 12px;
+  font-size: 18px;
   color: #8e8e8e;
 
   border: 0.5px solid #dedede;

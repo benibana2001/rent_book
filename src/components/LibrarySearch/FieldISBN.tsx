@@ -48,7 +48,7 @@ const Input = styled.input`
   background-repeat: no-repeat;
 
   &:placeholder-shown {
-    font-size: 12px;
+    font-size: 18px;
   }
 `
 
