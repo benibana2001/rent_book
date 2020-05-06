@@ -24,7 +24,9 @@ interface PropsComics {
 }
 
 const Comics: React.FunctionComponent<PropsComics> = (props) => {
-  const comics = props.comics
+  const temp = props.comics
+
+  const comics: Parser.comicData[] = temp.slice(0, 20)
 
   const comicsSliced = () => {
     const comicsChunk = comics.map((comic: Parser.comicData, index) => (

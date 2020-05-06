@@ -4,9 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const Dotenv = require('dotenv-webpack')
 
 module.exports = {
-  mode: 'development',
   entry: './src/index.tsx',
-  devtool: 'inline-source-map',
 
   output: {
     filename: 'main.js',
@@ -21,19 +19,13 @@ module.exports = {
     }),
   ],
 
-  devServer: {
-    open: true,
-    historyApiFallback: true,
-    host: '0.0.0.0',
-  },
-
   module: {
     rules: [
       {
         test: /.(ts|tsx)$/,
         loader: 'ts-loader',
         include: [path.resolve(__dirname, 'src')],
-        exclude: [/node_modules/]
+        exclude: [/node_modules/],
       },
       {
         test: /\.scss$/,
