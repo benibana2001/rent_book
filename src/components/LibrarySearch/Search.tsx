@@ -53,7 +53,7 @@ const Search: React.FunctionComponent<IProps> = (props) => {
         isbn={request.isbn}
       />
       <DebugButton
-        isbn={'4334926940'}
+        isbn={'9784798155456'}
         pref={'Tokyo_Adachi'}
         func={{ isbn: setISBN, pref: setSystemID }}
       />

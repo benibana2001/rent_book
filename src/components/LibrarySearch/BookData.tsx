@@ -15,6 +15,7 @@ interface IProps {
 const defaultBookResponse: BookResponse = {
   title: '',
   coverurl: '',
+  errorMessage: false,
 }
 
 const BookDataArea: React.FunctionComponent<IProps> = (props) => {
@@ -43,7 +44,20 @@ const BookDataArea: React.FunctionComponent<IProps> = (props) => {
     </Book>
   )
 
-  return isBookResponse() && bookDataArea
+  const bookDataNone = (
+    <Book>
+      <BookInner>
+        <BookTitle>{bookResponse.errorMessage}</BookTitle>
+      </BookInner>
+    </Book>
+  )
+
+  return (
+    <React.Fragment>
+      {isNoBookResponse() && bookDataNone}
+      {isBookResponse() && bookDataArea}
+    </React.Fragment>
+  )
 
   function searchButton() {
     if (validRequestStatus()) {
@@ -80,16 +94,24 @@ const BookDataArea: React.FunctionComponent<IProps> = (props) => {
     return bookResponse.title
   }
 
+  function isNoBookResponse() {
+    return bookResponse.errorMessage
+  }
+
   function fetchBook() {
     validate() ? fetch() : setBookResponse(defaultBookResponse)
   }
 
   function validate(): boolean {
-    return props.isbn.length === 13 || props.isbn.length === 10
+    return props.isbn.length === 13
   }
 
   async function fetch() {
-    setBookResponse(await props.fetchBookInfo(props.isbn))
+    const res = await props.fetchBookInfo(props.isbn)
+    if (res.errorMessage) {
+      console.log(res.errorMessage)
+    }
+    setBookResponse(res)
   }
 }
 

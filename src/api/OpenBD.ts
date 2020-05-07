@@ -1,6 +1,11 @@
 export interface BookResponse {
   title: string
   coverurl?: string
+  errorMessage: boolean | string
+}
+
+const message = {
+  NO_BOOK: '指定のISBNに該当する情報が見つかりませんでした.',
 }
 
 class OpenBD {
@@ -13,12 +18,18 @@ class OpenBD {
     return this._isbn
   }
 
+  // At OpenBD web api, always return 200 status even if no data.
   public async search(isbn: string): Promise<BookResponse> {
     this.isbn = isbn
     const url: string = this.HOST + '?isbn=' + this.isbn + '&pretty'
     const res: any = await fetch(url)
     const ary: any = await res.json()
     const data: any = ary[0]
+
+    if (!data) {
+      return { title: '', coverurl: '', errorMessage: message.NO_BOOK }
+    }
+
     const title: string =
       data.onix.DescriptiveDetail.TitleDetail.TitleElement.TitleText.content
     const coverurl: string = data.summary.cover
@@ -27,7 +38,7 @@ class OpenBD {
     // console.log(`title: ${title}`)
     // console.log(`coverurl: ${coverurl}`)
 
-    return { title: title, coverurl: coverurl }
+    return { title: title, coverurl: coverurl, errorMessage: false }
   }
 }
 
