@@ -12,7 +12,7 @@ const TabBar: React.FunctionComponent = () => {
 
   React.useEffect(() => {
     setCurrentPage(location.pathname)
-  })
+  }, [location.pathname])
 
   return (
     <Outer>
