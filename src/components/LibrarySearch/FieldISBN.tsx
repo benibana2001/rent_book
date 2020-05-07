@@ -9,12 +9,22 @@ interface IProps {
 }
 
 const FieldISBN: React.FunctionComponent<IProps> = (props) => {
+  const maxValueLength = 13
   const handleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     // If reference target in the async function, to do persit() is required.
     event.persist()
 
     const isbn = event.target.value as string
+
+    if (isbn.length >= maxValueLength) {
+      blurKeyboard(event)
+    }
+
     props.setISBN(isbn)
+  }
+
+  const blurKeyboard = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.target.blur()
   }
 
   return (
