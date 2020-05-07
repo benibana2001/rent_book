@@ -1,4 +1,5 @@
-import fetchJsonp = require('fetch-jsonp')
+// import fetchJsonp = require('fetch-jsonp')
+import fetchJsonp from 'fetch-jsonp'
 // import { LibRequest, LibResponse, LibData } from '../components/interfaces'
 
 export interface LibRequest {
@@ -227,7 +228,7 @@ class Calil {
    */
   public async callApi(url: string): Promise<any> {
     // fetch jsonp... I don't know why but fetch-jsonp package wrapp response twice by Promise.
-    const res: fetchJsonp.Response = await fetchJsonp(url, { timeout: 5000 })
+    const res = await fetchJsonp(url, { timeout: 5000 })
     const s: any = await res.json()
     return s
   }
