@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { Toast } from '../Common'
+import { Toast } from '../Common/index'
 import imgLoading from '../../img/toast_loading.png'
 
 interface IProps {

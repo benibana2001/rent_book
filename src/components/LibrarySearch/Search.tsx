@@ -12,7 +12,7 @@ import OpenBD, { BookResponse } from '../../api/OpenBD'
 
 import { BookStatus, defaultLibResponse } from './index'
 
-import { ContentsArea } from '../Common'
+import { ContentsArea } from '../Common/index'
 
 interface IProps {
   setBookInfo: (bookInfo: BookResponse) => void

@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { LibRequest } from '../../api/Calil'
 import { BookResponse } from '../../api/OpenBD'
 
-import { Button } from '../Common'
+import { Button } from '../Common/index'
 interface IProps {
   isbn: string
   request: LibRequest
@@ -68,9 +68,9 @@ const BookDataArea: React.FunctionComponent<IProps> = (props) => {
       )
     } else {
       return (
-        <Button.Medium onClick={handleClickNotValid}>
+        <Button.MediumColoredTransparent onClick={handleClickNotValid}>
           蔵書を調べる
-        </Button.Medium>
+        </Button.MediumColoredTransparent>
       )
     }
   }

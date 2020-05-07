@@ -9,7 +9,7 @@ import { BookStatus } from '../index'
 import ContentsArea from '../../Common/ContentsArea'
 import styled from 'styled-components'
 
-import { Button } from '../../Common'
+import { Button } from '../../Common/index'
 
 interface IProps {
   bookStatus: BookStatus

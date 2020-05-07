@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Route, Switch, useRouteMatch, Link, useParams } from 'react-router-dom'
 
 import Search from './Search'
-import Result from './Result'
+import Result from './Result/index'
 import '../../index.scss'
 import { LibResponse } from '../../api/Calil'
 

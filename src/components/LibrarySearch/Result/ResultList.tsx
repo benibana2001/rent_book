@@ -3,7 +3,7 @@ import * as React from 'react'
 import { LibData } from '../../../api/Calil'
 
 import Icon from '@mdi/react'
-import { mdiBank, mdiHome, mdiBookshelf, mdiBookSearch } from '@mdi/js'
+import { mdiBank, mdiBookshelf } from '@mdi/js'
 import styled from 'styled-components'
 
 interface IProps {

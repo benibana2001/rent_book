@@ -1,7 +1,7 @@
 import * as React from 'react'
 import styled from 'styled-components'
 
-import { ContentsArea } from '../Common'
+import { ContentsArea } from '../Common/index'
 
 import * as Parser from '../../api/BookListParser'
 
