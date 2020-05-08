@@ -1,6 +1,24 @@
 import * as Util from '../util'
 
 describe('Util', () => {
+  const dummy = {
+    isbn: [
+      {
+        13: '9784480064707',
+        10: '4480064702',
+      },
+      {
+        13: '9784047353374',
+        10: '404735337X',
+      },
+    ],
+
+    url: [
+      'https://www.amazon.co.jp/dp/4480064702',
+      'https://www.amazon.co.jp/dp/404735337X',
+    ],
+  }
+
   test('substr', () => {
     expect(Util.substring('9784480064707')).toBe('448006470')
   })
@@ -9,17 +27,23 @@ describe('Util', () => {
     expect(Util.sum('448006470')).toBe(207)
   })
 
-  test('calcCheckDigit', () => {
-    expect(Util.calcCheckDigit(211)).toBe('9')
-    expect(Util.calcCheckDigit(210)).toBe('X')
-    expect(Util.calcCheckDigit(209)).toBe('0')
-    expect(Util.calcCheckDigit(208)).toBe('1')
-    expect(Util.calcCheckDigit(207)).toBe('2')
-    expect(Util.calcCheckDigit(206)).toBe('3')
+  test.each([
+      [211, '9'],
+      [210, 'X'],
+      [209, '0'],
+      [208, '1'],
+      [207, '2']
+  ])('calcCheckDigit(%i, %s)', (a, expected) => {
+      expect(Util.calcCheckDigit(a)).toEqual(expected)
   })
 
   test('convertISBN13to10', () => {
-    expect(Util.convertISBN13to10('9784480064707')).toBe('4480064702')
-    expect(Util.convertISBN13to10('9784047353374')).toBe('404735337X')
+    expect(Util.convertISBN13to10(dummy.isbn[0][13])).toBe(dummy.isbn[0][10])
+    expect(Util.convertISBN13to10(dummy.isbn[1][13])).toBe(dummy.isbn[1][10])
+  })
+
+  test('shopUrl', () => {
+    expect(Util.shopUrl(dummy.isbn[0][13])).toBe(dummy.url[0])
+    expect(Util.shopUrl(dummy.isbn[1][13])).toBe(dummy.url[1])
   })
 })
