@@ -28,13 +28,13 @@ describe('Util', () => {
   })
 
   test.each([
-      [211, '9'],
-      [210, 'X'],
-      [209, '0'],
-      [208, '1'],
-      [207, '2']
+    [211, '9'],
+    [210, 'X'],
+    [209, '0'],
+    [208, '1'],
+    [207, '2'],
   ])('calcCheckDigit(%i, %s)', (a, expected) => {
-      expect(Util.calcCheckDigit(a)).toEqual(expected)
+    expect(Util.calcCheckDigit(a)).toEqual(expected)
   })
 
   test('convertISBN13to10', () => {
@@ -45,5 +45,13 @@ describe('Util', () => {
   test('shopUrl', () => {
     expect(Util.shopUrl(dummy.isbn[0][13])).toBe(dummy.url[0])
     expect(Util.shopUrl(dummy.isbn[1][13])).toBe(dummy.url[1])
+  })
+
+  test('Util.getRecentDays', () => {
+    const count = 3
+    const dummy = '20200101'
+    const expected = ['20200101', '20200102', '20200103']
+
+    expect(Util.getRecentDays(count, dummy)).toEqual(expected)
   })
 })

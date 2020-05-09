@@ -84,12 +84,21 @@ const add0 = (num: number | string): string => {
   return num
 }
 
-export const getRecentDays = (offset: number): string[] => {
-  const date = getDate()
-  const year = String(date.year)
-  const month = add0(date.month)
-  const day = String(date.date)
-  const limit = parseInt(day) + offset
+export const getRecentDays = (offset: number, today = ''): string[] => {
+  let year: string, month: string, day: string
+
+  if (today) {
+    year = today.substring(0, 4)
+    month = today.substring(4, 6)
+    day = today.substring(6, 8)
+  } else {
+    const date = getDate()
+    year = String(date.year)
+    month = add0(date.month)
+    day = String(date.date)
+  }
+
+  const limit: number = parseInt(day) + offset
 
   const recentDay = (n: string | number): string => {
     if (typeof n === `number`) n = String(n)
