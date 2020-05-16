@@ -23,8 +23,6 @@ interface PropsComics {
   comics: Parser.comicData[]
 }
 
-const LazyLoadClassName = 'lazy-load'
-
 const Comics: React.FunctionComponent<PropsComics> = (props) => {
   // 全データ管理用
   const [stack, setStack] = React.useState(props.comics)
@@ -35,13 +33,23 @@ const Comics: React.FunctionComponent<PropsComics> = (props) => {
   React.useEffect(consumeStack, [props.comics])
   React.useEffect(observeStart, [chunk])
 
+  const lazyEl = React.useRef<HTMLDivElement>(null)
   const comicsChunk = chunk.map((comic: Parser.comicData, index) => {
     const last = index === chunk.length - 1
 
     if (last) {
-      return <Comic key={index} comic={comic} lazyLoadFlag={true} />
+      return (
+        <div ref={lazyEl} key={index}>
+          <Comic comic={comic} />
+        </div>
+      )
     }
-    return <Comic key={index} comic={comic} lazyLoadFlag={false} />
+
+    return (
+      <div key={index}>
+        <Comic comic={comic} />
+      </div>
+    )
   })
 
   // イベント: 新たなデータチャンクを読み込み、Stateにセットする
@@ -57,22 +65,22 @@ const Comics: React.FunctionComponent<PropsComics> = (props) => {
       threshold: 1.0,
     }
 
-    const callback = () => {
-      console.group('callback')
+    const observeCallback = () => {
+      console.group('observeCallback')
       console.log('fire')
-      const removalTarget = document.querySelector(`.${LazyLoadClassName}`)
-      console.log(removalTarget)
-      console.log(removalTarget.className)
-        removalTarget.className = 'removed'
+
+    //   consumeStack()
+
       console.groupEnd()
     }
 
-    const observer = new IntersectionObserver(callback, options)
+    const observer = new IntersectionObserver(observeCallback, options)
 
     console.log('observe start')
-    if (document.querySelector(`.${LazyLoadClassName}`)) {
-      const target = document.querySelector(`.${LazyLoadClassName}`)
-      observer.observe(target)
+    // if (document.querySelector(`.${LazyLoadClassName}`)) {
+    if (lazyEl.current) {
+      const target = lazyEl
+      observer.observe(target.current)
     }
   }
 
@@ -94,29 +102,25 @@ const TestEvent: React.FunctionComponent<{ handler: Function }> = (props) => {
 
 type PropsComic = {
   comic: Parser.comicData
-  lazyLoadFlag: boolean
 }
 
 const Comic: React.FunctionComponent<PropsComic> = (props) => {
   const comic = props.comic
-  const lazyLoadFlag = props.lazyLoadFlag
 
   const moveToShop = () => {
     location.href = Util.shopUrl(comic.isbn)
   }
 
   return (
-    <div className={lazyLoadFlag ? LazyLoadClassName : ''}>
-      <ComicOuter onClick={moveToShop}>
-        <ComicCover imageurl={comic.cover} />
-        <ComicContext>
-          <ContextDate>{comic.pubdate}</ContextDate>
-          <ContextTitle>{comic.title}</ContextTitle>
-          <ContextAppendix>{comic.publisher}</ContextAppendix>
-          <ContextAppendix>{comic.author}</ContextAppendix>
-        </ComicContext>
-      </ComicOuter>
-    </div>
+    <ComicOuter onClick={moveToShop}>
+      <ComicCover imageurl={comic.cover} />
+      <ComicContext>
+        <ContextDate>{comic.pubdate}</ContextDate>
+        <ContextTitle>{comic.title}</ContextTitle>
+        <ContextAppendix>{comic.publisher}</ContextAppendix>
+        <ContextAppendix>{comic.author}</ContextAppendix>
+      </ComicContext>
+    </ComicOuter>
   )
 }
 
