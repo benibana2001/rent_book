@@ -2,9 +2,9 @@ import * as React from 'react'
 import styled from 'styled-components'
 
 import { ContentsArea } from '../Common/index'
+import Observer from './Observer'
 
 import * as Parser from '../../api/BookListParser'
-
 import * as Util from '../../util'
 
 interface Props {
@@ -24,80 +24,65 @@ interface PropsComics {
 }
 
 const Comics: React.FunctionComponent<PropsComics> = (props) => {
-  // 全データ管理用
-  const [stack, setStack] = React.useState(props.comics)
+  const stack = props.comics
+
   // 読み込み済みのチャンクを保持するState
-  const [chunk, setChunk] = React.useState([])
-  const chunkSize = 20
+  const [chunks, setChunks] = React.useState([])
+  const chunkSize = 40
+
+  // 監視対象のrefを保持
+  const options = {
+    root: document.querySelector('#root'),
+    rootMargin: '0px',
+    threshold: 1.0,
+  }
+
+  const observeCallback: IntersectionObserverCallback = (
+    entries: IntersectionObserverEntry[]
+  ) => {
+    entries.forEach((entry) => {
+      const intersecting = entry.intersectionRatio !== 0
+      if (intersecting && loadingObserver.existRef()) consumeStack()
+    })
+  }
+
+  const loadingObserver = new Observer(options, observeCallback)
 
   React.useEffect(consumeStack, [props.comics])
-  React.useEffect(observeStart, [chunk])
+  React.useEffect(observeStart, [chunks])
 
-  const lazyEl = React.useRef<HTMLDivElement>(null)
-  const comicsChunk = chunk.map((comic: Parser.comicData, index) => {
-    const last = index === chunk.length - 1
+  const comicsChunk = chunks.map((comic: Parser.comicData, index) => {
+    const last = index === chunks.length - 1
 
-    if (last) {
-      return (
-        <div ref={lazyEl} key={index}>
-          <Comic comic={comic} />
-        </div>
-      )
-    }
+    let ref: React.RefObject<HTMLDivElement> = null
+    if (last) ref = loadingObserver.createRef()
 
     return (
-      <div key={index}>
+      <div key={index} ref={ref}>
         <Comic comic={comic} />
       </div>
     )
   })
 
-  // イベント: 新たなデータチャンクを読み込み、Stateにセットする
+  // イベントハンドラ: 新たなデータチャンクを読み込み、Stateにセットする
   function consumeStack() {
-    setChunk([...chunk, ...stack.slice(0, chunkSize)])
-    setStack(stack.slice(chunkSize))
+    setChunks([
+      ...chunks,
+      ...stack.slice(chunks.length, chunks.length + chunkSize),
+    ])
+    console.log(`stackSize, chunksSize: ${stack.length}, ${chunks.length}`)
   }
 
   function observeStart() {
-    const options = {
-      root: document.querySelector('#root'),
-      rootMargin: '0px',
-      threshold: 1.0,
-    }
+    if (!loadingObserver.existRef()) return
 
-    const observeCallback = () => {
-      console.group('observeCallback')
-      console.log('fire')
-
-    //   consumeStack()
-
-      console.groupEnd()
-    }
-
-    const observer = new IntersectionObserver(observeCallback, options)
-
-    console.log('observe start')
-    // if (document.querySelector(`.${LazyLoadClassName}`)) {
-    if (lazyEl.current) {
-      const target = lazyEl
-      observer.observe(target.current)
-    }
+    const remainingStack = chunks.length < stack.length
+    loadingObserver.start()
+    // 描画の情報がない場合は、監視を停止
+    if (!remainingStack) loadingObserver.stop()
   }
 
-  return (
-    <React.Fragment>
-      <TestEvent handler={consumeStack}></TestEvent>
-      {comicsChunk}
-    </React.Fragment>
-  )
-}
-
-const TestEvent: React.FunctionComponent<{ handler: Function }> = (props) => {
-  return (
-    <div>
-      <button onClick={() => props.handler()}> Click</button>
-    </div>
-  )
+  return <React.Fragment>{comicsChunk}</React.Fragment>
 }
 
 type PropsComic = {

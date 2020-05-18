@@ -21,6 +21,6 @@ export const MediumColored = styled(Medium)`
 `
 
 export const MediumColoredTransparent = styled(Medium)`
-    background: rgba(81, 233, 215, 0.4);
-    color: rgba(255, 255, 255, 0.8)
+  background: rgba(81, 233, 215, 0.4);
+  color: rgba(255, 255, 255, 0.8);
 `
